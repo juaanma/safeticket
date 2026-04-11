@@ -1,9 +1,9 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iniciar SesiÃ³n | SaFeBeat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Iniciar Sesión | SaFeBeat</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
@@ -135,27 +135,27 @@
       
       <div class="auth-title">
         <h1>Bienvenido de nuevo</h1>
-        <p>ContinÃºa donde lo dejaste</p>
+        <p>Continúa donde lo dejaste</p>
       </div>
 
 
       <form id="login-form">
         <div class="form-group">
-          <label>Correo ElectrÃ³nico</label>
+          <label>Correo Electrónico</label>
           <input type="email" id="login-email" class="form-control" placeholder="juan@ejemplo.com" required>
         </div>
         <div class="form-group" style="margin-bottom: 0.5rem;">
-          <label>ContraseÃ±a</label>
-          <input type="password" id="login-password" class="form-control" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
+          <label>Contraseña</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
         </div>
-        <a href="#" class="forgot-link" style="margin-bottom: 1.5rem;">Â¿Olvidaste tu contraseÃ±a?</a>
+        <a href="#" class="forgot-link" style="margin-bottom: 1.5rem;">¿Olvidaste tu contraseña?</a>
 
         <button type="submit" id="btn-login" class="btn btn-primary" style="width: 100%;">Ingresar <i class="ph-bold ph-arrow-right"></i></button>
         <p id="error-msg" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
       </form>
 
       <div class="auth-footer">
-        Â¿AÃºn no tienes cuenta? <a href="register.html">RegÃ­strate</a>
+        ¿Aún no tienes cuenta? <a href="register.html">Regístrate</a>
       </div>
     </div>
   </div>
@@ -178,7 +178,7 @@
       e.preventDefault();
 
       if (!window.MiSupabase) {
-        alert("Modo prueba: no hay configuraciÃ³n de Supabase. Ingresando sin validar...");
+        alert("Modo prueba: no hay configuración de Supabase. Ingresando sin validar...");
         window.location.href = 'dashboard.html';
         return;
       }
@@ -203,7 +203,7 @@
       if (error) {
         // Simple error translation hack
         let text = error.message;
-        if (text.includes('Invalid login credentials')) text = 'Correo o contraseÃ±a incorrectos.';
+        if (text.includes('Invalid login credentials')) text = 'Correo o contraseña incorrectos.';
         errorMsg.innerText = text;
         errorMsg.style.display = 'block';
       } else {
@@ -253,6 +253,7 @@
   </script>
 </body>
 </html>
+
 
 
 

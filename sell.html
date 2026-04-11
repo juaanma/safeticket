@@ -1,8 +1,8 @@
-ï»¿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
   <title>Vender Entrada | SaFeBeat</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
@@ -97,13 +97,13 @@
       <i class="ph-fill ph-shield-check" style="color: var(--accent); font-size: 1.5rem; margin-top: 0.2rem;"></i>
       <div>
         <div style="font-weight: 600; color: var(--accent); margin-bottom: 0.3rem;">Vendedor Verificado</div>
-        <div style="font-size: 0.9rem; color: var(--text-muted);">Tu identidad ya ha sido verificada. Tus publicaciones tendrÃ¡n el sello de "Vendedor Confiable", aumentando tus chances de venta.</div>
+        <div style="font-size: 0.9rem; color: var(--text-muted);">Tu identidad ya ha sido verificada. Tus publicaciones tendrán el sello de "Vendedor Confiable", aumentando tus chances de venta.</div>
       </div>
     </div>
 
     <form id="sell-form">
       <div class="form-group">
-        <label>Â¿A quÃ© evento pertenece tu entrada?</label>
+        <label>¿A qué evento pertenece tu entrada?</label>
         <select id="sell-event-id" class="form-control" required style="cursor: pointer;">
           <option value="" disabled selected>Cargando eventos...</option>
         </select>
@@ -111,7 +111,7 @@
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
         <div class="form-group">
-          <label>Sector / UbicaciÃ³n</label>
+          <label>Sector / Ubicación</label>
           <input type="text" id="sell-section" class="form-control" placeholder="Ej: Campo VIP" required>
         </div>
         <div class="form-group">
@@ -124,9 +124,9 @@
         <label>Formato de la Entrada</label>
         <select id="sell-format" class="form-control" required>
           <option value="" disabled selected>Selecciona el formato</option>
-          <option value="pdf">Entrada Digital (PDF con cÃ³digo de barras/QR)</option>
+          <option value="pdf">Entrada Digital (PDF con código de barras/QR)</option>
           <option value="app">Transferencia en App (Ej: Quentro, AllAccess)</option>
-          <option value="fisica">Entrada FÃ­sica (Punto de encuentro)</option>
+          <option value="fisica">Entrada Física (Punto de encuentro)</option>
         </select>
       </div>
 
@@ -135,7 +135,7 @@
         <div class="upload-box">
           <i class="ph ph-upload-simple upload-icon"></i>
           <h4 style="margin-bottom: 0.5rem;">Sube el PDF o captura de pantalla</h4>
-          <p style="color: var(--text-muted); font-size: 0.9rem;">No mostraremos el cÃ³digo QR pÃºblicamente. Se usarÃ¡ solo para validaciÃ³n interna del sistema.</p>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">No mostraremos el código QR públicamente. Se usará solo para validación interna del sistema.</p>
         </div>
       </div>
 
@@ -145,7 +145,7 @@
           <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem;">$</span>
           <input type="number" id="sell-price" class="form-control" style="padding-left: 2.5rem; font-size: 1.2rem; font-weight: bold;" placeholder="0" required>
         </div>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">La comisiÃ³n de la plataforma (8%) serÃ¡ descontada de este valor al momento de la venta.</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">La comisión de la plataforma (8%) será descontada de este valor al momento de la venta.</p>
       </div>
 
       <button type="submit" id="btn-submit-sell" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 2rem;">
@@ -204,6 +204,7 @@
   </script>
 </body>
 </html>
+
 
 
 
