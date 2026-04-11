@@ -1,4 +1,4 @@
-﻿// js/events.js
+// js/events.js
 
 function formatEventDate(dateString) {
   const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
@@ -66,18 +66,29 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
       : `<div class="event-price" style="color: var(--text-muted);">Agotado</div>`;
 
     const html = `
-      <a href="event.html?id=${event.id}" class="event-card">
-        <div class="event-image">
-          <img src="${event.image_url || 'https://images.unsplash.com/photo-1540039155732-d6749b9325eb?w=800'}" alt="${event.title}">
-          <div class="event-badge"><i class="ph-fill ph-shield-check"></i> Protegido</div>
-        </div>
-        <div class="event-details">
-          <div class="event-date">${formatEventDate(event.date)}</div>
-          <h3 class="event-title">${event.title}</h3>
-          <div class="event-location"><i class="ph ph-map-pin"></i> ${event.location}</div>
-          <div class="event-footer">
-            ${priceText}
-            <span style="color: #cbd5e1; font-size: 0.9rem;">${ticketsText}</span>
+      <a href="event.html?id=${event.id}" class="ticket-card" style="min-height: 140px;">
+        <img src="${event.image_url || 'https://images.unsplash.com/photo-1540039155732-d6749b9325eb?w=800'}" alt="${event.title}" class="ticket-card-img">
+        <div class="ticket-card-body">
+          <div>
+            <div class="ticket-card-header">
+              <h3 class="ticket-card-title" style="font-size: 1.1rem;">${event.title}</h3>
+            </div>
+            <div class="ticket-card-row">
+              <span class="ticket-card-venue">${event.location}</span>
+            </div>
+            <div class="ticket-card-date">${formatEventDate(event.date)}</div>
+          </div>
+          <div class="ticket-card-footer">
+            <div>
+              <div class="ticket-card-seller-label">Disponibilidad</div>
+              <div class="seller-avatar-group" style="color:var(--primary); font-weight:800; display:flex; gap:0.2rem; align-items:center;">
+                <i class="ph-fill ph-ticket"></i> ${availableTickets.length > 0 ? availableTickets.length + ' tickets' : 'Agotado'}
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div class="ticket-card-seller-label">Desde</div>
+              <div class="ticket-card-price" style="font-size: 1.1rem; color: ${availableTickets.length > 0 ? 'var(--primary)' : 'var(--text-muted)'};">${availableTickets.length > 0 ? formatPrice(minPrice) : '---'}</div>
+            </div>
           </div>
         </div>
       </a>
