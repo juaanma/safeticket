@@ -210,5 +210,45 @@
       }
     });
   </script>
+  <!-- Mobile Bottom Nav -->
+  <div class="mobile-bottom-nav">
+    <div class="mobile-nav-container">
+      <a href="marketplace.html" class="mobile-nav-item" id="mob-nav-marketplace">
+        <i class="ph ph-calendar-star"></i>
+        <span>Eventos</span>
+      </a>
+      <a href="tickets.html" class="mobile-nav-item" id="mob-nav-tickets">
+        <i class="ph ph-ticket"></i>
+        <span>Entradas</span>
+      </a>
+      <div class="mobile-nav-fab-container">
+        <a href="sell.html" class="mobile-nav-fab">
+          <i class="ph ph-plus"></i>
+        </a>
+      </div>
+      <a href="dashboard.html" class="mobile-nav-item" id="mob-nav-dashboard">
+        <i class="ph ph-check-square-offset"></i>
+        <span>Actividad</span>
+      </a>
+      <a href="profile.html" class="mobile-nav-item" id="mob-nav-profile">
+        <i class="ph ph-user"></i>
+        <span>Perfil</span>
+      </a>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const path = window.location.pathname;
+      if (path.includes('marketplace')) {
+        document.getElementById('mob-nav-marketplace')?.classList.add('active');
+      } else if (path.includes('tickets')) {
+        document.getElementById('mob-nav-tickets')?.classList.add('active');
+      } else if (path.includes('dashboard')) {
+        document.getElementById('mob-nav-dashboard')?.classList.add('active');
+      } else if (path.includes('profile')) {
+        document.getElementById('mob-nav-profile')?.classList.add('active');
+      }
+    });
+  </script>
 </body>
 </html>
