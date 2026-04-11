@@ -154,9 +154,58 @@
     @media (max-width: 900px) {
       .dashboard-container {
         grid-template-columns: 1fr;
+        padding-top: 6rem;
+      }
+      .profile-sidebar {
+        margin-bottom: 2rem;
       }
       .stats-grid {
         grid-template-columns: 1fr;
+      }
+      
+      /* Mobile Table Cards Strategy */
+      .table-container table,
+      .table-container thead,
+      .table-container tbody,
+      .table-container th,
+      .table-container td,
+      .table-container tr {
+        display: block;
+      }
+      .table-container thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      .table-container tr {
+        background: var(--bg-color);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        margin-bottom: 1.5rem;
+        padding: 0.5rem 0;
+      }
+      .table-container td {
+        border: none;
+        border-bottom: 1px dashed var(--border);
+        position: relative;
+        padding: 1rem 1rem 1rem 45%;
+        text-align: right;
+        min-height: 3rem;
+        font-size: 0.95rem;
+      }
+      .table-container td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: 40%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        text-align: left;
+        color: var(--text-muted);
+      }
+      .table-container td:last-child {
+        border-bottom: none;
       }
     }
   </style>

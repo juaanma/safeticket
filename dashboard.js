@@ -159,12 +159,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const row = `
         <tr>
-          <td><strong>${eventTitle}</strong><br><span style="font-size: 0.85rem; color: var(--text-muted);">Sector: ${ticket.section}</span></td>
-          <td>${transactionType}</td>
-          <td>${dateStr}</td>
-          <td>${formattedPrice}</td>
-          <td>
-            <div style="display:flex; align-items:center; gap: 1rem;">
+          <td data-label="Evento"><strong style="color:var(--primary);">${eventTitle}</strong><br><span style="font-size: 0.85rem; color: var(--text-muted); text-align:right;">Sector: ${ticket.section}</span></td>
+          <td data-label="Tipo">${transactionType}</td>
+          <td data-label="Fecha">${dateStr}</td>
+          <td data-label="Monto"><span style="font-weight:700;">${formattedPrice}</span></td>
+          <td data-label="Estado">
+            <div style="display:flex; align-items:center; justify-content: flex-end; gap: 1rem;">
               <span class="status-badge ${statusClass}">${statusText}</span>
               ${actionsHtml}
             </div>
