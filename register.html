@@ -170,7 +170,17 @@
         </div>
         <div class="form-group">
           <label>Contraseña</label>
-          <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required>
+          <div style="position: relative;">
+            <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required style="padding-right: 2.5rem;">
+            <button type="button" class="toggle-password" data-target="reg-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer;"><i class="ph-bold ph-eye"></i></button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Repetir Contraseña</label>
+          <div style="position: relative;">
+            <input type="password" id="reg-password-confirm" class="form-control" placeholder="••••••••" required style="padding-right: 2.5rem;">
+            <button type="button" class="toggle-password" data-target="reg-password-confirm" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer;"><i class="ph-bold ph-eye"></i></button>
+          </div>
         </div>
 
         <div
@@ -204,6 +214,24 @@
           window.location.replace('dashboard.html');
         }
       }
+
+      // Lógica para mostrar/ocultar contraseñas
+      document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-target');
+          const input = document.getElementById(targetId);
+          const icon = this.querySelector('i');
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('ph-eye');
+            icon.classList.add('ph-eye-closed');  // Usando el ícono tachado de Phosphor
+          } else {
+            input.type = 'password';
+            icon.classList.remove('ph-eye-closed');
+            icon.classList.add('ph-eye');
+          }
+        });
+      });
     });
 
     document.getElementById('register-form').addEventListener('submit', async (e) => {
@@ -218,9 +246,22 @@
 
       const email = document.getElementById('reg-email').value;
       const password = document.getElementById('reg-password').value;
+      const confirmPassword = document.getElementById('reg-password-confirm').value;
       const fullName = document.getElementById('reg-name').value;
       const btn = document.getElementById('btn-submit');
       const errorMsg = document.getElementById('error-msg');
+
+      if (password !== confirmPassword) {
+        errorMsg.innerText = "Las contraseñas no coinciden. Por favor, revísalas.";
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      if (password.length < 6) {
+        errorMsg.innerText = "La contraseña debe tener al menos 6 caracteres.";
+        errorMsg.style.display = 'block';
+        return;
+      }
 
       btn.innerHTML = 'Cargando...';
       btn.disabled = true;

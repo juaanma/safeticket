@@ -17,7 +17,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     .eq('user_id', userData.user.id)
     .maybeSingle();
 
-  const displayAlias = (profile && profile.full_name) ? profile.full_name : (userData.user.email.split('@')[0] || 'Usuario');
+  const metadataNameForAlias = (userData && userData.user && userData.user.user_metadata && userData.user.user_metadata.full_name) 
+    ? userData.user.user_metadata.full_name 
+    : '';
+  const displayAlias = metadataNameForAlias || (profile && profile.full_name) || 'Usuario';
   const storedName = (profile && profile.full_name) ? profile.full_name : '';
   
   // Header
@@ -29,6 +32,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (emailHeaderEl) emailHeaderEl.innerText = userData.user.email;
 
   // Lógica de Foto de Perfil (Avatar)
+  let stagedAvatarBase64 = null;
+
   const avatarUpload = document.getElementById('avatar-upload');
   if (avatarUpload) {
     avatarUpload.addEventListener('change', (e) => {
@@ -36,15 +41,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (file) {
         const reader = new FileReader();
         reader.onload = function(event) {
-          const imgBase64 = event.target.result;
-          // Guardar en localStorage usando el user_id para que sea único por usuario
-          localStorage.setItem('avatar_' + userData.user.id, imgBase64);
+          stagedAvatarBase64 = event.target.result;
           
           if (init) {
-            init.style.backgroundImage = `url(${imgBase64})`;
+            init.style.backgroundImage = `url(${stagedAvatarBase64})`;
             init.innerText = '';
           }
-          alert("¡Foto de perfil actualizada correctamente y guardada!");
         };
         reader.readAsDataURL(file);
       }
@@ -125,6 +127,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const newPhone = document.getElementById('profile-phone').value;
       const currentNameForInitials = metadataName || 'Usuario';
+
+      if (stagedAvatarBase64) {
+        localStorage.setItem('avatar_' + userData.user.id, stagedAvatarBase64);
+        stagedAvatarBase64 = null;
+      }
 
       // Intentar actualización estándar (excluyendo el nombre porque ahora es bloqueado)
       const { data: updatedData, error: updateError } = await window.MiSupabase.from('profiles').update({

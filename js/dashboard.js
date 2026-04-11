@@ -18,9 +18,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     .eq('user_id', userData.user.id)
     .maybeSingle();
 
+  const metadataNameForAlias = (userData && userData.user && userData.user.user_metadata && userData.user.user_metadata.full_name) 
+    ? userData.user.user_metadata.full_name 
+    : '';
   const profileNameEl = document.getElementById('dashboard-user-name');
   const profileInitialsEl = document.getElementById('dashboard-user-initials');
-  const nameStr = (profile && profile.full_name) ? profile.full_name : (userData.user.email.split('@')[0] || 'Usuario');
+  const nameStr = metadataNameForAlias || (profile && profile.full_name) || 'Usuario';
   
   if (profileNameEl) profileNameEl.innerText = nameStr;
   if (profileInitialsEl) profileInitialsEl.innerText = nameStr.substring(0, 2).toUpperCase();
