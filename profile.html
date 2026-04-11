@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -160,12 +160,13 @@
     <!-- Main Content -->
     <div class="settings-panel">
       
-      <div class="verification-card">
+      <div id="verification-card" class="verification-card" style="background: rgba(245, 158, 11, 0.05); border-color: #f59e0b;">
         <div style="display: flex; gap: 1rem; align-items: center;">
-          <i class="ph-fill ph-seal-check" style="font-size: 3rem; color: var(--accent);"></i>
+          <i id="verification-icon" class="ph-fill ph-warning-circle" style="font-size: 3rem; color: #f59e0b;"></i>
           <div>
-            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.2rem;">Cuenta Verificada</h4>
-            <p style="color: var(--text-muted); font-size: 0.9rem;">Tu identidad ha sido validada existosamente. Puedes vender entradas y retirar dinero.</p>
+            <h4 id="verification-title" style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.2rem;">Identidad Sin Verificar</h4>
+            <p id="verification-text" style="color: var(--text-muted); font-size: 0.9rem;">Necesitas verificar tu DNI para poder vender entradas en la plataforma.</p>
+            <a id="btn-kyc-verify-profile" href="kyc-ar.html" class="btn btn-primary btn-sm" style="margin-top: 0.8rem; display: inline-flex;"><i class="ph-bold ph-scan"></i> Validar Identidad</a>
           </div>
         </div>
       </div>
@@ -185,11 +186,11 @@
         <div class="form-row">
           <div class="form-group">
             <label>Correo Electrónico</label>
-            <input type="email" class="form-control" value="juanmarcos@ejemplo.com" readonly style="background: var(--surface-hover); color: var(--text-muted);">
+            <input type="email" id="profile-email" class="form-control" value="" readonly style="background: var(--surface-hover); color: var(--text-muted);">
           </div>
           <div class="form-group">
             <label>Teléfono</label>
-            <input type="tel" class="form-control" value="+54 11 1234 5678">
+            <input type="tel" id="profile-phone" class="form-control" value="">
           </div>
         </div>
         <div class="form-group" style="text-align: right; margin-top: 1.5rem;">
@@ -226,6 +227,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/profile.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const btnLogout = document.getElementById('btn-logout');
