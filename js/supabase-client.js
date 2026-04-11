@@ -1,4 +1,4 @@
-console.log("[Supabase] Iniciando conexión con las claves proporcionadas...");
+﻿console.log("[Supabase] Iniciando conexión con las claves proporcionadas...");
 const SUPABASE_URL = 'https://nwlqamwemzhyfsskwbmd.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53bHFhbXdlbXpoeWZzc2t3Ym1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NjQ4NDQsImV4cCI6MjA5MTI0MDg0NH0.9oQoFOkTsI2h6xLkwsTz-GapOlR-HM0ZKj2u-YZDI6c';
 
@@ -15,3 +15,5 @@ try {
 } catch (error) {
   console.error("[Supabase] Excepción inicializando cliente:", error);
 }
+
+

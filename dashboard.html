@@ -160,6 +160,7 @@
       }
     }
   </style>
+<script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -184,27 +185,32 @@
 
   <main class="container dashboard-container">
     <aside class="profile-sidebar">
-      <div class="profile-avatar" id="dashboard-user-initials">--</div>
-      <div class="profile-name" id="dashboard-user-name">Cargando...</div>
-      <div id="profile-status" class="profile-status" style="margin-bottom: 2rem;">
-        <i class="ph-fill ph-warning-circle"></i> Identidad sin verificar</div>
-      <a id="btn-kyc-verify" href="kyc-ar.html" class="btn btn-primary btn-sm" style="width: 100%; margin-bottom: 2rem; font-size: 0.85rem;"><i class="ph-bold ph-scan"></i> Validar DNI (Obligatorio)</a>
+      <div class="profile-avatar" id="dashboard-user-initials" style="background-size: cover; background-position: center; border: 3px solid var(--surface); box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90px; height: 90px; transition: transform 0.3s ease;">--</div>
+      <div class="profile-name" id="dashboard-user-name" style="margin-bottom: 1.5rem;">Cargando...</div>
+      
+      <div id="profile-status-wrapper" style="background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-sm); padding: 1.2rem; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center; transition: all 0.3s ease;">
+        <div id="profile-status" class="profile-status" style="margin: 0; background: rgba(245, 158, 11, 0.15); padding: 0.4rem 1rem; border-radius: var(--radius-xl); font-weight: 600; color: #d97706; display: inline-flex; font-size: 0.85rem;">
+          <i class="ph-fill ph-warning-circle"></i> Identidad sin verificar
+        </div>
+        <p id="profile-status-text" style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.4; margin: 0;">El proceso es rápido y seguro. Necesitamos validar tu DNI para proteger tu cuenta.</p>
+        <a id="btn-kyc-verify" href="kyc-ar.html" class="btn btn-primary btn-sm" style="width: 100%; font-size: 0.85rem; padding: 0.6rem;"><i class="ph-bold ph-scan"></i> Iniciar Verificación</a>
+      </div>
 
-      <nav class="nav-menu">
-        <a href="dashboard.html" class="active"><i class="ph ph-squares-four"></i> Resumen de Actividad</a>
-        <a href="#"><i class="ph ph-ticket"></i> Mis Compras</a>
-        <a href="#"><i class="ph ph-tag"></i> Entradas Publicadas</a>
-        <a href="#"><i class="ph ph-shopping-bag"></i> Entradas Vendidas</a>
+      <nav class="nav-menu" id="dashboard-nav-menu">
+        <a href="#" class="active" data-tab="all"><i class="ph ph-squares-four"></i> Resumen de Actividad</a>
+        <a href="#" data-tab="purchases"><i class="ph ph-ticket"></i> Mis Compras</a>
+        <a href="#" data-tab="published"><i class="ph ph-tag"></i> Entradas Publicadas</a>
+        <a href="#" data-tab="sold"><i class="ph ph-shopping-bag"></i> Entradas Vendidas</a>
       </nav>
     </aside>
 
     <div class="dashboard-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h2>Resumen de Actividad</h2>
+        <h2 id="panel-title">Resumen de Actividad</h2>
         <a href="sell.html" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Nueva Venta</a>
       </div>
 
-      <div class="stats-grid">
+      <div class="stats-grid" id="stats-grid">
         <div class="stat-card">
           <div class="stat-label">Ingresos Totales (Pendientes)</div>
           <div class="stat-value" style="color: var(--accent);">$45,000</div>
@@ -219,7 +225,7 @@
         </div>
       </div>
 
-      <h3>Transacciones Recientes</h3>
+      <h3 id="table-title">Transacciones Recientes</h3>
       <div class="table-container">
         <table>
           <thead>
@@ -262,7 +268,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js?v=4"></script>
   <script src="js/auth-guard.js"></script>
-  <script src="js/dashboard.js"></script>
+  <script src="js/dashboard.js?v=2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const btnLogout = document.getElementById('btn-logout');
@@ -318,3 +324,7 @@
   </script>
 </body>
 </html>
+
+
+
+

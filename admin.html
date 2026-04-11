@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -52,6 +52,7 @@
       gap: 0.3rem;
     }
   </style>
+<script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -137,7 +138,7 @@
         const row = `
           <tr>
             <td style="font-size: 0.85rem; color: var(--text-muted);">${u.user_id}</td>
-            <td><strong>${u.full_name || 'Sin Nombre'}</strong> <br> <span style="font-size:0.85rem; color: var(--text-muted);">${u.phone || 'Sin télefono'}</span></td>
+            <td><strong>${u.full_name || 'Sin Nombre'}</strong> <br> <span style="font-size:0.85rem; color: var(--text-muted);">${u.phone || 'Sin teléfono'}</span></td>
             <td>${estadoHtml}</td>
             <td>${btnHtml}</td>
           </tr>
@@ -166,3 +167,7 @@
   </script>
 </body>
 </html>
+
+
+
+

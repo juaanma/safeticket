@@ -1,4 +1,4 @@
-// auth-guard.js
+﻿// auth-guard.js
 // Poner este script en cualquier pantalla que requiera que el usuario esté logueado
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -18,3 +18,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log("Acceso concedido al usuario:", user.email);
   }
 });
+
+

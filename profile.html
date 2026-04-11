@@ -119,6 +119,7 @@
       }
     }
   </style>
+<script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -143,40 +144,54 @@
   <main class="container profile-layout">
     <!-- Sidebar -->
     <aside class="settings-sidebar">
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <div id="profile-user-initials" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #a5b4fc, var(--primary)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white; margin: 0 auto 1rem;">--</div>
+      <div style="text-align: center; margin-bottom: 2rem; position: relative;">
+        <!-- Container para foto de perfil -->
+        <div style="position: relative; width: 90px; height: 90px; margin: 0 auto 1rem;">
+          <div id="profile-user-initials" style="width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #a5b4fc, var(--primary)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white; background-size: cover; background-position: center; border: 3px solid var(--surface); box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s ease;">--</div>
+          
+          <label for="avatar-upload" style="position: absolute; bottom: -5px; right: -5px; background: var(--primary); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid var(--surface); transition: var(--transition); box-shadow: 0 2px 5px rgba(0,0,0,0.2);" title="Cambiar foto de perfil">
+            <i class="ph-bold ph-camera" style="font-size: 1rem;"></i>
+          </label>
+          <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+        </div>
+        
         <div id="profile-user-name" style="font-weight: 700; font-size: 1.2rem;">Cargando...</div>
         <div id="profile-user-email-header" style="color: var(--text-muted); font-size: 0.85rem;">...</div>
       </div>
 
       <nav class="settings-menu">
-        <a href="#" class="active"><i class="ph ph-user"></i> Información Personal</a>
-        <a href="#"><i class="ph ph-wallet"></i> Billetera y CBU</a>
-        <a href="#"><i class="ph ph-shield-check"></i> Verificación DNI</a>
-        <a href="#"><i class="ph ph-lock-key"></i> Seguridad y Clave</a>
+        <a href="#" class="active" id="tab-link-personal"><i class="ph ph-user"></i> Información Personal</a>
+        <a href="#" id="tab-link-kyc"><i class="ph ph-shield-check"></i> Verificación DNI</a>
+        <a href="#" id="tab-link-security"><i class="ph ph-lock-key"></i> Seguridad y Clave</a>
       </nav>
     </aside>
 
     <!-- Main Content -->
     <div class="settings-panel">
       
-      <div id="verification-card" class="verification-card" style="background: rgba(245, 158, 11, 0.05); border-color: #f59e0b;">
-        <div style="display: flex; gap: 1rem; align-items: center;">
-          <i id="verification-icon" class="ph-fill ph-warning-circle" style="font-size: 3rem; color: #f59e0b;"></i>
-          <div>
-            <h4 id="verification-title" style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.2rem;">Identidad Sin Verificar</h4>
-            <p id="verification-text" style="color: var(--text-muted); font-size: 0.9rem;">Necesitas verificar tu DNI para poder vender entradas en la plataforma.</p>
-            <a id="btn-kyc-verify-profile" href="kyc-ar.html" class="btn btn-primary btn-sm" style="margin-top: 0.8rem; display: inline-flex;"><i class="ph-bold ph-scan"></i> Validar Identidad</a>
+      <div id="tab-kyc" class="profile-tab" style="display: none;">
+        <h3>Verificación de Identidad</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">Para mantener la seguridad de nuestra comunidad, necesitamos comprobar que eres una persona real.</p>
+        <div id="verification-card" class="verification-card" style="background: rgba(245, 158, 11, 0.05); border-color: #f59e0b;">
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <i id="verification-icon" class="ph-fill ph-warning-circle" style="font-size: 3rem; color: #f59e0b;"></i>
+            <div>
+              <h4 id="verification-title" style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.2rem;">Identidad Sin Verificar</h4>
+              <p id="verification-text" style="color: var(--text-muted); font-size: 0.9rem;">Necesitas verificar tu DNI para poder vender entradas en la plataforma.</p>
+              <a id="btn-kyc-verify-profile" href="kyc-ar.html" class="btn btn-primary btn-sm" style="margin-top: 0.8rem; display: inline-flex;"><i class="ph-bold ph-scan"></i> Validar Identidad</a>
+            </div>
           </div>
         </div>
       </div>
+
+      <div id="tab-personal" class="profile-tab">
 
       <div class="form-section">
         <h3>Datos Personales</h3>
         <div class="form-row">
           <div class="form-group">
             <label>Nombre(s) y Apellido</label>
-            <input type="text" id="profile-fullname" class="form-control" value="Cargando...">
+            <input type="text" id="profile-fullname" class="form-control" value="Cargando..." readonly style="background: var(--surface-hover); color: var(--text-muted); cursor: not-allowed;">
           </div>
           <div class="form-group" style="display: none;">
             <label>Apellidos</label>
@@ -203,14 +218,39 @@
         <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Aquí depositaremos el dinero de tus ventas. Debe estar a tu nombre.</p>
         <div class="form-group" style="margin-bottom: 1.5rem;">
           <label>CBU / CVU</label>
-          <input type="text" class="form-control" value="0000003100000000000000">
+          <input type="text" id="profile-cbu" class="form-control" placeholder="Ingresa los 22 dígitos" value="">
         </div>
         <div class="form-group" style="margin-bottom: 1.5rem;">
           <label>Alias</label>
-          <input type="text" class="form-control" value="JUAN.MARCOS.MP">
+          <input type="text" id="profile-alias" class="form-control" placeholder="Ej: TU.ALIAS.MP" value="">
         </div>
         <div class="form-group" style="text-align: right;">
-          <button class="btn btn-outline" style="border-color: var(--border);">Actualizar CBU</button>
+          <button id="btn-save-bank" class="btn btn-outline" style="border-color: var(--border);">Actualizar CBU</button>
+        </div>
+      </div>
+
+      </div> <!-- Fin tab personal -->
+
+      <div id="tab-security" class="profile-tab" style="display: none;">
+        <h3>Seguridad y Clave</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">Gestiona la seguridad de tu cuenta cambiando tu contraseña regularmente.</p>
+        
+        <div class="form-section">
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label>Contraseña Actual</label>
+            <input type="password" id="profile-old-password" class="form-control" placeholder="Ingresa tu contraseña actual">
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label>Nueva Contraseña</label>
+            <input type="password" id="profile-new-password" class="form-control" placeholder="Mínimo 6 caracteres">
+          </div>
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label>Confirmar Nueva Contraseña</label>
+            <input type="password" id="profile-confirm-password" class="form-control" placeholder="Repite tu nueva contraseña">
+          </div>
+          <div class="form-group" style="text-align: right;">
+            <button id="btn-change-password" class="btn btn-primary" style="background-color: #ef4444; border: 1px solid #dc2626; color: white;">Guardar</button>
+          </div>
         </div>
       </div>
 
@@ -228,7 +268,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js?v=4"></script>
   <script src="js/auth-guard.js"></script>
-  <script src="js/profile.js"></script>
+  <script src="js/profile.js?v=2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const btnLogout = document.getElementById('btn-logout');
@@ -284,3 +324,7 @@
   </script>
 </body>
 </html>
+
+
+
+

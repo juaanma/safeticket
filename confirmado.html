@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¡Correo Confirmado! | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .confirm-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .confirm-box {
+      background: var(--surface);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-md);
+      padding: 3rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .confirm-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #10b981;
+    }
+
+    .icon-wrapper {
+      width: 80px;
+      height: 80px;
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin: 0 auto 1.5rem;
+    }
+
+    .title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    }
+
+    .text-muted {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+  </style>
+  <script src="js/theme.js"></script>
+</head>
+
+<body>
+  <div class="confirm-container">
+    <div class="confirm-box">
+      <div class="icon-wrapper">
+        <i class="ph-fill ph-check-circle"></i>
+      </div>
+      <h1 class="title">¡Correo Confirmado!</h1>
+      <p class="text-muted">Tu dirección de correo electrónico ha sido validada exitosamente. Ahora formas parte de la comunidad segura de SaFeBeat.</p>
+      
+      <a href="login.html" class="btn btn-primary" style="width: 100%;">Ir a Iniciar Sesión <i class="ph-bold ph-arrow-right"></i></a>
+    </div>
+  </div>
+
+  <!-- Script para procesar el token en la URL si es necesario -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Supabase automáticamente procesa el 'hash' si la URL viene del correo de confirmación.
+      // Cuando haces clic en Iniciar Sesión, la sesión ya debería estar activa si te redireccionaran correctamente.
+    });
+  </script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-// js/sell.js
+﻿// js/sell.js
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!window.MiSupabase) return;
@@ -13,19 +13,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (userData && userData.user) {
     const { data: profile } = await window.MiSupabase
       .from('profiles')
-      .select('is_verified')
+      .select('is_verified, phone')
       .eq('user_id', userData.user.id)
-      .single();
+      .maybeSingle();
 
     if (!profile || !profile.is_verified) {
-      form.innerHTML = `
-        <div style="text-align: center; padding: 3rem; background: rgba(99, 102, 241, 0.05); border-radius: var(--radius-md); border: 1px dashed var(--primary);">
-          <i class="ph-fill ph-shield-warning" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
-          <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Verificación Requerida</h3>
-          <p style="color: var(--text-muted); margin-bottom: 2rem;">Para poder publicar entradas y recibir pagos, necesitamos confirmar tu identidad mediante tu DNI.</p>
-          <a href="kyc-ar.html" class="btn btn-primary" style="width: 100%;">Completar Verificación <i class="ph-bold ph-arrow-right"></i></a>
-        </div>
-      `;
+      // Diferenciar entre "Naranja" y "En Revisión"
+      const isPending = profile && profile.phone && String(profile.phone).includes("DNI");
+      
+      if (isPending) {
+        form.innerHTML = `
+          <div style="text-align: center; padding: 3rem; background: rgba(59, 130, 246, 0.05); border-radius: var(--radius-md); border: 1px dashed #3b82f6;">
+            <i class="ph-fill ph-clock-afternoon" style="font-size: 3.5rem; color: #3b82f6; margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem; color: #3b82f6;">Identidad en Revisión</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Tus documentos han sido recibidos y están siendo validados por nuestro equipo de moderación. Vuelve pronto para empezar a vender.</p>
+            <a href="dashboard.html" class="btn btn-outline" style="width: 100%;">Volver al Inicio</a>
+          </div>
+        `;
+      } else {
+        form.innerHTML = `
+          <div style="text-align: center; padding: 3rem; background: rgba(99, 102, 241, 0.05); border-radius: var(--radius-md); border: 1px dashed var(--primary);">
+            <i class="ph-fill ph-shield-warning" style="font-size: 3.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Verificación Requerida</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Para poder publicar entradas y recibir pagos, necesitamos confirmar tu identidad mediante tu DNI.</p>
+            <a href="kyc-ar.html" class="btn btn-primary" style="width: 100%;">Completar Verificación <i class="ph-bold ph-arrow-right"></i></a>
+          </div>
+        `;
+      }
       return; // Stop execution, form is disabled
     } else {
       // Mostrar banner de vendedor verificado solo si es verdadero
@@ -99,9 +113,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       btnSubmit.disabled = false;
       btnSubmit.innerHTML = 'Publicar Entrada <i class="ph-bold ph-arrow-right"></i>';
     } else {
-      alert('¡Entrada publicada con éxito!');
+      alert('¡Entrada publicada con ééxito!');
       window.location.href = 'dashboard.html';
     }
   });
 
 });
+
+

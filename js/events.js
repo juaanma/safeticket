@@ -1,4 +1,4 @@
-// js/events.js
+﻿// js/events.js
 
 function formatEventDate(dateString) {
   const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
@@ -95,3 +95,5 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
 
 // Exponer la funcion global para llamarla al cargar
 window.loadEvents = loadEvents;
+
+

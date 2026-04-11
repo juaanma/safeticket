@@ -145,6 +145,7 @@
       }
     }
   </style>
+<script src="js/theme.js"></script>
 </head>
 <body>
 
@@ -288,7 +289,7 @@
             <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
           </a>
           <p style="color: var(--text-muted); margin-bottom: 1.5rem; max-width: 300px;">
-            La plataforma de reventa de entradas más segura y confiable. Despidete de las estafas.
+            La plataforma de reventa de entradas ms segura y confiable. Despidete de las estafas.
           </p>
         </div>
       </div>
@@ -340,14 +341,14 @@
         .eq('status', 'disponible');
 
       if (error) {
-        alert('Hubo un error al comprar la entrada. Quizás alguien más la compró primero.');
+        alert('Hubo un error al comprar la entrada. Quizás alguien ms la compró primero.');
         console.error(error);
         if (btnElement) {
           btnElement.disabled = false;
           btnElement.innerHTML = 'Comprar Ahora';
         }
       } else {
-        alert('¡Transferencia completada con éxito! La entrada ya está asignada a tu cuenta.');
+        alert('¡Transferencia completada con ééxito! La entrada ya está asignada a tu cuenta.');
         window.location.href = 'dashboard.html';
       }
     }
@@ -396,3 +397,6 @@
   </script>
 </body>
 </html>
+
+
+

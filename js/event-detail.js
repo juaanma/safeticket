@@ -1,4 +1,4 @@
-// js/event-detail.js
+﻿// js/event-detail.js
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!window.MiSupabase) return;
@@ -107,3 +107,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     ticketContainer.insertAdjacentHTML('beforeend', html);
   });
 });
+
+
