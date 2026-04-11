@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -321,10 +321,15 @@
         .select('is_verified')
         .eq('user_id', user.id)
         .single();
+      const isPending = (profile && profile.phone && String(profile.phone).includes("DNI")) || localStorage.getItem('kyc_pending_' + user.id) === 'true';
         
       if (!profile || !profile.is_verified) {
-        alert('Por motivos de seguridad y anti-fraude, requerimos que verifiques tu identidad antes de comprar o vender entradas.');
-        window.location.href = 'kyc-ar.html';
+        if (isPending) {
+          alert('Tu cuenta está en proceso de validación. Vuelve pronto cuando estés aprobado para comprar.');
+        } else {
+          alert('Por motivos de seguridad y anti-fraude, requerimos que verifiques tu identidad antes de comprar o vender entradas.');
+          window.location.href = 'kyc-ar.html';
+        }
         return;
       }
 

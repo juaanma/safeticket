@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Load avatar desde base de datos remota si existe
-  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : localStorage.getItem('avatar_' + userData.user.id);
+  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : null;
   if (savedAvatar) {
     if (profileInitialsEl) {
       profileInitialsEl.style.backgroundImage = `url(${savedAvatar})`;

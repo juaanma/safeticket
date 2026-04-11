@@ -1,4 +1,4 @@
-﻿// js/sell.js
+// js/sell.js
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!window.MiSupabase) return;
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (!profile || !profile.is_verified) {
       // Diferenciar entre "Naranja" y "En Revisión"
-      const isPending = profile && profile.phone && String(profile.phone).includes("DNI");
+      const isPending = (profile && profile.phone && String(profile.phone).includes("DNI")) || localStorage.getItem('kyc_pending_' + userData.user.id) === 'true';
       
       if (isPending) {
         form.innerHTML = `

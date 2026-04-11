@@ -73,8 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Cargar avatar desde DB remota (o localStorage de fallback)
-  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : localStorage.getItem('avatar_' + userData.user.id);
+  // Cargar avatar desde DB remota SOLAMENTE para asegurar sincronización real
+  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : null;
   if (savedAvatar) {
     if (init) {
       init.style.backgroundImage = `url(${savedAvatar})`;
@@ -156,32 +156,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (stagedAvatarBase64) {
         updatePayload.avatar_url = stagedAvatarBase64;
-        localStorage.setItem('avatar_' + userData.user.id, stagedAvatarBase64); // Fallback offline
         stagedAvatarBase64 = null;
       }
 
       // Intentar actualización estándar
       const { data: updatedData, error: updateError } = await window.MiSupabase.from('profiles').update(updatePayload).eq('user_id', userData.user.id).select();
 
-      if (updateError) {
-        // Mock de exito si Supabase falla
+      let finalError = updateError;
+      if (updateError || !updatedData || updatedData.length === 0) {
         let insertPayload = {
            user_id: userData.user.id,
            full_name: metadataName,
            phone: newPhone
         };
         if (updatePayload.avatar_url) insertPayload.avatar_url = updatePayload.avatar_url;
-        await window.MiSupabase.from('profiles').insert([insertPayload]);
-        
-        finishSuccess(currentNameForInitials);
-      } else {
-        finishSuccess(currentNameForInitials);
+        const { error: insertError } = await window.MiSupabase.from('profiles').insert([insertPayload]);
+        finalError = insertError && updateError ? (insertError || updateError) : null;
       }
 
-      function finishSuccess(nName) {
-        alert("¡Tus cambios han sido guardados correctamente!");
+      if (finalError) {
+        alert("Error crítico (Supabase) al sincronizar Perfil: " + finalError.message);
+      } else {
+        alert("¡Todos tus cambios fueron sincronizados en la nube correctamente!");
         const nameEl = document.getElementById('profile-user-name');
-        if (nameEl) nameEl.innerText = nName;
+        if (nameEl) nameEl.innerText = currentNameForInitials;
       }
       
       btnSave.innerText = 'Guardar Cambios';
@@ -194,14 +192,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cbuInput = document.getElementById('profile-cbu');
   const aliasInput = document.getElementById('profile-alias');
 
-  // Cargar bancarios desde DB si existe, o localStorage de fallback
-  let loadedCbu = '';
-  let loadedAlias = '';
-  if (profile && profile.cbu) loadedCbu = profile.cbu;
-  if (profile && profile.alias) loadedAlias = profile.alias;
-  
-  if (!loadedCbu) loadedCbu = localStorage.getItem('bank_cbu_' + userData.user.id) || '';
-  if (!loadedAlias) loadedAlias = localStorage.getItem('bank_alias_' + userData.user.id) || '';
+  // Cargar bancarios desde DB estrictamente
+  let loadedCbu = (profile && profile.cbu) ? profile.cbu : '';
+  let loadedAlias = (profile && profile.alias) ? profile.alias : '';
 
   if (cbuInput) cbuInput.value = loadedCbu;
   if (aliasInput) aliasInput.value = loadedAlias;
@@ -220,16 +213,27 @@ document.addEventListener('DOMContentLoaded', async () => {
       const newAlias = aliasInput.value;
 
       // Intentamos guardarlo en supabase, asumiendo columnas cbu y alias
-      const { error: updateBankError } = await window.MiSupabase.from('profiles').update({
+      const { data: updatedBank, error: updateBankError } = await window.MiSupabase.from('profiles').update({
         cbu: newCbu,
         alias: newAlias
-      }).eq('user_id', userData.user.id);
+      }).eq('user_id', userData.user.id).select();
 
-      // Guardamos en LocalStorage también por si Supabase no tiene esas columnas 
-      localStorage.setItem('bank_cbu_' + userData.user.id, newCbu);
-      localStorage.setItem('bank_alias_' + userData.user.id, newAlias);
+      let finalBankError = updateBankError;
+      if (updateBankError || !updatedBank || updatedBank.length === 0) {
+        // La tabla estaba vacía o falló el update, hacemos un insert
+        const { error: insertBankError } = await window.MiSupabase.from('profiles').insert([{
+           user_id: userData.user.id,
+           cbu: newCbu,
+           alias: newAlias
+        }]);
+        finalBankError = insertBankError && updateBankError ? (insertBankError || updateBankError) : null;
+      }
 
-      alert("¡Tus datos bancarios han sido actualizados con éxito!");
+      if (finalBankError) {
+        alert("Error (Supabase) al sincronizar Datos Bancarios: " + finalBankError.message);
+      } else {
+        alert("¡Tus datos bancarios han sido sincronizados en la nube con éxito!");
+      }
       
       btnSaveBank.innerText = 'Actualizar CBU';
       btnSaveBank.disabled = false;
