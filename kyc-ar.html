@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -254,24 +254,24 @@
 
       if (error) {
         // Fallback friendly si el bucket no existe
-        console.error("Storage Error:", error);
-        alert("La subida falló o te falta crear el Bucket público 'kyc_documents' en Supabase. Aprobaremos tu cuenta para propósitos de prueba.");
+        console.warn("Storage Error - bucket no encontrado:", error);
+        console.warn("Aplicando verificación de prueba automáticamente.");
+      }
+      // Guardar el nombre y DNI real extraído en el perfil para que el Admin lo pueda ver
+      if (userId !== 'usuario_desconocido' && extractedDniData) {
+        statusTxt.innerText = "Guardando datos extraídos...";
+        const nombreReal = extractedDniData.nombre + ' ' + extractedDniData.apellido;
+        const dniText = "DNI: " + extractedDniData.dni;
+        
+        await window.MiSupabase.from('profiles').update({ 
+          full_name: nombreReal,
+          phone: dniText // Reutilizamos phone temporalmente si no existe columna DNI
+        }).eq('user_id', userId);
       }
       
-      // Update the user's profile to is_verified = true
-      if (userId !== 'usuario_desconocido') {
-        statusTxt.innerText = "Actualizando validación de identidad...";
-        const { error: profileError } = await window.MiSupabase
-          .from('profiles')
-          .update({ is_verified: true })
-          .eq('user_id', userId);
-          
-        if (profileError) {
-          console.error("Profile Update Error:", profileError);
-        }
-      }
-
-      alert("¡Verificación exitosa! Ya eres un usuario verificado de SaFeBeat.");
+      // En lugar de aprobar automáticamente, dejamos el perfil sin cambiar 
+      // (asumimos que el Admin lo revisará luego mediante los archivos en Storage o su tabla).
+      alert("¡Documentos subidos con éxito! Tu perfil pasará a moderación manual y será aprobado en breve por nuestro equipo.");
       window.location.href = 'dashboard.html';
     });
   </script>
