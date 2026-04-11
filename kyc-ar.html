@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -264,10 +264,18 @@
         const nombreReal = extractedDniData.nombre + ' ' + extractedDniData.apellido;
         const dniText = "DNI: " + extractedDniData.dni;
         
-        await window.MiSupabase.from('profiles').update({ 
+        const payload = { 
           full_name: nombreReal,
-          phone: dniText // Reutilizamos phone temporalmente si no existe columna DNI
-        }).eq('user_id', userId);
+          phone: dniText, // Reutilizamos phone temporalmente si no existe columna DNI
+          is_verified: false
+        };
+        
+        const { data: updatedRows, error: updateErr } = await window.MiSupabase.from('profiles').update(payload).eq('user_id', userId).select();
+        
+        if (updateErr || !updatedRows || updatedRows.length === 0) {
+           payload.user_id = userId;
+           await window.MiSupabase.from('profiles').insert([payload]);
+        }
       }
       
       // En lugar de aprobar automáticamente, dejamos el perfil sin cambiar 

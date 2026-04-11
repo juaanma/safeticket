@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -109,14 +109,21 @@
       
       tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Buscando usuarios...</td></tr>';
       
-      const { data: users, error } = await window.MiSupabase
+      const { data: allUsers, error } = await window.MiSupabase
         .from('profiles')
-        .select('*')
-        .eq('is_verified', filterVerified);
+        .select('*');
 
       if(error) {
         tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error: No tienes permisos de administrador o la tabla no existe.</td></tr>';
         return;
+      }
+      
+      // Filtrado seguro en JS
+      let users = [];
+      if (filterVerified) {
+        users = allUsers.filter(u => u.is_verified === true);
+      } else {
+        users = allUsers.filter(u => u.is_verified !== true && u.phone && String(u.phone).includes('DNI'));
       }
       
       if(!users || users.length === 0) {
