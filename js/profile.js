@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Cargar avatar si existe en localStorage
-  const savedAvatar = localStorage.getItem('avatar_' + userData.user.id);
+  // Cargar avatar desde DB remota (o localStorage de fallback)
+  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : localStorage.getItem('avatar_' + userData.user.id);
   if (savedAvatar) {
     if (init) {
       init.style.backgroundImage = `url(${savedAvatar})`;
@@ -128,23 +128,26 @@ document.addEventListener('DOMContentLoaded', async () => {
       const newPhone = document.getElementById('profile-phone').value;
       const currentNameForInitials = metadataName || 'Usuario';
 
+      let updatePayload = { phone: newPhone };
+
       if (stagedAvatarBase64) {
-        localStorage.setItem('avatar_' + userData.user.id, stagedAvatarBase64);
+        updatePayload.avatar_url = stagedAvatarBase64;
+        localStorage.setItem('avatar_' + userData.user.id, stagedAvatarBase64); // Fallback offline
         stagedAvatarBase64 = null;
       }
 
-      // Intentar actualización estándar (excluyendo el nombre porque ahora es bloqueado)
-      const { data: updatedData, error: updateError } = await window.MiSupabase.from('profiles').update({
-        phone: newPhone
-      }).eq('user_id', userData.user.id).select();
+      // Intentar actualización estándar
+      const { data: updatedData, error: updateError } = await window.MiSupabase.from('profiles').update(updatePayload).eq('user_id', userData.user.id).select();
 
       if (updateError) {
-        // Mock de exito si Supabase falla (por políticas RLS / sin tabla)
-        const { error: insertError } = await window.MiSupabase.from('profiles').insert([{
+        // Mock de exito si Supabase falla
+        let insertPayload = {
            user_id: userData.user.id,
            full_name: metadataName,
            phone: newPhone
-        }]);
+        };
+        if (updatePayload.avatar_url) insertPayload.avatar_url = updatePayload.avatar_url;
+        await window.MiSupabase.from('profiles').insert([insertPayload]);
         
         finishSuccess(currentNameForInitials);
       } else {

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const btnKycVerify = document.getElementById('btn-kyc-verify');
   const { data: profile } = await window.MiSupabase
     .from('profiles')
-    .select('is_verified, full_name')
+    .select('*')
     .eq('user_id', userData.user.id)
     .maybeSingle();
 
@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if(textDesc) textDesc.innerHTML = 'Tus documentos están en evaluación.';
   }
 
-  // Load avatar
-  const savedAvatar = localStorage.getItem('avatar_' + userData.user.id);
+  // Load avatar desde base de datos remota si existe
+  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : localStorage.getItem('avatar_' + userData.user.id);
   if (savedAvatar) {
     if (profileInitialsEl) {
       profileInitialsEl.style.backgroundImage = `url(${savedAvatar})`;
