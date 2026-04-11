@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -232,7 +232,9 @@
         options: {
           data: {
             full_name: fullName
-          }
+          },
+          // Pasamos explícitamente a dónde queremos que vaya tras confirmar el mail
+          emailRedirectTo: window.location.origin + '/confirmado.html'
         }
       });
 
