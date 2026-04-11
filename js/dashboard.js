@@ -9,14 +9,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const { data: userData } = await window.MiSupabase.auth.getUser();
   if (!userData || !userData.user) return;
 
-  // Actualizar perfil Sidebar KYC
+  // Actualizar perfil Sidebar KYC y Nombre
   const profileStatus = document.getElementById('profile-status');
   const btnKycVerify = document.getElementById('btn-kyc-verify');
   const { data: profile } = await window.MiSupabase
     .from('profiles')
-    .select('is_verified')
+    .select('is_verified, full_name')
     .eq('user_id', userData.user.id)
-    .single();
+    .maybeSingle();
+
+  const profileNameEl = document.getElementById('dashboard-user-name');
+  const profileInitialsEl = document.getElementById('dashboard-user-initials');
+  const nameStr = (profile && profile.full_name) ? profile.full_name : (userData.user.email.split('@')[0] || 'Usuario');
+  
+  if (profileNameEl) profileNameEl.innerText = nameStr;
+  if (profileInitialsEl) profileInitialsEl.innerText = nameStr.substring(0, 2).toUpperCase();
 
   if (profile && profile.is_verified) {
     profileStatus.style.color = '#10b981'; // Green

@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
       `;
       return; // Stop execution, form is disabled
+    } else {
+      // Mostrar banner de vendedor verificado solo si es verdadero
+      const banner = document.getElementById('seller-verified-banner');
+      if (banner) banner.style.display = 'flex';
     }
   }
 
