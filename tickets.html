@@ -1,0 +1,228 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entradas Publicadas | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .tickets-container {
+      padding-top: 8rem;
+      padding-bottom: 5rem;
+    }
+    
+    .filters-bar {
+      display: flex;
+      gap: 1rem;
+      background: var(--surface);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filters-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .form-control-inline {
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.6rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
+        <li><a href="tickets.html" class="nav-link active" style="color: var(--primary); font-weight: 600;">Entradas Publicadas</a></li>
+        <li><a href="dashboard.html" class="nav-link">Mi Actividad</a></li>
+        <li><a href="profile.html" class="nav-link" id="nav-profile-link">Mi Perfil</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="sell.html" class="btn btn-outline">Vender entrada</a>
+        <a href="login.html" class="btn btn-primary">Ingresar</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container tickets-container">
+    <div style="margin-bottom: 2rem;">
+      <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">Entradas Disponibles</h1>
+      <p style="color: var(--text-muted);">Explora todas las entradas publicadas por usuarios verificados.</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="filters-group">
+        <div class="search-bar" style="margin-top: 0; box-shadow: none; border-radius: var(--radius-sm); min-width: 250px;">
+          <i class="ph ph-magnifying-glass" style="margin-left: 0.5rem;"></i>
+          <input type="text" placeholder="Buscar artista o evento..." style="padding: 0.5rem;">
+        </div>
+        <select class="form-control-inline">
+          <option>Todas las Categorías</option>
+          <option>Conciertos</option>
+          <option>Festivales</option>
+          <option>Deportes</option>
+        </select>
+        <select class="form-control-inline">
+          <option>Cualquier Ubicación</option>
+          <option>Buenos Aires</option>
+          <option>Santiago</option>
+        </select>
+      </div>
+      <div>
+        <select class="form-control-inline">
+          <option>Más recientes</option>
+          <option>Menor precio</option>
+          <option>Mayor precio</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Ticket List -->
+    <div class="ticket-list-container">
+      
+      <!-- Ticket Item 1 -->
+      <div class="ticket-list-item">
+        <img src="https://images.unsplash.com/photo-1540039155732-d6749b9325eb?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Bizarrap" class="ticket-list-image">
+        <div class="ticket-list-content">
+          <div class="ticket-list-details">
+            <h3>Primavera Sound - Campo VIP</h3>
+            <div class="ticket-list-meta">
+              <span><i class="ph ph-calendar-blank"></i> Vie, 24 Oct</span>
+              <span><i class="ph ph-map-pin"></i> Buenos Aires</span>
+              <span style="color: var(--accent); font-weight: 500;"><i class="ph-fill ph-seal-check"></i> Vendedor Verificado</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Formato: Entrada Digital (PDF)</p>
+          </div>
+          <div class="ticket-list-buy">
+            <span class="ticket-list-price">$12,500</span>
+            <a href="event.html" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Comprar Seguro</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket Item 2 -->
+      <div class="ticket-list-item">
+        <img src="https://images.unsplash.com/photo-1470229722913-7c090b332da8?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Creamfields" class="ticket-list-image">
+        <div class="ticket-list-content">
+          <div class="ticket-list-details">
+            <h3>Creamfields 2024 - General</h3>
+            <div class="ticket-list-meta">
+              <span><i class="ph ph-calendar-blank"></i> Sab, 11 Nov</span>
+              <span><i class="ph ph-map-pin"></i> Santiago, Chile</span>
+              <span style="color: var(--accent); font-weight: 500;"><i class="ph-fill ph-seal-check"></i> Vendedor Verificado</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Formato: Transferencia en App</p>
+          </div>
+          <div class="ticket-list-buy">
+            <span class="ticket-list-price">$45,000</span>
+            <a href="event.html" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Comprar Seguro</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket Item 3 -->
+      <div class="ticket-list-item">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Coldplay" class="ticket-list-image">
+        <div class="ticket-list-content">
+          <div class="ticket-list-details">
+            <h3>Coldplay - Platea Baja Fila 5</h3>
+            <div class="ticket-list-meta">
+              <span><i class="ph ph-calendar-blank"></i> Dom, 05 Dic</span>
+              <span><i class="ph ph-map-pin"></i> Bogotá</span>
+              <span style="color: var(--accent); font-weight: 500;"><i class="ph-fill ph-seal-check"></i> Vendedor Verificado</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Formato: Entrada Digital (QR)</p>
+          </div>
+          <div class="ticket-list-buy">
+            <span class="ticket-list-price">$200,000</span>
+            <a href="event.html" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Comprar Seguro</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket Item 4 -->
+      <div class="ticket-list-item">
+        <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80" alt="Afterlife" class="ticket-list-image">
+        <div class="ticket-list-content">
+          <div class="ticket-list-details">
+            <h3>Afterlife - VIP Standing</h3>
+            <div class="ticket-list-meta">
+              <span><i class="ph ph-calendar-blank"></i> Vie, 10 Dic</span>
+              <span><i class="ph ph-map-pin"></i> Mandarine Park, BA</span>
+              <span style="color: var(--accent); font-weight: 500;"><i class="ph-fill ph-seal-check"></i> Vendedor Verificado</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Formato: Transferencia Quentro</p>
+          </div>
+          <div class="ticket-list-buy">
+            <span class="ticket-list-price">$28,000</span>
+            <a href="event.html" class="btn btn-primary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem;">Comprar Seguro</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+    <div style="text-align: center; margin-top: 3rem;">
+      <button class="btn btn-outline" style="border-radius: var(--radius-xl);">Cargar más entradas</button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo" style="margin-bottom: 1.5rem;">
+            <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+          </a>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem; max-width: 300px;">
+            La plataforma de reventa de entradas más segura y confiable. Despidete de las estafas.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Plataforma</h4>
+          <div class="footer-links">
+            <a href="marketplace.html">Explorar Eventos</a>
+            <a href="sell.html">Vender Entrada</a>
+            <a href="dashboard.html">Mi Cuenta</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Soporte</h4>
+          <div class="footer-links">
+            <a href="#">Centro de Ayuda</a>
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Contacto</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SaFeBeat. Todos los derechos reservados.</p>
+        <p><i class="ph-fill ph-lock-key"></i> Transacciones Seguras</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

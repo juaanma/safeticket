@@ -1,0 +1,279 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Cuenta | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .dashboard-container {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 3rem;
+      padding-top: 8rem;
+      padding-bottom: 5rem;
+    }
+
+    .profile-sidebar {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      height: fit-content;
+    }
+
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a5b4fc, var(--primary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: white;
+      margin: 0 auto 1rem;
+    }
+
+    .profile-name {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .profile-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      color: var(--accent);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+    }
+
+    .nav-menu a {
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: var(--transition);
+    }
+
+    .nav-menu a:hover, .nav-menu a.active {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+    }
+
+    .dashboard-panel {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 1.5rem;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.3rem 0.6rem;
+      border-radius: var(--radius-xl);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-success {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent);
+    }
+    
+    .status-pending {
+      background: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
+        <li><a href="tickets.html" class="nav-link">Entradas Publicadas</a></li>
+        <li><a href="dashboard.html" class="nav-link active" style="color: var(--primary); font-weight: 600;">Mi Actividad</a></li>
+        <li><a href="profile.html" class="nav-link" id="nav-profile-link">Mi Perfil</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="sell.html" class="btn btn-outline">Vender entrada</a>
+        <button id="btn-logout" class="btn btn-primary" style="background: transparent; border: 1px solid var(--border); color: var(--text-main);">Cerrar Sesión</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container dashboard-container">
+    <aside class="profile-sidebar">
+      <div class="profile-avatar">JM</div>
+      <div class="profile-name">Juan Marcos</div>
+      <div id="profile-status" class="profile-status" style="color: #f59e0b; margin-bottom: 1rem;"><i class="ph-fill ph-warning-circle"></i> Identidad Sin Verificar</div>
+      <a id="btn-kyc-verify" href="kyc-ar.html" class="btn btn-primary btn-sm" style="width: 100%; margin-bottom: 2rem; font-size: 0.85rem;"><i class="ph-bold ph-scan"></i> Validar DNI (Obligatorio)</a>
+
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="active"><i class="ph ph-squares-four"></i> Resumen de Actividad</a>
+        <a href="#"><i class="ph ph-ticket"></i> Mis Compras</a>
+        <a href="#"><i class="ph ph-tag"></i> Entradas Publicadas</a>
+        <a href="#"><i class="ph ph-shopping-bag"></i> Entradas Vendidas</a>
+      </nav>
+    </aside>
+
+    <div class="dashboard-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Resumen de Actividad</h2>
+        <a href="sell.html" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Nueva Venta</a>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Ingresos Totales (Pendientes)</div>
+          <div class="stat-value" style="color: var(--accent);">$45,000</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Entradas Vendidas</div>
+          <div class="stat-value">2</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Entradas Compradas</div>
+          <div class="stat-value">1</div>
+        </div>
+      </div>
+
+      <h3>Transacciones Recientes</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Tipo</th>
+              <th>Fecha</th>
+              <th>Monto</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="dashboard-tx-list">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted);">Cargando tu actividad...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid var(--primary); padding: 1.5rem; border-radius: var(--radius-sm); margin-top: 3rem; display: flex; gap: 1.5rem; align-items: center;">
+        <i class="ph-fill ph-info" style="font-size: 2rem; color: var(--primary);"></i>
+        <div>
+          <h4 style="margin-bottom: 0.5rem;">El evento Cremfields se realiza pronto</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Recuerda que tus fondos de $45,000 serán liberados a tu cuenta bancaria 48-72 hrs después de que el evento finalice sin reportes de problemas.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="margin-top: auto;">
+    <div class="container" style="border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-muted); display: flex; justify-content: space-between; font-size: 0.9rem;">
+      <p>&copy; 2026 SaFeBeat. Todos los derechos reservados.</p>
+      <p><i class="ph-fill ph-lock-key"></i> Transacciones Seguras</p>
+    </div>
+  </footer>
+
+  <!-- Protector de Ruta -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnLogout = document.getElementById('btn-logout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          if (window.MiSupabase) {
+            await window.MiSupabase.auth.signOut();
+          }
+          window.location.href = 'index.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

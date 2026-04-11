@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vender Entrada | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .sell-container {
+      max-width: 600px;
+      margin: 8rem auto 5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .upload-box {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-md);
+      padding: 3rem 2rem;
+      text-align: center;
+      background: rgba(21, 24, 33, 0.5);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .upload-box:hover {
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+    
+    .info-box {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--accent);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      <div class="nav-actions">
+        <a href="index.html" class="btn btn-outline">Cancelar</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container sell-container">
+    <h1 style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Publicar tu Entrada</h1>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Vende tu entrada de forma segura y recibe tu dinero directamente en tu cuenta bancaria.</p>
+
+    <div class="info-box">
+      <i class="ph-fill ph-shield-check" style="color: var(--accent); font-size: 1.5rem; margin-top: 0.2rem;"></i>
+      <div>
+        <div style="font-weight: 600; color: var(--accent); margin-bottom: 0.3rem;">Vendedor Verificado</div>
+        <div style="font-size: 0.9rem; color: var(--text-muted);">Tu identidad ya ha sido verificada. Tus publicaciones tendrán el sello de "Vendedor Confiable", aumentando tus chances de venta.</div>
+      </div>
+    </div>
+
+    <form id="sell-form">
+      <div class="form-group">
+        <label>¿A qué evento pertenece tu entrada?</label>
+        <select id="sell-event-id" class="form-control" required style="cursor: pointer;">
+          <option value="" disabled selected>Cargando eventos...</option>
+        </select>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label>Sector / Ubicación</label>
+          <input type="text" id="sell-section" class="form-control" placeholder="Ej: Campo VIP" required>
+        </div>
+        <div class="form-group">
+          <label>Fila / Asiento (Opcional)</label>
+          <input type="text" id="sell-seat" class="form-control" placeholder="Ej: Fila 10, Asiento 2">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 1rem;">
+        <label>Formato de la Entrada</label>
+        <select id="sell-format" class="form-control" required>
+          <option value="" disabled selected>Selecciona el formato</option>
+          <option value="pdf">Entrada Digital (PDF con código de barras/QR)</option>
+          <option value="app">Transferencia en App (Ej: Quentro, AllAccess)</option>
+          <option value="fisica">Entrada Física (Punto de encuentro)</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-top: 2rem;">
+        <label>Evidencia de la Entrada</label>
+        <div class="upload-box">
+          <i class="ph ph-upload-simple upload-icon"></i>
+          <h4 style="margin-bottom: 0.5rem;">Sube el PDF o captura de pantalla</h4>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">No mostraremos el código QR públicamente. Se usará solo para validación interna del sistema.</p>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top: 2rem;">
+        <label>Precio de Venta ($)</label>
+        <div style="position: relative;">
+          <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem;">$</span>
+          <input type="number" id="sell-price" class="form-control" style="padding-left: 2.5rem; font-size: 1.2rem; font-weight: bold;" placeholder="0" required>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">La comisión de la plataforma (8%) será descontada de este valor al momento de la venta.</p>
+      </div>
+
+      <button type="submit" id="btn-submit-sell" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 2rem;">
+        Publicar Entrada <i class="ph-bold ph-arrow-right"></i>
+      </button>
+      <p id="sell-error-msg" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
+
+    </form>
+  </main>
+
+  <!-- Protector de Ruta -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/auth-ui.js"></script>
+  <script src="js/sell.js"></script>
+</body>
+</html>

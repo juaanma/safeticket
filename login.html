@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .auth-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .auth-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 3rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: var(--shadow);
+    }
+    .auth-title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .auth-title h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .auth-title p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-family: inherit;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .auth-footer a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .social-auth {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .btn-social {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      padding: 0.8rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      color: var(--text-main);
+      transition: var(--transition);
+      font-weight: 500;
+    }
+    .btn-social:hover {
+      border-color: var(--primary);
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border);
+    }
+    .divider::before { margin-right: 1em; }
+    .divider::after { margin-left: 1em; }
+    
+    .logo-center {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-main);
+      gap: 0.5rem;
+    }
+    .logo-center span { color: var(--primary); }
+    .forgot-link {
+      display: block;
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--primary);
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-box">
+      <a href="index.html" class="logo-center">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      
+      <div class="auth-title">
+        <h1>Bienvenido de nuevo</h1>
+        <p>Continúa donde lo dejaste</p>
+      </div>
+
+
+      <form id="login-form">
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" id="login-email" class="form-control" placeholder="juan@ejemplo.com" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 0.5rem;">
+          <label>Contraseña</label>
+          <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+        </div>
+        <a href="#" class="forgot-link" style="margin-bottom: 1.5rem;">¿Olvidaste tu contraseña?</a>
+
+        <button type="submit" id="btn-login" class="btn btn-primary" style="width: 100%;">Ingresar <i class="ph-bold ph-arrow-right"></i></button>
+        <p id="error-msg" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
+      </form>
+
+      <div class="auth-footer">
+        ¿Aún no tienes cuenta? <a href="register.html">Regístrate</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase CDN and Client initialization -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (window.MiSupabase) {
+        const { data: { session } } = await window.MiSupabase.auth.getSession();
+        if (session) {
+          window.location.replace('dashboard.html');
+        }
+      }
+    });
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!window.MiSupabase) {
+        alert("Modo prueba: no hay configuración de Supabase. Ingresando sin validar...");
+        window.location.href = 'dashboard.html';
+        return;
+      }
+
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('btn-login');
+      const errorMsg = document.getElementById('error-msg');
+
+      btn.innerHTML = 'Ingresando...';
+      btn.disabled = true;
+      errorMsg.style.display = 'none';
+
+      const { data, error } = await window.MiSupabase.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+      btn.innerHTML = 'Ingresar <i class="ph-bold ph-arrow-right"></i>';
+      btn.disabled = false;
+
+      if (error) {
+        // Simple error translation hack
+        let text = error.message;
+        if (text.includes('Invalid login credentials')) text = 'Correo o contraseña incorrectos.';
+        errorMsg.innerText = text;
+        errorMsg.style.display = 'block';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

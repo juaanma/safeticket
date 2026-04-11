@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 3rem;
+      padding-top: 8rem;
+      padding-bottom: 5rem;
+    }
+
+    .settings-sidebar {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      height: fit-content;
+    }
+
+    .settings-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .settings-menu a {
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+
+    .settings-menu a:hover, .settings-menu a.active {
+      background: rgba(30, 58, 138, 0.08);
+      color: var(--primary);
+    }
+
+    .settings-panel {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+    }
+
+    .form-section {
+      margin-bottom: 3rem;
+    }
+
+    .form-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .verification-card {
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid var(--accent);
+      padding: 1.5rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .profile-layout {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
+        <li><a href="tickets.html" class="nav-link">Entradas Publicadas</a></li>
+        <li><a href="dashboard.html" class="nav-link">Mi Actividad</a></li>
+        <li><a href="profile.html" class="nav-link active" style="color: var(--primary); font-weight: 600;" id="nav-profile-link">Mi Perfil</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button id="btn-logout" class="btn btn-outline">Cerrar Sesión</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container profile-layout">
+    <!-- Sidebar -->
+    <aside class="settings-sidebar">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #a5b4fc, var(--primary)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white; margin: 0 auto 1rem;">JM</div>
+        <div style="font-weight: 700; font-size: 1.2rem;">Juan Marcos</div>
+        <div style="color: var(--text-muted); font-size: 0.85rem;">juanmarcos@ejemplo.com</div>
+      </div>
+
+      <nav class="settings-menu">
+        <a href="#" class="active"><i class="ph ph-user"></i> Información Personal</a>
+        <a href="#"><i class="ph ph-wallet"></i> Billetera y CBU</a>
+        <a href="#"><i class="ph ph-shield-check"></i> Verificación DNI</a>
+        <a href="#"><i class="ph ph-lock-key"></i> Seguridad y Clave</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="settings-panel">
+      
+      <div class="verification-card">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <i class="ph-fill ph-seal-check" style="font-size: 3rem; color: var(--accent);"></i>
+          <div>
+            <h4 style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.2rem;">Cuenta Verificada</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Tu identidad ha sido validada existosamente. Puedes vender entradas y retirar dinero.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Datos Personales</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre(s)</label>
+            <input type="text" class="form-control" value="Juan Marcos">
+          </div>
+          <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" class="form-control" value="Pérez">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Correo Electrónico</label>
+            <input type="email" class="form-control" value="juanmarcos@ejemplo.com" readonly style="background: var(--surface-hover); color: var(--text-muted);">
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="tel" class="form-control" value="+54 11 1234 5678">
+          </div>
+        </div>
+        <div class="form-group" style="text-align: right; margin-top: 1.5rem;">
+          <button class="btn btn-primary">Guardar Cambios</button>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>Datos Bancarios (Billetera)</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Aquí depositaremos el dinero de tus ventas. Debe estar a tu nombre.</p>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>CBU / CVU</label>
+          <input type="text" class="form-control" value="0000003100000000000000">
+        </div>
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label>Alias</label>
+          <input type="text" class="form-control" value="JUAN.MARCOS.MP">
+        </div>
+        <div class="form-group" style="text-align: right;">
+          <button class="btn btn-outline" style="border-color: var(--border);">Actualizar CBU</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="margin-top: auto;">
+    <div class="container" style="border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-muted); display: flex; justify-content: space-between; font-size: 0.9rem;">
+      <p>&copy; 2026 SaFeBeat. Todos los derechos reservados.</p>
+      <p><i class="ph-fill ph-lock-key"></i> Transacciones Seguras</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnLogout = document.getElementById('btn-logout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          if (window.MiSupabase) {
+            await window.MiSupabase.auth.signOut();
+          }
+          window.location.href = 'index.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

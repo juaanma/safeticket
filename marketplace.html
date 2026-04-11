@@ -1,0 +1,287 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorar Eventos | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .marketplace-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2rem;
+      padding-top: 8rem;
+      padding-bottom: 5rem;
+    }
+    
+    .filters-sidebar {
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .filter-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .filter-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .filter-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .filter-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    
+    .filter-label input[type="checkbox"] {
+      accent-color: var(--primary);
+      width: 16px;
+      height: 16px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.8rem;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      margin-bottom: 0.5rem;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    @media (max-width: 992px) {
+      .marketplace-container {
+        grid-template-columns: 1fr;
+      }
+      .filters-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
+        <li><a href="tickets.html" class="nav-link">Entradas Publicadas</a></li>
+        <li><a href="dashboard.html" class="nav-link">Mi Actividad</a></li>
+        <li><a href="profile.html" class="nav-link" id="nav-profile-link">Mi Perfil</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="sell.html" class="btn btn-outline">Vender entrada</a>
+        <a href="login.html" class="btn btn-primary">Ingresar</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container marketplace-container">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3>Filtros</h3>
+        <span style="font-size: 0.8rem; color: var(--primary); cursor: pointer;">Limpiar</span>
+      </div>
+      
+      <div class="search-bar" style="margin-top: 0; margin-bottom: 1.5rem;">
+        <i class="ph ph-magnifying-glass" style="margin-left: 0.5rem;"></i>
+        <input type="text" placeholder="Buscar..." style="padding: 0.5rem; font-size: 0.9rem;">
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Categoría <i class="ph ph-caret-down"></i></div>
+        <label class="filter-label"><input type="checkbox" checked> Conciertos</label>
+        <label class="filter-label"><input type="checkbox" checked> Festivales</label>
+        <label class="filter-label"><input type="checkbox"> Teatro y Comedia</label>
+        <label class="filter-label"><input type="checkbox"> Deportes</label>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Ubicación <i class="ph ph-caret-down"></i></div>
+        <select class="form-control">
+          <option>Todas las ciudades</option>
+          <option selected>Buenos Aires</option>
+          <option>Santiago</option>
+          <option>Bogotá</option>
+          <option>Madrid</option>
+        </select>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">Precio Máximo <i class="ph ph-caret-down"></i></div>
+        <input type="range" min="0" max="100000" value="50000" style="width: 100%; accent-color: var(--primary);">
+        <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">
+          <span>$0</span>
+          <span>$100.000+</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Listings -->
+    <div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Eventos Disponibles <span id="events-count-label"></span></h2>
+        <select class="form-control" style="width: auto; background: var(--surface);">
+          <option>Recomendados</option>
+          <option>Más cercanos en fecha</option>
+          <option>Menor precio</option>
+          <option>Mayor precio</option>
+        </select>
+      </div>
+
+      <div class="events-grid" style="margin-top: 0;">
+        <!-- Event 1 -->
+        <a href="event.html" class="event-card">
+          <div class="event-image">
+            <img src="https://images.unsplash.com/photo-1540039155732-d6749b9325eb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Concierto Bizarrap">
+            <div class="event-badge"><i class="ph-fill ph-shield-check"></i> Protegido</div>
+          </div>
+          <div class="event-details">
+            <div class="event-date">Vie, 24 Oct • 21:00</div>
+            <h3 class="event-title">Festival Primavera Sound</h3>
+            <div class="event-location"><i class="ph ph-map-pin"></i> Parque de la Ciudad, BA</div>
+            <div class="event-footer">
+              <div class="event-price"><span>Desde</span> $12,500</div>
+              <span style="color: #cbd5e1; font-size: 0.9rem;">4 entradas disponibles</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Event 2 -->
+        <a href="event.html" class="event-card">
+          <div class="event-image">
+            <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Concierto Rock">
+            <div class="event-badge"><i class="ph-fill ph-shield-check"></i> Protegido</div>
+          </div>
+          <div class="event-details">
+            <div class="event-date">Sab, 18 Nov • 20:00</div>
+            <h3 class="event-title">Arctic Monkeys</h3>
+            <div class="event-location"><i class="ph ph-map-pin"></i> Movistar Arena, BA</div>
+            <div class="event-footer">
+              <div class="event-price"><span>Desde</span> $35,000</div>
+              <span style="color: #cbd5e1; font-size: 0.9rem;">2 entradas disponibles</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Event 3 -->
+        <a href="event.html" class="event-card">
+          <div class="event-image">
+            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Electrónica">
+            <div class="event-badge"><i class="ph-fill ph-shield-check"></i> Protegido</div>
+          </div>
+          <div class="event-details">
+            <div class="event-date">Dom, 05 Dic • 23:30</div>
+            <h3 class="event-title">Afterlife Buenos Aires</h3>
+            <div class="event-location"><i class="ph ph-map-pin"></i> Mandarine Park</div>
+            <div class="event-footer">
+              <div class="event-price"><span>Desde</span> $28,000</div>
+              <span style="color: #cbd5e1; font-size: 0.9rem;">6 entradas disponibles</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="event.html" class="event-card">
+          <div class="event-image">
+            <img src="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Duki">
+            <div class="event-badge"><i class="ph-fill ph-shield-check"></i> Protegido</div>
+          </div>
+          <div class="event-details">
+            <div class="event-date">Vie, 10 Dic • 21:00</div>
+            <h3 class="event-title">Duki en River Plate</h3>
+            <div class="event-location"><i class="ph ph-map-pin"></i> Estadio Monumental, BA</div>
+            <div class="event-footer">
+              <div class="event-price"><span>Desde</span> $18,000</div>
+              <span style="color: #cbd5e1; font-size: 0.9rem;">10 entradas disponibles</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div style="text-align: center; margin-top: 3rem;">
+        <button class="btn btn-outline">Cargar más eventos</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="index.html" class="logo" style="margin-bottom: 1.5rem;">
+            <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+          </a>
+          <p style="color: var(--text-muted); margin-bottom: 1.5rem; max-width: 300px;">
+            La plataforma de reventa de entradas más segura y confiable. Despidete de las estafas.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Plataforma</h4>
+          <div class="footer-links">
+            <a href="marketplace.html">Explorar Eventos</a>
+            <a href="sell.html">Vender Entrada</a>
+            <a href="dashboard.html">Mi Cuenta</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Soporte</h4>
+          <div class="footer-links">
+            <a href="#">Centro de Ayuda</a>
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Contacto</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SaFeBeat. Todos los derechos reservados.</p>
+        <p><i class="ph-fill ph-lock-key"></i> Transacciones Seguras</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/auth-ui.js"></script>
+  <script src="js/events.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Delay it slightly to ensure Subapase client is ready
+      setTimeout(() => window.loadEvents('.events-grid'), 200);
+    });
+  </script>
+</body>
+</html>
