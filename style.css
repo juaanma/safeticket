@@ -434,8 +434,29 @@ footer {
     display: none;
   }
   
+  .nav-actions .btn-outline {
+    display: none; /* Hide 'Vender entrada' text button on mobile header to prevent layout breaking */
+  }
+
+  .nav-container {
+    padding: 0 1rem;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
+  .btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.95rem;
+  }
+  
   .hero {
-    padding: 8rem 0 4rem;
+    padding: 7rem 0 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
   }
   
   .search-bar {
@@ -449,5 +470,53 @@ footer {
   
   .footer-grid {
     grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .dashboard-container {
+    padding-top: 6rem;
+    gap: 1.5rem;
+  }
+
+  .profile-sidebar {
+    padding: 1.5rem 1rem;
+  }
+
+  /* Force inline overrides for auth pages specifically on mobile */
+  .auth-box {
+    padding: 2rem 1.5rem !important;
+  }
+
+  .auth-container {
+    padding: 1rem !important;
+  }
+  
+  /* Events page fixes */
+  .event-hero-content {
+    padding-top: 2rem;
+  }
+  
+  .event-info h1 {
+    font-size: 1.8rem !important;
+  }
+  
+  .ticket-list {
+    margin-top: 1rem;
+  }
+  
+  .ticket-item {
+    padding: 1rem 1rem;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .nav-actions .btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
   }
 }
