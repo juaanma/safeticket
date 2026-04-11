@@ -73,8 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Cargar avatar desde DB remota (o localStorage de fallback)
-  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : localStorage.getItem('avatar_' + userData.user.id);
+  // Cargar avatar desde DB remota SOLAMENTE para asegurar sincronización real
+  const savedAvatar = (profile && profile.avatar_url) ? profile.avatar_url : null;
   if (savedAvatar) {
     if (init) {
       init.style.backgroundImage = `url(${savedAvatar})`;
@@ -98,6 +98,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       phoneInput.value = profile.phone;
   }
 
+  const isKycPending = (profile && profile.phone && String(profile.phone).includes("DNI")) || localStorage.getItem('kyc_pending_' + userData.user.id) === 'true';
+
   // Si está verificado, cambiar la UI a verde (Validado)
   if (profile && profile.is_verified) {
     const card = document.getElementById('verification-card');
@@ -117,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (title) title.innerText = 'Cuenta Verificada';
     if (text) text.innerText = 'Tu identidad ha sido validada eéxitosamente. Puedes vender entradas y retirar tu dinero.';
     if (btnKyc) btnKyc.style.display = 'none';
-  } else if (profile && profile.phone && String(profile.phone).includes("DNI")) {
+  } else if (isKycPending) {
     const card = document.getElementById('verification-card');
     const icon = document.getElementById('verification-icon');
     const title = document.getElementById('verification-title');
@@ -132,8 +134,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       icon.className = 'ph-fill ph-clock-afternoon';
       icon.style.color = '#3b82f6';
     }
-    if (title) title.innerText = 'Identidad en Revisión';
-    if (title) title.style.color = '#3b82f6';
+    if (title) {
+      title.innerText = 'Identidad en Revisión';
+      title.style.color = '#3b82f6';
+    }
     if (text) text.innerText = 'Tus documentos están siendo moderados manualmente. Te notificaremos pronto.';
     if (btnKyc) btnKyc.style.display = 'none';
   }
@@ -152,32 +156,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (stagedAvatarBase64) {
         updatePayload.avatar_url = stagedAvatarBase64;
-        localStorage.setItem('avatar_' + userData.user.id, stagedAvatarBase64); // Fallback offline
         stagedAvatarBase64 = null;
       }
 
       // Intentar actualización estándar
       const { data: updatedData, error: updateError } = await window.MiSupabase.from('profiles').update(updatePayload).eq('user_id', userData.user.id).select();
 
-      if (updateError) {
-        // Mock de exito si Supabase falla
+      let finalError = updateError;
+      if (updateError || !updatedData || updatedData.length === 0) {
         let insertPayload = {
            user_id: userData.user.id,
            full_name: metadataName,
            phone: newPhone
         };
         if (updatePayload.avatar_url) insertPayload.avatar_url = updatePayload.avatar_url;
-        await window.MiSupabase.from('profiles').insert([insertPayload]);
-        
-        finishSuccess(currentNameForInitials);
-      } else {
-        finishSuccess(currentNameForInitials);
+        const { error: insertError } = await window.MiSupabase.from('profiles').insert([insertPayload]);
+        finalError = insertError && updateError ? (insertError || updateError) : null;
       }
 
-      function finishSuccess(nName) {
-        alert("¡Tus cambios han sido guardados correctamente!");
+      if (finalError) {
+        alert("Error crítico (Supabase) al sincronizar Perfil: " + finalError.message);
+      } else {
+        alert("¡Todos tus cambios fueron sincronizados en la nube correctamente!");
         const nameEl = document.getElementById('profile-user-name');
-        if (nameEl) nameEl.innerText = nName;
+        if (nameEl) nameEl.innerText = currentNameForInitials;
       }
       
       btnSave.innerText = 'Guardar Cambios';
@@ -190,14 +192,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const cbuInput = document.getElementById('profile-cbu');
   const aliasInput = document.getElementById('profile-alias');
 
-  // Cargar bancarios desde DB si existe, o localStorage de fallback
-  let loadedCbu = '';
-  let loadedAlias = '';
-  if (profile && profile.cbu) loadedCbu = profile.cbu;
-  if (profile && profile.alias) loadedAlias = profile.alias;
-  
-  if (!loadedCbu) loadedCbu = localStorage.getItem('bank_cbu_' + userData.user.id) || '';
-  if (!loadedAlias) loadedAlias = localStorage.getItem('bank_alias_' + userData.user.id) || '';
+  // Cargar bancarios desde DB estrictamente
+  let loadedCbu = (profile && profile.cbu) ? profile.cbu : '';
+  let loadedAlias = (profile && profile.alias) ? profile.alias : '';
 
   if (cbuInput) cbuInput.value = loadedCbu;
   if (aliasInput) aliasInput.value = loadedAlias;
@@ -221,11 +218,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         alias: newAlias
       }).eq('user_id', userData.user.id);
 
-      // Guardamos en LocalStorage también por si Supabase no tiene esas columnas 
-      localStorage.setItem('bank_cbu_' + userData.user.id, newCbu);
-      localStorage.setItem('bank_alias_' + userData.user.id, newAlias);
-
-      alert("¡Tus datos bancarios han sido actualizados con éxito!");
+      if (updateBankError) {
+        alert("Error (Supabase) al sincronizar Datos Bancarios: " + updateBankError.message);
+      } else {
+        alert("¡Tus datos bancarios han sido sincronizados en la nube con éxito!");
+      }
       
       btnSaveBank.innerText = 'Actualizar CBU';
       btnSaveBank.disabled = false;
