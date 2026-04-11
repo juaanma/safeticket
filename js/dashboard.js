@@ -28,27 +28,37 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (profileNameEl) profileNameEl.innerText = nameStr;
   if (profileInitialsEl) profileInitialsEl.innerText = nameStr.substring(0, 2).toUpperCase();
 
+  const isKycPending = (profile && profile.phone && String(profile.phone).includes("DNI")) || localStorage.getItem('kyc_pending_' + userData.user.id) === 'true';
+
   if (profile && profile.is_verified) {
     const wrapper = document.getElementById('profile-status-wrapper');
     if (wrapper) {
       wrapper.style.background = 'rgba(16, 185, 129, 0.05)';
       wrapper.style.borderColor = 'rgba(16, 185, 129, 0.3)';
     }
-    profileStatus.style.color = '#059669'; 
-    profileStatus.style.background = 'rgba(16, 185, 129, 0.15)';
-    profileStatus.innerHTML = '<i class="ph-fill ph-shield-check"></i> Cuenta Validada';
+    const profileStatus = document.getElementById('profile-status');
+    const btnKycVerify = document.getElementById('btn-kyc-verify');
+    if (profileStatus) {
+      profileStatus.style.color = '#059669'; 
+      profileStatus.style.background = 'rgba(16, 185, 129, 0.15)';
+      profileStatus.innerHTML = '<i class="ph-fill ph-shield-check"></i> Cuenta Validada';
+    }
     if (btnKycVerify) btnKycVerify.style.display = 'none';
     const textDesc = document.getElementById('profile-status-text');
     if(textDesc) textDesc.innerHTML = 'Felicidades, puedes operar sin límites en la plataforma.';
-  } else if (profile && profile.phone && String(profile.phone).includes("DNI")) {
+  } else if (isKycPending) {
     const wrapper = document.getElementById('profile-status-wrapper');
     if (wrapper) {
       wrapper.style.background = 'rgba(59, 130, 246, 0.05)';
       wrapper.style.borderColor = 'rgba(59, 130, 246, 0.3)';
     }
-    profileStatus.style.color = '#2563eb'; 
-    profileStatus.style.background = 'rgba(59, 130, 246, 0.15)';
-    profileStatus.innerHTML = '<i class="ph-fill ph-clock-afternoon"></i> En Revisión';
+    const profileStatus = document.getElementById('profile-status');
+    const btnKycVerify = document.getElementById('btn-kyc-verify');
+    if (profileStatus) {
+      profileStatus.style.color = '#2563eb'; 
+      profileStatus.style.background = 'rgba(59, 130, 246, 0.15)';
+      profileStatus.innerHTML = '<i class="ph-fill ph-clock-afternoon"></i> En Revisión';
+    }
     if (btnKycVerify) btnKycVerify.style.display = 'none';
     const textDesc = document.getElementById('profile-status-text');
     if(textDesc) textDesc.innerHTML = 'Tus documentos están en evaluación.';

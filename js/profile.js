@@ -98,6 +98,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       phoneInput.value = profile.phone;
   }
 
+  const isKycPending = (profile && profile.phone && String(profile.phone).includes("DNI")) || localStorage.getItem('kyc_pending_' + userData.user.id) === 'true';
+
   // Si está verificado, cambiar la UI a verde (Validado)
   if (profile && profile.is_verified) {
     const card = document.getElementById('verification-card');
@@ -117,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (title) title.innerText = 'Cuenta Verificada';
     if (text) text.innerText = 'Tu identidad ha sido validada eéxitosamente. Puedes vender entradas y retirar tu dinero.';
     if (btnKyc) btnKyc.style.display = 'none';
-  } else if (profile && profile.phone && String(profile.phone).includes("DNI")) {
+  } else if (isKycPending) {
     const card = document.getElementById('verification-card');
     const icon = document.getElementById('verification-icon');
     const title = document.getElementById('verification-title');
@@ -132,8 +134,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       icon.className = 'ph-fill ph-clock-afternoon';
       icon.style.color = '#3b82f6';
     }
-    if (title) title.innerText = 'Identidad en Revisión';
-    if (title) title.style.color = '#3b82f6';
+    if (title) {
+      title.innerText = 'Identidad en Revisión';
+      title.style.color = '#3b82f6';
+    }
     if (text) text.innerText = 'Tus documentos están siendo moderados manualmente. Te notificaremos pronto.';
     if (btnKyc) btnKyc.style.display = 'none';
   }

@@ -278,6 +278,9 @@
         }
       }
       
+      // Fallback offline garantizado
+      localStorage.setItem('kyc_pending_' + userId, 'true');
+      
       // En lugar de aprobar automáticamente, dejamos el perfil sin cambiar 
       // (asumimos que el Admin lo revisará luego mediante los archivos en Storage o su tabla).
       alert("¡Documentos subidos con ééxito! Tu perfil pasará a moderación manual y será aprobado en breve por nuestro equipo.");
