@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi Cuenta | SeguraTicket</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     .dashboard-container {
@@ -176,7 +176,7 @@
       </ul>
       <div class="nav-actions">
         <a href="sell.html" class="btn btn-outline">Vender entrada</a>
-        <a href="index.html" class="btn btn-primary" style="background: transparent; border: 1px solid var(--border); color: var(--text-main);">Cerrar Sesión</a>
+        <button id="btn-logout" class="btn btn-primary" style="background: transparent; border: 1px solid var(--border); color: var(--text-main);">Cerrar Sesión</button>
       </div>
     </div>
   </nav>
@@ -270,7 +270,20 @@
 
   <!-- Protector de Ruta -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-client.js?v=4"></script>
-  <script src="auth-guard.js"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/auth-guard.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnLogout = document.getElementById('btn-logout');
+      if (btnLogout) {
+        btnLogout.addEventListener('click', async () => {
+          if (window.MiSupabase) {
+            await window.MiSupabase.auth.signOut();
+          }
+          window.location.href = 'index.html';
+        });
+      }
+    });
+  </script>
 </body>
 </html>

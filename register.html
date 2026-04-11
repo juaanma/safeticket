@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Regístrate | SeguraTicket</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     .auth-container {
@@ -162,9 +162,18 @@
 
   <!-- Supabase CDN and Client initialization -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-client.js?v=3"></script>
+  <script src="js/supabase-client.js?v=3"></script>
   
   <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      if (window.MiSupabase) {
+        const { data: { session } } = await window.MiSupabase.auth.getSession();
+        if (session) {
+          window.location.replace('dashboard.html');
+        }
+      }
+    });
+
     document.getElementById('register-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
