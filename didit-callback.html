@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Procesando Identidad | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: var(--bg-color);
+      margin: 0;
+    }
+    .callback-box {
+      background: var(--surface);
+      padding: 3rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid var(--border);
+      max-width: 400px;
+    }
+    .spinner {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+  </style>
+<script src="js/theme.js"></script>
+</head>
+<body>
+  <div class="callback-box">
+    <i class="ph-bold ph-spinner ph-spin spinner" id="callback-icon"></i>
+    <h2 id="callback-title">Autenticando con DIDIT...</h2>
+    <p id="callback-msg" style="color: var(--text-muted); margin-top: 1rem;">Por favor no cierres esta ventana. Estamos recibiendo la validación y asegurando tu cuenta.</p>
+    <a href="dashboard.html" id="btn-return" class="btn btn-primary" style="display: none; width: 100%; margin-top: 1.5rem;">Volver al Inicio</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/didit-auth.js"></script>
+</body>
+</html>

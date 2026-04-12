@@ -93,8 +93,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isSeller = ticket.seller_id === userData.user.id;
     const isBuyer = ticket.buyer_id === userData.user.id;
     if (isSeller) {
-      ventasCount++;
-      if (ticket.status === 'disponible' || ticket.status === 'vendido' || ticket.status === 'entregado') income += Number(ticket.price);
+      if (ticket.status === 'vendido' || ticket.status === 'entregado') {
+        ventasCount++;
+        income += Number(ticket.price);
+      }
     }
     if (isBuyer) comprasCount++;
   });
@@ -115,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (tabName === 'purchases') {
       filteredTickets = allTickets.filter(t => t.buyer_id === userData.user.id);
     } else if (tabName === 'published') {
-      filteredTickets = allTickets.filter(t => t.seller_id === userData.user.id);
+      filteredTickets = allTickets.filter(t => t.seller_id === userData.user.id && t.status === 'disponible');
     } else if (tabName === 'sold') {
       filteredTickets = allTickets.filter(t => t.seller_id === userData.user.id && (t.status === 'vendido' || t.status === 'entregado'));
     }

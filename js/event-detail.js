@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+  let currentUserId = null;
+  const { data: sessionData } = await window.MiSupabase.auth.getSession();
+  if (sessionData && sessionData.session) {
+    currentUserId = sessionData.session.user.id;
+  }
+
   // 1. Cargar datos del Evento
   const { data: event, error } = await window.MiSupabase
     .from('events')
@@ -116,7 +122,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         </div>
 
         <div>
-          <button class="btn btn-primary btn-buy" style="width: 100%;" onclick="buyTicket('${ticket.id}', this)">Comprar Ahora</button>
+          ${currentUserId && ticket.seller_id === currentUserId
+            ? `<button class="btn" style="width: 100%; background: var(--bg-color); border: 2px dashed var(--border); color: var(--text-muted); cursor: not-allowed;" disabled>Tu entrada publicada</button>`
+            : `<button class="btn btn-primary btn-buy" style="width: 100%;" onclick="buyTicket('${ticket.id}', this)">Comprar Ahora</button>`
+          }
         </div>
       </div>
     `;
