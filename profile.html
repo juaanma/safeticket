@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -163,6 +163,7 @@
         <a href="#" class="active" id="tab-link-personal"><i class="ph ph-user"></i> Información Personal</a>
         <a href="#" id="tab-link-kyc"><i class="ph ph-shield-check"></i> Verificación DNI</a>
         <a href="#" id="tab-link-security"><i class="ph ph-lock-key"></i> Seguridad y Clave</a>
+        <a href="#" class="app-logout-btn" style="color: #ef4444; margin-top: 1rem;"><i class="ph ph-sign-out"></i> Cerrar Sesión</a>
       </nav>
     </aside>
 
@@ -271,15 +272,16 @@
   <script src="js/profile.js?v=2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const btnLogout = document.getElementById('btn-logout');
-      if (btnLogout) {
-        btnLogout.addEventListener('click', async () => {
+      const logoutBtns = document.querySelectorAll('#btn-logout, .app-logout-btn');
+      logoutBtns.forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
           if (window.MiSupabase) {
             await window.MiSupabase.auth.signOut();
           }
           window.location.href = 'index.html';
         });
-      }
+      });
     });
   </script>
   <!-- Mobile Bottom Nav -->
@@ -324,6 +326,7 @@
   </script>
 </body>
 </html>
+
 
 
 

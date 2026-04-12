@@ -20,13 +20,17 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
   let query = window.MiSupabase.from('events').select('*');
   if (limit) query = query.limit(limit);
 
-  const { data: events, error: eventsError } = await query.order('date', { ascending: true });
+  const { data: eventsRaw, error: eventsError } = await query.order('date', { ascending: true });
 
-  if (eventsError || !events) {
+  if (eventsError || !eventsRaw) {
     console.error('Error fetching events:', eventsError);
     container.innerHTML = '<p style="grid-column: 1/-1; text-align:center;">Hubo un error cargando los eventos.</p>';
     return;
   }
+
+  // Filtrar eventos falsos de la base
+  const fakeTitles = ["Festival Primavera Sound", "Arctic Monkeys", "Duki en River Plate"];
+  const events = eventsRaw.filter(e => !fakeTitles.includes(e.title));
 
   // 2. Extraer IDs para buscar sus tickets
   const eventIds = events.map(e => e.id);
@@ -107,4 +111,8 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
 // Exponer la funcion global para llamarla al cargar
 window.loadEvents = loadEvents;
 
-
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('index-events-grid')) {
+    window.loadEvents('#index-events-grid', 3);
+  }
+});

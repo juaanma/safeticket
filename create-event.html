@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Añadir Nuevo Evento | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <style>
+    .create-container {
+      max-width: 600px;
+      margin: 8rem auto 5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .info-box {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid var(--primary);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+  </style>
+  <script src="js/theme.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      <div class="nav-actions">
+        <a href="marketplace.html" class="btn btn-outline">Volver a Eventos</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container create-container">
+    <h1 style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Añadir Nuevo Evento</h1>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">¿Tu evento no está en nuestra lista? No te preocupes, puedes añadirlo a la base de datos global de SaFeBeat para luego vender tus entradas.</p>
+
+    <div class="info-box">
+      <i class="ph-fill ph-info" style="color: var(--primary); font-size: 1.5rem; margin-top: 0.2rem;"></i>
+      <div>
+        <div style="font-weight: 600; color: var(--primary); margin-bottom: 0.3rem;">Plataforma Colaborativa</div>
+        <div style="font-size: 0.9rem; color: var(--text-muted);">Cualquier usuario puede crear un evento. Una vez creado, se podrá seleccionar inmediatamente en la página de vender entradas.</div>
+      </div>
+    </div>
+
+    <form id="create-event-form">
+      <div class="form-group">
+        <label>Nombre del Evento</label>
+        <input type="text" id="event-title" class="form-control" placeholder="Ej: Linkin Park Tour 2026" required>
+      </div>
+
+      <div class="form-group">
+        <label>Lugar / Recinto</label>
+        <input type="text" id="event-venue" class="form-control" placeholder="Ej: Estadio Movistar Arena, Buenos Aires" required>
+      </div>
+
+      <div class="form-group">
+        <label>Categoría (Género Musical)</label>
+        <select id="event-category" class="form-control" required style="cursor: pointer;">
+          <option value="" disabled selected>Selecciona el género principal</option>
+          <option value="Techno">Techno</option>
+          <option value="Progressive">Progressive</option>
+          <option value="House">House</option>
+          <option value="Melodic">Melodic</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Fecha y Hora del Evento</label>
+        <input type="datetime-local" id="event-date" class="form-control" required style="color-scheme: dark;">
+      </div>
+
+      <div class="form-group">
+        <label>Imagen Representativa</label>
+        <div class="file-upload-box" id="file-upload-box" style="border: 2px dashed var(--border); border-radius: var(--radius-md); padding: 2.5rem 1rem; text-align: center; cursor: pointer; transition: var(--transition); background: var(--surface);">
+          <input type="file" id="event-image-file" accept="image/*" style="display: none;">
+          <i class="ph ph-upload-simple upload-icon" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem; display: block;"></i>
+          <h4 style="margin-bottom: 0.5rem; color: var(--text-main);">Haz clic para seleccionar una imagen</h4>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Sube el flyer promocional del evento (JPG, PNG)</p>
+          <div id="file-preview-container" style="display: none; margin-top: 1rem;">
+            <img id="file-preview-img" style="max-height: 150px; border-radius: var(--radius-sm); margin: 0 auto; box-shadow: var(--shadow);">
+            <p id="file-preview-name" style="margin-top: 0.5rem; font-weight: 600; color: var(--primary); font-size: 0.9rem; word-break: break-all;"></p>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" id="btn-submit-create" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 2rem;">
+        Crear Evento <i class="ph-bold ph-check"></i>
+      </button>
+      <p id="create-error-msg" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
+    </form>
+  </main>
+
+  <!-- Protector de Ruta y Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/create-event.js"></script>
+
+  <!-- Mobile Bottom Nav -->
+  <div class="mobile-bottom-nav">
+    <div class="mobile-nav-container">
+      <a href="marketplace.html" class="mobile-nav-item">
+        <i class="ph ph-calendar-star"></i>
+        <span>Eventos</span>
+      </a>
+      <a href="tickets.html" class="mobile-nav-item">
+        <i class="ph ph-ticket"></i>
+        <span>Entradas</span>
+      </a>
+      <div class="mobile-nav-fab-container">
+        <a href="sell.html" class="mobile-nav-fab">
+          <i class="ph ph-plus"></i>
+        </a>
+      </div>
+      <a href="dashboard.html" class="mobile-nav-item">
+        <i class="ph ph-check-square-offset"></i>
+        <span>Actividad</span>
+      </a>
+      <a href="profile.html" class="mobile-nav-item">
+        <i class="ph ph-user"></i>
+        <span>Perfil</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

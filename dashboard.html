@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -250,6 +250,7 @@
         <a href="#" data-tab="purchases"><i class="ph ph-ticket"></i> Mis Compras</a>
         <a href="#" data-tab="published"><i class="ph ph-tag"></i> Entradas Publicadas</a>
         <a href="#" data-tab="sold"><i class="ph ph-shopping-bag"></i> Entradas Vendidas</a>
+        <a href="#" class="app-logout-btn" style="color: #ef4444; margin-top: 1rem;"><i class="ph ph-sign-out"></i> Cerrar Sesión</a>
       </nav>
     </aside>
 
@@ -320,15 +321,16 @@
   <script src="js/dashboard.js?v=2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const btnLogout = document.getElementById('btn-logout');
-      if (btnLogout) {
-        btnLogout.addEventListener('click', async () => {
+      const logoutBtns = document.querySelectorAll('#btn-logout, .app-logout-btn');
+      logoutBtns.forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
           if (window.MiSupabase) {
             await window.MiSupabase.auth.signOut();
           }
           window.location.href = 'index.html';
         });
-      }
+      });
     });
   </script>
   <!-- Mobile Bottom Nav -->

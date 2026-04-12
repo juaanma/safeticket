@@ -50,15 +50,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Cargar eventos para el dropdown
   async function loadEventsDropdown() {
-    const { data: events, error } = await window.MiSupabase
+    const { data: eventsRaw, error } = await window.MiSupabase
       .from('events')
       .select('id, title, date')
       .order('date', { ascending: true });
 
-    if (error || !events) {
+    if (error || !eventsRaw) {
       eventSelect.innerHTML = '<option value="" disabled selected>Error cargando eventos</option>';
       return;
     }
+
+    // Filtrar eventos falsos iniciales
+    const fakeTitles = ["Festival Primavera Sound", "Arctic Monkeys", "Duki en River Plate", "Coldplay", "Creamfields", "Tan Bionica", "Duki"];
+    const events = eventsRaw.filter(e => !fakeTitles.includes(e.title));
 
     if (events.length === 0) {
       eventSelect.innerHTML = '<option value="" disabled selected>No hay eventos disponibles</option>';
@@ -77,6 +81,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   loadEventsDropdown();
 
+  // Manejo de carga de archivo de evidencia
+  const uploadBox = document.getElementById('evidence-upload-box');
+  const fileInput = document.getElementById('ticket-evidence-file');
+  const previewContainer = document.getElementById('evidence-preview-container');
+  const previewName = document.getElementById('evidence-preview-name');
+  let evidenceBase64 = null;
+
+  if (uploadBox && fileInput) {
+    uploadBox.addEventListener('click', () => fileInput.click());
+    
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        evidenceBase64 = event.target.result;
+        previewName.textContent = "Archivo cargado: " + file.name;
+        
+        // Hide icons, show preview
+        const icon = uploadBox.querySelector('.ph-upload-simple');
+        const h4 = uploadBox.querySelector('h4');
+        
+        if (icon) icon.style.display = 'none';
+        if (h4) h4.style.display = 'none';
+        
+        previewContainer.style.display = 'block';
+        uploadBox.style.borderColor = 'var(--primary)';
+        uploadBox.style.background = 'rgba(79, 70, 229, 0.05)';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   // Enviar el ticket
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -92,11 +130,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     const seat = document.getElementById('sell-seat').value;
     const format = document.getElementById('sell-format').value;
     const price = document.getElementById('sell-price').value;
+    
+    if (!evidenceBase64) {
+      errorMsg.innerText = "Error: Por seguridad es obligatorio subir la evidencia física o digital de la entrada.";
+      errorMsg.style.display = 'block';
+      return;
+    }
 
     const fullSection = seat ? `${section} - ${seat}` : section;
 
     btnSubmit.disabled = true;
-    btnSubmit.innerHTML = 'Publicando... <i class="ph-bold ph-spinner"></i>';
+    btnSubmit.innerHTML = 'Publicando... <i class="ph-bold ph-spinner ph-spin"></i>';
     errorMsg.style.display = 'none';
 
     const { error } = await window.MiSupabase.from('tickets').insert([{
@@ -104,7 +148,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       seller_id: userData.user.id,
       section: fullSection,
       format: format,
-      price: parseFloat(price)
+      price: parseFloat(price),
+      evidence_url: evidenceBase64
     }]);
 
     if (error) {

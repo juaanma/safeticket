@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -107,6 +107,9 @@
         <select id="sell-event-id" class="form-control" required style="cursor: pointer;">
           <option value="" disabled selected>Cargando eventos...</option>
         </select>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">
+          ¿No encuentras tu evento en la lista? <a href="create-event.html" style="color: var(--primary); text-decoration: underline;">¡Añádelo tú mismo haciendo clic aquí!</a>
+        </p>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -132,10 +135,14 @@
 
       <div class="form-group" style="margin-top: 2rem;">
         <label>Evidencia de la Entrada</label>
-        <div class="upload-box">
+        <div class="upload-box" id="evidence-upload-box">
+          <input type="file" id="ticket-evidence-file" accept="image/*,.pdf" style="display: none;" required>
           <i class="ph ph-upload-simple upload-icon"></i>
           <h4 style="margin-bottom: 0.5rem;">Sube el PDF o captura de pantalla</h4>
           <p style="color: var(--text-muted); font-size: 0.9rem;">No mostraremos el código QR públicamente. Se usará solo para validación interna del sistema.</p>
+          <div id="evidence-preview-container" style="display: none; margin-top: 1rem;">
+            <p id="evidence-preview-name" style="margin-top: 0.5rem; font-weight: 600; color: var(--primary); font-size: 0.9rem; word-break: break-all;"></p>
+          </div>
         </div>
       </div>
 
