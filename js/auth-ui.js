@@ -1,4 +1,4 @@
-﻿// auth-ui.js
+// auth-ui.js
 // Script para actualizar la barra de navegación dependiendo si el usuario está logueado o no
 document.addEventListener('DOMContentLoaded', () => {
   // Buscamos la sesión guardada de Supabase en localStorage
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (navActions && !window.location.pathname.includes('dashboard.html')) {
       navActions.innerHTML = `
         <a href="sell.html" class="btn btn-outline">Vender entrada</a>
-        <a href="dashboard.html" class="btn btn-primary" style="background: transparent; border: 1px solid var(--border); color: var(--text-main);">Mi Cuenta</a>
       `;
     }
   }

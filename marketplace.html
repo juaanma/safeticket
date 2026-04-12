@@ -9,56 +9,170 @@
   <style>
     .marketplace-container {
       display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 2rem;
+      grid-template-columns: 260px 1fr;
+      gap: 2.5rem;
       padding-top: 8rem;
       padding-bottom: 5rem;
     }
     
     .filters-sidebar {
       background: var(--surface);
-      padding: 1.5rem;
+      padding: 1.25rem;
       border-radius: var(--radius-md);
       border: 1px solid var(--border);
       height: fit-content;
       position: sticky;
       top: 100px;
     }
-    
+
+    .filter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .filter-header h3 {
+      font-size: 1.05rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-clear {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-clear:hover {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
     .filter-section {
       margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
     }
     
     .filter-section:last-child {
-      border-bottom: none;
       margin-bottom: 0;
-      padding-bottom: 0;
     }
     
     .filter-title {
-      font-weight: 600;
-      margin-bottom: 1rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     
-    .filter-label {
+    .filter-chip-group {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.5rem;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 0.95rem;
+      flex-wrap: wrap;
+      gap: 0.4rem;
     }
     
-    .filter-label input[type="checkbox"] {
-      accent-color: var(--primary);
-      width: 16px;
-      height: 16px;
+    .filter-chip {
+      cursor: pointer;
+    }
+    
+    .filter-chip .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+    }
+    
+    .filter-chip span {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      background: var(--bg-color);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    
+    .filter-chip input:checked + span {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .filter-chip:hover span {
+      border-color: var(--primary);
+      color: var(--text-main);
+    }
+
+    .custom-range {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      margin: 0.5rem 0 1rem;
+    }
+    
+    .custom-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--primary);
+      cursor: pointer;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    
+    .custom-range::-webkit-slider-thumb:hover {
+      box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.2);
+      transform: scale(1.1);
+    }
+
+    .compact-search {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    
+    .compact-search input {
+      width: 100%;
+      padding: 0.65rem 1rem 0.65rem 2.2rem;
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.8rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      font-family: inherit;
+    }
+    
+    .compact-search input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+    
+    .compact-search i {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1rem;
     }
 
     .form-control {
@@ -80,6 +194,7 @@
     @media (max-width: 992px) {
       .marketplace-container {
         grid-template-columns: 1fr;
+        gap: 1.5rem;
       }
       .filters-sidebar {
         position: static;
@@ -112,28 +227,43 @@
   <main class="container marketplace-container">
     <!-- Sidebar Filters -->
     <aside class="filters-sidebar">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-        <h3>Filtros</h3>
-        <span style="font-size: 0.8rem; color: var(--primary); cursor: pointer;">Limpiar</span>
+      <div class="filter-header">
+        <h3><i class="ph ph-faders"></i> Filtros</h3>
+        <button class="btn-clear">Limpiar</button>
       </div>
       
-      <div class="search-bar" style="margin-top: 0; margin-bottom: 1.5rem;">
-        <i class="ph ph-magnifying-glass" style="margin-left: 0.5rem;"></i>
-        <input type="text" placeholder="Buscar..." style="padding: 0.5rem; font-size: 0.9rem;">
+      <div class="compact-search">
+        <i class="ph ph-magnifying-glass"></i>
+        <input type="text" placeholder="Buscar evento o artista...">
       </div>
 
       <div class="filter-section">
-        <div class="filter-title">Categoría <i class="ph ph-caret-down"></i></div>
-        <label class="filter-label"><input type="checkbox" checked> Techno</label>
-        <label class="filter-label"><input type="checkbox" checked> Progressive</label>
-        <label class="filter-label"><input type="checkbox"> House</label>
-        <label class="filter-label"><input type="checkbox"> Melodic</label>
+        <div class="filter-title">Categoría</div>
+        <div class="filter-chip-group">
+          <label class="filter-chip"><input type="checkbox" checked class="sr-only"><span>Techno</span></label>
+          <label class="filter-chip"><input type="checkbox" checked class="sr-only"><span>Progressive</span></label>
+          <label class="filter-chip"><input type="checkbox" class="sr-only"><span>House</span></label>
+          <label class="filter-chip"><input type="checkbox" class="sr-only"><span>Melodic</span></label>
+          <label class="filter-chip"><input type="checkbox" class="sr-only"><span>Trance</span></label>
+        </div>
       </div>
 
       <div class="filter-section">
-        <div class="filter-title">Precio Máximo <i class="ph ph-caret-down"></i></div>
-        <input type="range" min="0" max="100000" value="50000" style="width: 100%; accent-color: var(--primary);">
-        <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;">
+        <div class="filter-title">Fechas</div>
+        <div class="filter-chip-group">
+          <label class="filter-chip"><input type="radio" name="date" class="sr-only" checked><span>Cualquiera</span></label>
+          <label class="filter-chip"><input type="radio" name="date" class="sr-only"><span>Esta Semana</span></label>
+          <label class="filter-chip"><input type="radio" name="date" class="sr-only"><span>Este Mes</span></label>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title">
+          Precio Máximo
+          <span id="price-val" style="color: var(--primary); font-size: 0.85rem; font-weight: 700; text-transform: none; letter-spacing: 0;">$50.000</span>
+        </div>
+        <input type="range" class="custom-range" min="0" max="100000" step="1000" value="50000" oninput="document.getElementById('price-val').innerText = '$' + Number(this.value).toLocaleString('es-AR')">
+        <div style="display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.7rem; font-weight: 600;">
           <span>$0</span>
           <span>$100.000+</span>
         </div>
@@ -142,12 +272,8 @@
 
     <!-- Listings -->
     <div>
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-        <div>
-          <h2 style="margin:0;">Eventos Disponibles <span id="events-count-label"></span></h2>
-        </div>
+      <div style="display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
         <div style="display: flex; gap: 1rem; align-items: center;">
-          <a href="create-event.html" class="btn btn-primary" style="font-size: 0.9rem; padding: 0.6rem 1rem;"><i class="ph-bold ph-plus"></i> Añadir Evento</a>
           <select class="form-control" style="width: auto; background: var(--surface);">
             <option>Recomendados</option>
             <option>Más cercanos en fecha</option>
@@ -161,9 +287,7 @@
         <!-- Eventos Dinamicos via Supabase (events.js) -->
       </div>
 
-      <div style="text-align: center; margin-top: 3rem;">
-        <button class="btn btn-outline">Cargar más eventos</button>
-      </div>
+
     </div>
   </main>
 
