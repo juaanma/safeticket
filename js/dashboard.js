@@ -151,10 +151,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       const dateStr = d.toLocaleDateString();
       const formattedPrice = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(ticket.price);
 
-      // Boton de cancelar si soy el vendedor y sigue disponible
+      // Botones de accion segun rol y estado
       let actionsHtml = '';
-      if (isSeller && ticket.status === 'disponible') {
-        actionsHtml = `<button onclick="window.deleteTicket('${ticket.id}')" style="background:transparent; border:none; color:#ef4444; cursor:pointer;" title="Eliminar Listado"><i class="ph-bold ph-trash"></i></button>`;
+      if (ticket.status === 'disponible') {
+        if (isSeller) {
+          actionsHtml = `<button onclick="window.deleteTicket('${ticket.id}')" style="background:transparent; border:none; color:#ef4444; cursor:pointer;" title="Eliminar Listado"><i class="ph-bold ph-trash" style="font-size: 1.2rem;"></i></button>`;
+        }
+      } else if (ticket.status === 'vendido') {
+        actionsHtml = `<a href="order.html?ticket_id=${ticket.id}" class="btn btn-outline" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; border-color: var(--primary); color: var(--primary);"><i class="ph-bold ph-chat-circle"></i> Coordinar</a>`;
       }
 
       const row = `

@@ -32,17 +32,37 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  ticketData = ticket;
-  eventData = ticket.events;
-
-  // Si ya estaba en un estado distinto a "disponible", tal vez redirigir iterando steps
-  if (ticket.status === 'vendido') {
-    // Para simplificar, asumimos que este flujo es the happy path nuevo
-    // pero si recargan, podríamos saltar al paso 4
+  const { data: userData } = await window.MiSupabase.auth.getUser();
+  if (!userData || !userData.user) {
+    alert("Debes iniciar sesión para ver esta orden.");
+    window.location.href = 'login.html';
+    return;
   }
 
+  ticketData = ticket;
+  eventData = ticket.events;
+  window.currentUser = userData.user;
+
+  const isSeller = userData.user.id === ticket.seller_id;
+
   populateData();
-  startTimer(10 * 60, document.getElementById('checkout-timer'));
+
+  if (isSeller) {
+    // Si es el vendedor, salta directamente al chat de coordinación
+    goToStep(4);
+    switchTab('chat');
+  } else {
+    // Si es el comprador, inicia o retoma el flujo
+    if (ticket.status === 'vendido') {
+      goToStep(4);
+    } else {
+      startTimer(10 * 60, document.getElementById('checkout-timer'));
+    }
+  }
+
+  // Configurar chat en vivo
+  await loadMessages();
+  subscribeToChat(ticketId);
 });
 
 function populateData() {
@@ -136,7 +156,6 @@ function switchTab(tabName) {
   const viewStatus = document.getElementById('view-status');
   const viewChat = document.getElementById('view-chat');
 
-  // Reset
   tabStatus.classList.remove('active');
   tabChat.classList.remove('active');
   tabStatus.style.borderBottomColor = 'transparent';
@@ -157,34 +176,67 @@ function switchTab(tabName) {
     tabChat.style.borderBottomColor = 'var(--primary)';
     tabChat.style.color = 'var(--primary)';
     viewChat.style.display = 'block';
+    // scroll al fondo al abrir
+    const container = document.getElementById('chat-messages');
+    container.scrollTop = container.scrollHeight;
   }
 }
 
-function sendMsgInput() {
+async function loadMessages() {
+  const container = document.getElementById('chat-messages');
+  container.innerHTML = '<div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin: 1rem 0;">A partir de este momento puedes coordinar la entrega en tiempo real.</div>';
+
+  const { data: messages, error } = await window.MiSupabase
+    .from('messages')
+    .select('*')
+    .eq('ticket_id', ticketData.id)
+    .order('created_at', { ascending: true });
+
+  if (!error && messages) {
+    messages.forEach(msg => appendMessageUI(msg));
+  }
+}
+
+function subscribeToChat(tId) {
+  window.MiSupabase.channel('chat_room_' + tId)
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `ticket_id=eq.${tId}` }, payload => {
+      appendMessageUI(payload.new);
+    })
+    .subscribe();
+}
+
+function appendMessageUI(msg) {
+  const container = document.getElementById('chat-messages');
+  const isMine = msg.sender_id === window.currentUser.id;
+  
+  const div = document.createElement('div');
+  div.className = isMine ? 'chat-msg sent' : 'chat-msg received';
+  div.innerText = msg.content;
+  container.appendChild(div);
+  
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMsgInput() {
   const input = document.getElementById('chat-input');
   const val = input.value.trim();
   if (!val) return;
-  sendMsg(val);
+  
   input.value = '';
+  input.disabled = true;
+
+  const { error } = await window.MiSupabase.from('messages').insert([{
+    ticket_id: ticketData.id,
+    sender_id: window.currentUser.id,
+    content: val
+  }]);
+
+  input.disabled = false;
+  input.focus();
 }
 
 function sendMsg(text) {
-  const container = document.getElementById('chat-messages');
-  
-  const div = document.createElement('div');
-  div.className = 'chat-msg sent';
-  div.innerText = text;
-  container.appendChild(div);
-  
-  // Auto-scroll
-  container.scrollTop = container.scrollHeight;
-
-  // Respuesta simulada
-  setTimeout(() => {
-    const rDiv = document.createElement('div');
-    rDiv.className = 'chat-msg received';
-    rDiv.innerText = "¡Dale, genial! Ahora mismo estoy en el trabajo, te hago el envío ni bien llego a casa a las 18hs :)";
-    container.appendChild(rDiv);
-    container.scrollTop = container.scrollHeight;
-  }, 2500);
+  const input = document.getElementById('chat-input');
+  input.value = text;
+  sendMsgInput();
 }
