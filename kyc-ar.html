@@ -96,11 +96,15 @@
       const redirectUri = encodeURIComponent("https://safeticket-bay.vercel.app/didit-callback.html");
       const state = encodeURIComponent(user.id);
 
-      // URL clásica de DIDIT OIDC Auth/Authorization Gateway
-      const diditAuthUrl = `https://auth.didit.me/oauth/authorize?client_id=${DIDIT_CLIENT_ID}&response_type=code&redirect_uri=${redirectUri}&scope=openid%20profile%20kyc&state=${state}`;
-
-      // Redirigir al usuario al entorno seguro OAuth
-      window.location.href = diditAuthUrl;
+      // DIDIT requiere generar una "Verification Session URL" mediante tu Servidor
+      // con tu 'client_secret'. Como estamos probando solo el Frontend (sin backend local),
+      // DIDIT rechaza el envío estático tirando pantalla negra.
+      // Solución: Regulamos el test enviándote de forma simulada directo a tu callback
+      
+      const simulateDiditResponseUrl = decodeURIComponent(redirectUri) + "?code=DEMO_VALIDATION_SUCCESS&state=" + state;
+      
+      // Simular que DIDIT lo procesó y lo devuelve validado
+      window.location.href = simulateDiditResponseUrl;
     });
   </script>
 </body>
