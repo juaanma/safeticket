@@ -51,10 +51,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Si es el vendedor, salta directamente al chat de coordinación
     goToStep(4);
     switchTab('chat');
+    const recBox = document.getElementById('reception-box');
+    if (recBox) recBox.style.display = 'none';
   } else {
     // Si es el comprador, inicia o retoma el flujo
-    if (ticket.status === 'vendido') {
+    if (ticket.status === 'vendido' || ticket.status === 'entregado') {
       goToStep(4);
+      if (ticket.status === 'entregado') {
+        const recBox = document.getElementById('reception-box');
+        if(recBox) {
+          recBox.style.background = 'rgba(16, 185, 129, 0.05)';
+          recBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+          recBox.innerHTML = '<div style="color: #10b981; font-weight: 600; text-align:center; padding:1rem;"><i class="ph-fill ph-check-circle" style="font-size:3rem; margin-bottom: 0.5rem;"></i><br><span style="font-size: 1.2rem;">Entrega Confirmada</span><p style="color:var(--text-muted); font-size:0.85rem; margin-top: 0.5rem; font-weight: normal;">Has notificado la recepción válida de la entrada. El vendedor recibirá sus fondos.<br>¡Disfruta el evento!</p></div>';
+        }
+        setTimeout(() => {
+          const items = document.querySelectorAll('.timeline-item');
+          if(items.length >= 4) {
+             items[2].classList.remove('active');
+             items[2].classList.add('completed');
+             items[3].classList.add('completed');
+          }
+        }, 50);
+      }
     } else {
       startTimer(10 * 60, document.getElementById('checkout-timer'));
     }
@@ -239,4 +257,37 @@ function sendMsg(text) {
   const input = document.getElementById('chat-input');
   input.value = text;
   sendMsgInput();
+}
+
+async function confirmReceived() {
+  if(!confirm('¿Estás seguro que tienes la entrada real y válida en tu poder? Tras confirmar esta acción, los fondos serán liberados al vendedor y no habrá reembolso.')) return;
+
+  const btn = document.getElementById('btn-confirm-received');
+  if(btn) {
+    btn.disabled = true;
+    btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Confirmando...';
+  }
+
+  const { error } = await window.MiSupabase
+    .from('tickets')
+    .update({ status: 'entregado' })
+    .eq('id', ticketData.id);
+
+  if (error) {
+    alert('Error al intentar confirmar. Intenta nuevamente.');
+    if(btn) {
+      btn.disabled = false;
+      btn.innerText = 'Ya recibí la entrada';
+    }
+    return;
+  }
+  
+  // Enviar mensaje de confirmacion visible
+  await window.MiSupabase.from('messages').insert([{
+    ticket_id: ticketData.id,
+    sender_id: window.currentUser.id,
+    content: '✅ [SISTEMA]: El comprador ha confirmado la recepción exitosa de la entrada. La orden se ha completado y los fondos proceden a liquidación.'
+  }]);
+
+  window.location.reload();
 }

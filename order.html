@@ -425,10 +425,10 @@
           </div>
         </div>
 
-        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); padding: 1rem; border-radius: var(--radius-sm); margin-top: 2rem;">
+        <div id="reception-box" style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); padding: 1rem; border-radius: var(--radius-sm); margin-top: 2rem;">
           <div style="color: #f59e0b; font-weight: 600; margin-bottom: 0.5rem;"><i class="ph-fill ph-warning"></i> ¿Todo listo?</div>
           <p style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">Solo cuando estés seguro de tener la entrada en tu poder, haz clic aquí para liberar los fondos al vendedor.</p>
-          <button class="btn btn-outline" style="width: 100%; border-color: #f59e0b; color: #f59e0b;">Ya recibí la entrada</button>
+          <button id="btn-confirm-received" class="btn btn-outline" style="width: 100%; border-color: #f59e0b; color: #f59e0b;" onclick="confirmReceived()">Ya recibí la entrada</button>
         </div>
       </div>
 
