@@ -32,8 +32,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  const { data: userData } = await window.MiSupabase.auth.getUser();
-  if (!userData || !userData.user) {
+  const { data: sessionData } = await window.MiSupabase.auth.getSession();
+  if (!sessionData || !sessionData.session) {
     alert("Debes iniciar sesión para ver esta orden.");
     window.location.href = 'login.html';
     return;
@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   ticketData = ticket;
   eventData = ticket.events;
-  window.currentUser = userData.user;
+  window.currentUser = sessionData.session.user;
 
-  const isSeller = userData.user.id === ticket.seller_id;
+  const isSeller = window.currentUser.id === ticket.seller_id;
 
   populateData();
 
@@ -106,7 +106,32 @@ function populateData() {
 
   // Step 3 / 4 variables
   document.getElementById('s3-op-id').innerText = ticketData.id.split('-')[0].toUpperCase();
-  document.getElementById('s4-seller-id').innerText = '#' + ticketData.seller_id.substring(0, 4).toUpperCase();
+  
+  const isSellerInfo = window.currentUser.id === ticketData.seller_id;
+  const counterpartyId = isSellerInfo ? ticketData.buyer_id : ticketData.seller_id;
+
+  if (counterpartyId) {
+    window.MiSupabase.from('profiles').select('full_name, avatar_url').eq('user_id', counterpartyId).maybeSingle().then(({data}) => {
+      const nameLabel = document.getElementById('chat-name-label');
+      const avatarDiv = document.getElementById('chat-avatar');
+      
+      const roleText = isSellerInfo ? 'Comprador' : 'Vendedor';
+      let nameText = data && data.full_name ? data.full_name : '#' + counterpartyId.substring(0, 4).toUpperCase();
+      
+      if (nameLabel) {
+        nameLabel.innerHTML = `${roleText}: <strong>${nameText}</strong>`;
+      }
+      
+      if (data && data.avatar_url && avatarDiv) {
+        avatarDiv.style.backgroundImage = `url(${data.avatar_url})`;
+        avatarDiv.innerHTML = '';
+      }
+    });
+  } else {
+    // Fallback if no buyer yet
+    const nameLabel = document.getElementById('chat-name-label');
+    if (nameLabel) nameLabel.innerHTML = `Vendedor: <strong>#${ticketData.seller_id.substring(0, 4).toUpperCase()}</strong>`;
+  }
 }
 
 function goToStep(stepNumber) {
