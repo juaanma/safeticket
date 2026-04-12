@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Procesar Pago | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="js/theme.js"></script>
+  <style>
+    body {
+      background-color: var(--bg-color);
+    }
+    
+    .order-container {
+      max-width: 500px;
+      margin: 5rem auto;
+      min-height: calc(100vh - 5rem);
+      padding: 1rem;
+    }
+    
+    .step-view {
+      display: none;
+      animation: fadeIn 0.4s ease forwards;
+    }
+    
+    .step-view.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .fintech-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.8rem;
+      font-size: 0.95rem;
+    }
+    
+    .info-row.total {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--border);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
+    
+    .info-label {
+      color: var(--text-muted);
+    }
+    
+    .info-value {
+      color: var(--text-main);
+      font-weight: 500;
+      text-align: right;
+    }
+    
+    .timer {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      border: 2px solid var(--primary);
+      background: rgba(79, 70, 229, 0.05);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+    }
+    
+    .security-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1);
+      color: #059669;
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .copy-btn {
+      background: var(--surface-hover);
+      border: none;
+      color: var(--primary);
+      padding: 0.3rem 0.6rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: var(--transition);
+    }
+    
+    .copy-btn:hover {
+      background: var(--border);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.5rem;
+      top: 0.3rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 2px solid var(--text-muted);
+      transform: translateX(-5px);
+    }
+
+    .timeline-item.completed::before {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .timeline-item.active::before {
+      background: #10b981;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 0.2rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .chat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 400px;
+    }
+
+    .chat-header {
+      padding: 1rem;
+      background: var(--bg-color);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 600;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chat-msg {
+      max-width: 80%;
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
+
+    .chat-msg.received {
+      align-self: flex-start;
+      background: var(--bg-color);
+      border: 1px solid var(--border);
+    }
+
+    .chat-msg.sent {
+      align-self: flex-end;
+      background: var(--primary);
+      color: white;
+    }
+
+    .quick-replies {
+      padding: 0.5rem 1rem;
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .quick-replies::-webkit-scrollbar { display: none; }
+
+    .btn-quick {
+      white-space: nowrap;
+      background: var(--surface-hover);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+
+    .chat-input-area {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Minimal Navbar for Checkout -->
+  <nav class="navbar">
+    <div class="container" style="display: flex; justify-content: center;">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+    </div>
+  </nav>
+
+  <div class="order-container">
+
+    <!-- STEP 1: SUMMARY -->
+    <div id="step-1" class="step-view active">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="font-size: 1.5rem;">Resumen de Compra</h2>
+        <div class="timer"><i class="ph-bold ph-clock"></i> <span id="checkout-timer">10:00</span></div>
+      </div>
+
+      <div class="security-badge">
+        <i class="ph-fill ph-lock-key" style="font-size: 1.5rem;"></i>
+        <span>Tu dinero está retenido y protegido por la plataforma hasta que la entrega se complete correctamente.</span>
+      </div>
+
+      <div class="fintech-card">
+        <h3 style="margin-bottom: 1rem; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Detalle de la Entrada</h3>
+        <div class="info-row">
+          <span class="info-label">Evento</span>
+          <span class="info-value" id="s1-event-title">Cargando...</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Fecha y Lugar</span>
+          <span class="info-value" id="s1-event-detail">...</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Ubicación</span>
+          <span class="info-value" id="s1-ticket-section">...</span>
+        </div>
+        <div class="info-row" style="margin-top: 1rem; border-top: 1px dashed var(--border); padding-top: 1rem;">
+          <span class="info-label">Precio Entrada</span>
+          <span class="info-value" id="s1-price">$0</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Seguro SaFeBeat (8%)</span>
+          <span class="info-value" id="s1-fee">$0</span>
+        </div>
+        <div class="info-row total">
+          <span>Total a Pagar</span>
+          <span id="s1-total">$0</span>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Método de Pago</h3>
+      <div class="payment-method">
+        <i class="ph-fill ph-bank" style="font-size: 1.8rem; color: var(--primary);"></i>
+        <div>
+          <div style="font-weight: 600;">Transferencia Bancaria / CVU</div>
+          <div style="font-size: 0.85rem; color: var(--text-muted);">Sin comisiones adicionales. Acreditación inmediata.</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+        <button class="btn btn-outline" style="flex: 1;" onclick="history.back()">Cancelar</button>
+        <button class="btn btn-primary" style="flex: 2; padding: 1rem;" onclick="goToStep(2)">Iniciar Transferencia</button>
+      </div>
+    </div>
+
+
+    <!-- STEP 2: INSTRUCTIONS -->
+    <div id="step-2" class="step-view">
+      <button class="btn btn-outline" style="border:none; padding: 0; margin-bottom: 1rem;" onclick="goToStep(1)"><i class="ph-bold ph-arrow-left"></i> Volver</button>
+      
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Casi tuyo...</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Para asegurar tus entradas, transfiere el monto exacto a la siguiente cuenta recaudadora de SaFeBeat.</p>
+
+      <div class="fintech-card" style="border: 2px solid var(--accent); background: rgba(16, 185, 129, 0.02);">
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <div style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">Monto exacto a transferir</div>
+          <div style="font-size: 2.5rem; font-weight: 800; color: var(--text-main);" id="s2-total">$0</div>
+          <div style="font-size: 0.8rem; color: #ef4444; font-weight: 600; margin-top: 0.5rem;"><i class="ph-fill ph-warning-circle"></i> Transfiere los centavos exactos para validación automática.</div>
+        </div>
+
+        <div style="background: var(--bg-color); border-radius: var(--radius-sm); padding: 1rem;">
+          <div style="margin-bottom: 1rem;">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.2rem;">Titular</div>
+            <div style="font-weight: 600;">SAFE TICKET S.R.L.</div>
+          </div>
+          <div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.2rem;">CVU / ALIAS</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="font-family: monospace; font-size: 1.1rem; font-weight: 600;">0000168300000003661121</div>
+              <button class="copy-btn" onclick="copyToClipboard('0000168300000003661121', this)"><i class="ph-bold ph-copy"></i> Copiar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="security-badge" style="background: rgba(59, 130, 246, 0.1); color: #3b82f6;">
+        <i class="ph-fill ph-info" style="font-size: 1.5rem;"></i>
+        <span>Tu dinero no va directo al vendedor. Nosotros controlamos los fondos hasta garantizar la correcta entrega.</span>
+      </div>
+
+      <!-- Simulator state for validation -->
+      <div id="validation-spinner" style="display: none; text-align: center; padding: 2rem 0;">
+        <i class="ph-bold ph-spinner ph-spin" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem;"></i>
+        <h3 style="color: var(--primary);">Esperando validación de tu pago...</h3>
+        <p style="color: var(--text-muted); font-size: 0.9rem;">Por favor no cierres esta ventana. Esto suele demorar unos segundos.</p>
+      </div>
+
+      <button id="btn-ya-transferi" class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;" onclick="simulatePaymentValidation()">Ya Transferí <i class="ph-bold ph-check"></i></button>
+    </div>
+
+
+    <!-- STEP 3: SUCCESS -->
+    <div id="step-3" class="step-view" style="text-align: center; padding: 2rem 0;">
+      <div style="width: 100px; height: 100px; border-radius: 50%; background: #10b981; color: white; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto 2rem; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);">
+        <i class="ph-bold ph-check"></i>
+      </div>
+      
+      <h1 style="color: #10b981; margin-bottom: 1rem;">Pago recibido con éxito</h1>
+      <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; max-width: 400px; margin-left: auto; margin-right: auto;">Hemos asegurado tus fondos. Ahora ya podés coordinar la entrega con el vendedor de forma 100% segura.</p>
+
+      <div class="fintech-card" style="text-align: left; margin-bottom: 2rem;">
+        <div class="info-row">
+          <span class="info-label">Operación Nº</span>
+          <span class="info-value" style="font-family: monospace;">#<span id="s3-op-id">983471</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Estado</span>
+          <span class="info-value" style="color: #10b981;"><i class="ph-fill ph-circle"></i> Aprobada</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem;" onclick="finalizeOrder()">Coordinar Entrega <i class="ph-bold ph-chat-teardrop-text"></i></button>
+    </div>
+
+
+    <!-- STEP 4: TRACKING & CHAT -->
+    <div id="step-4" class="step-view">
+      <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
+        <button class="tab-btn active" onclick="switchTab('status')" id="tab-status" style="background: transparent; border: none; color: var(--primary); font-weight: 600; padding: 0.5rem 1rem; border-bottom: 2px solid var(--primary); cursor: pointer;">Seguimiento</button>
+        <button class="tab-btn" onclick="switchTab('chat')" id="tab-chat" style="background: transparent; border: none; color: var(--text-muted); font-weight: 600; padding: 0.5rem 1rem; border-bottom: 2px solid transparent; cursor: pointer;">Chat Seguro</button>
+      </div>
+
+      <!-- TIMELINE VIEW -->
+      <div id="view-status">
+        <h2 style="font-size: 1.3rem;">Estado de tu compra</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">No marques como recibida la entrada hasta verificar que esté correcta.</p>
+        
+        <div class="timeline">
+          <div class="timeline-item completed">
+            <div class="timeline-title">Reserva Creada</div>
+            <div class="timeline-desc">La entrada fue separada para ti.</div>
+          </div>
+          <div class="timeline-item completed">
+            <div class="timeline-title">Pago Validado</div>
+            <div class="timeline-desc">Los fondos están asegurados en SaFeBeat.</div>
+          </div>
+          <div class="timeline-item active">
+            <div class="timeline-title">Entrega Pendiente</div>
+            <div class="timeline-desc">Coordina con el vendedor por el Chat.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">Entrada Recibida</div>
+            <div class="timeline-desc">Toca el botón cuando ya la tengas.</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); padding: 1rem; border-radius: var(--radius-sm); margin-top: 2rem;">
+          <div style="color: #f59e0b; font-weight: 600; margin-bottom: 0.5rem;"><i class="ph-fill ph-warning"></i> ¿Todo listo?</div>
+          <p style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem;">Solo cuando estés seguro de tener la entrada en tu poder, haz clic aquí para liberar los fondos al vendedor.</p>
+          <button class="btn btn-outline" style="width: 100%; border-color: #f59e0b; color: #f59e0b;">Ya recibí la entrada</button>
+        </div>
+      </div>
+
+      <!-- CHAT VIEW -->
+      <div id="view-chat" style="display: none;">
+        <div class="chat-box">
+          <div class="chat-header">
+            <div style="width: 35px; height: 35px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center;"><i class="ph-fill ph-user"></i></div>
+            <div>
+              <div style="font-size: 0.95rem;">Vendedor <span id="s4-seller-id"></span></div>
+              <div style="font-size: 0.75rem; color: #10b981;">Online</div>
+            </div>
+          </div>
+          
+          <div class="chat-body" id="chat-messages">
+            <div style="text-align: center; color: var(--text-muted); font-size: 0.8rem; margin: 1rem 0;">A partir de este momento puedes coordinar la entrega. Recuerda no enviar dinero adicional por fuera de la plataforma.</div>
+            
+            <div class="chat-msg received">
+              ¡Hola! Vi que compraste la entrada. ¿Cómo preferís que coordinemos?
+            </div>
+          </div>
+
+          <div class="quick-replies">
+            <button class="btn-quick" onclick="sendMsg('Hola, ya realicé el pago. ¿Coordinamos la entrega?')">Ya realicé el pago</button>
+            <button class="btn-quick" onclick="sendMsg('¿La entrada se envía por mail o se transfiere por app?')">¿Mail o transferencia?</button>
+            <button class="btn-quick" onclick="sendMsg('¿Cuándo podrías enviarla?')">¿Cuándo la envías?</button>
+          </div>
+
+          <div class="chat-input-area">
+            <input type="text" id="chat-input" class="form-control" placeholder="Escribe un mensaje..." style="flex: 1;" onkeypress="if(event.key === 'Enter') sendMsgInput()">
+            <button class="btn btn-primary" onclick="sendMsgInput()"><i class="ph-bold ph-paper-plane-tilt"></i></button>
+          </div>
+        </div>
+        
+        <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 1rem;"><i class="ph-fill ph-shield-check"></i> Si hay un problema, nuestro soporte puede intervenir.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/order.js"></script>
+</body>
+</html>

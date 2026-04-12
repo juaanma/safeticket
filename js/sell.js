@@ -3,10 +3,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
   if (!window.MiSupabase) return;
 
-  const eventSelect = document.getElementById('sell-event-id');
+  const eventInput = document.getElementById('sell-event-input');
+  const hiddenIdEl = document.getElementById('sell-event-id');
+  const autocompleteList = document.getElementById('autocomplete-list');
   const form = document.getElementById('sell-form');
   const errorMsg = document.getElementById('sell-error-msg');
   const btnSubmit = document.getElementById('btn-submit-sell');
+  
+  let allEventsCache = [];
 
   // KYC Verification check
   const { data: userData } = await window.MiSupabase.auth.getUser();
@@ -56,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       .order('date', { ascending: true });
 
     if (error || !eventsRaw) {
-      eventSelect.innerHTML = '<option value="" disabled selected>Error cargando eventos</option>';
+      if (eventInput) eventInput.placeholder = 'Error cargando eventos';
       return;
     }
 
@@ -65,55 +69,66 @@ document.addEventListener('DOMContentLoaded', async () => {
     const events = eventsRaw.filter(e => !fakeTitles.includes(e.title));
 
     if (events.length === 0) {
-      eventSelect.innerHTML = '<option value="" disabled selected>No hay eventos disponibles</option>';
+      if (eventInput) eventInput.placeholder = 'No hay eventos disponibles';
       return;
     }
 
-    eventSelect.innerHTML = '<option value="" disabled selected>Selecciona el evento</option>';
-    events.forEach(ev => {
-      const d = new Date(ev.date).toLocaleDateString();
-      const option = document.createElement('option');
-      option.value = ev.id;
-      option.textContent = `${ev.title} (${d})`;
-      eventSelect.appendChild(option);
-    });
+    allEventsCache = events.map(ev => ({
+      id: ev.id,
+      text: `${ev.title} (${new Date(ev.date).toLocaleDateString()})`
+    }));
   }
 
   loadEventsDropdown();
 
-  // Manejo de carga de archivo de evidencia
-  const uploadBox = document.getElementById('evidence-upload-box');
-  const fileInput = document.getElementById('ticket-evidence-file');
-  const previewContainer = document.getElementById('evidence-preview-container');
-  const previewName = document.getElementById('evidence-preview-name');
-  let evidenceBase64 = null;
-
-  if (uploadBox && fileInput) {
-    uploadBox.addEventListener('click', () => fileInput.click());
-    
-    fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+  // Autocomplete logic
+  if (eventInput && autocompleteList) {
+    eventInput.addEventListener('input', function() {
+      const val = this.value;
+      autocompleteList.innerHTML = '';
+      hiddenIdEl.value = ''; // clean if user starts typing again
       
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        evidenceBase64 = event.target.result;
-        previewName.textContent = "Archivo cargado: " + file.name;
-        
-        // Hide icons, show preview
-        const icon = uploadBox.querySelector('.ph-upload-simple');
-        const h4 = uploadBox.querySelector('h4');
-        
-        if (icon) icon.style.display = 'none';
-        if (h4) h4.style.display = 'none';
-        
-        previewContainer.style.display = 'block';
-        uploadBox.style.borderColor = 'var(--primary)';
-        uploadBox.style.background = 'rgba(79, 70, 229, 0.05)';
-      };
-      reader.readAsDataURL(file);
+      if (!val) {
+        autocompleteList.style.display = 'none';
+        return;
+      }
+      
+      const matches = allEventsCache.filter(e => e.text.toLowerCase().includes(val.toLowerCase()));
+      
+      if (matches.length > 0) {
+        autocompleteList.style.display = 'block';
+        matches.forEach(m => {
+          const item = document.createElement('div');
+          
+          // Reemplazar coincidencia para mostrarla en negrita
+          const regex = new RegExp(`(${val})`, 'gi');
+          item.innerHTML = m.text.replace(regex, "<strong>$1</strong>");
+          
+          item.addEventListener('click', function() {
+            eventInput.value = m.text;
+            hiddenIdEl.value = m.id;
+            autocompleteList.style.display = 'none';
+          });
+          autocompleteList.appendChild(item);
+        });
+      } else {
+        const item = document.createElement('div');
+        item.style.color = 'var(--text-muted)';
+        item.style.cursor = 'default';
+        item.innerText = 'No se encontraron eventos...';
+        autocompleteList.appendChild(item);
+        autocompleteList.style.display = 'block';
+      }
+    });
+
+    document.addEventListener('click', function (e) {
+      if (e.target !== eventInput && e.target !== autocompleteList) {
+        autocompleteList.style.display = 'none';
+      }
     });
   }
+
+
 
   // Enviar el ticket
   form.addEventListener('submit', async (e) => {
@@ -125,18 +140,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
 
-    const eventId = eventSelect.value;
+    const eventId = hiddenIdEl.value;
+
+    if (!eventId) {
+      errorMsg.innerText = "Error: Por favor, selecciona un evento válido de la lista sugerida.";
+      errorMsg.style.display = 'block';
+      return;
+    }
+
     const section = document.getElementById('sell-section').value;
     const seat = document.getElementById('sell-seat').value;
     const format = document.getElementById('sell-format').value;
     const price = document.getElementById('sell-price').value;
     
-    if (!evidenceBase64) {
-      errorMsg.innerText = "Error: Por seguridad es obligatorio subir la evidencia física o digital de la entrada.";
-      errorMsg.style.display = 'block';
-      return;
-    }
-
     const fullSection = seat ? `${section} - ${seat}` : section;
 
     btnSubmit.disabled = true;
@@ -149,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       section: fullSection,
       format: format,
       price: parseFloat(price),
-      evidence_url: evidenceBase64
+      status: 'disponible'
     }]);
 
     if (error) {
