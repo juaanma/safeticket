@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const timeline = document.querySelector('.timeline');
     if(timeline) {
-      if (ticket.status === 'entregado') {
+      if (ticket.status === 'entregado' || ticket.status === 'liquidado') {
         timeline.innerHTML = `
           <div class="timeline-item completed">
             <div class="timeline-title">Entrada Publicada</div>
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const recBox = document.getElementById('reception-box');
     if (recBox) {
-      if (ticket.status === 'entregado') {
+      if (ticket.status === 'entregado' || ticket.status === 'liquidado') {
           recBox.style.background = 'rgba(16, 185, 129, 0.05)';
           recBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
           recBox.innerHTML = '<div style="color: #10b981; font-weight: 600; text-align:center; padding:1rem;"><i class="ph-fill ph-check-circle" style="font-size:3rem; margin-bottom: 0.5rem;"></i><br><span style="font-size: 1.2rem;">Venta Finalizada</span><p style="color:var(--text-muted); font-size:0.85rem; margin-top: 0.5rem; font-weight: normal;">El comprador confirmó la recepción. Tus fondos están en proceso de liquidación.</p></div>';
@@ -113,11 +113,20 @@ document.addEventListener('DOMContentLoaded', async () => {
           recBox.innerHTML = '<div style="font-weight: 600; margin-bottom: 0.5rem; color: #3b82f6;"><i class="ph-fill ph-info"></i> Esperando al comprador</div><p style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 0;">No puedes forzar la recepción. El comprador debe confirmar que recibió la entrada. Si hay problemas, puedes contactar a soporte.</p>';
       }
     }
+
+    const quickReplies = document.querySelector('.quick-replies');
+    if(quickReplies) {
+      quickReplies.innerHTML = `
+        <button class="btn-quick" onclick="sendMsg('Hola, acabo de ver la compra. ¿Cómo preferís que te transfiera la entrada?')">¿Cómo te transfiero?</button>
+        <button class="btn-quick" onclick="sendMsg('Pasame tu correo electrónico para enviarte las entradas por la plataforma oficial.')">Pasame tu mail</button>
+        <button class="btn-quick" onclick="sendMsg('Acabo de enviarte la entrada, por favor confirmá la recepción en esta pantalla.')">Entrada enviada</button>
+      `;
+    }
   } else {
     // Si es el comprador, inicia o retoma el flujo
-    if (ticket.status === 'vendido' || ticket.status === 'entregado') {
+    if (ticket.status === 'vendido' || ticket.status === 'entregado' || ticket.status === 'liquidado') {
       goToStep(4);
-      if (ticket.status === 'entregado') {
+      if (ticket.status === 'entregado' || ticket.status === 'liquidado') {
         const recBox = document.getElementById('reception-box');
         if(recBox) {
           recBox.style.background = 'rgba(16, 185, 129, 0.05)';

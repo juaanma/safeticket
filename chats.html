@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <title>Mis Mensajes | SaFeBeat</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <script src="js/theme.js"></script>
+  <style>
+    .chats-container {
+      max-width: 600px;
+      margin: 6rem auto 5rem;
+      padding: 1rem;
+      min-height: calc(100vh - 11rem);
+    }
+    
+    .chat-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: var(--transition);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .chat-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .chat-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--bg-hover), var(--border));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .chat-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chat-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.2rem;
+    }
+
+    .chat-name {
+      font-weight: 600;
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-date {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .chat-event {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chat-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: var(--radius-xl);
+      color: white;
+    }
+
+    .badge-compra {
+      background: var(--primary);
+    }
+
+    .badge-venta {
+      background: #10b981;
+    }
+    
+    .badge-cerrado {
+      background: var(--text-muted);
+      color: var(--bg-color);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      color: var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
+        <li><a href="tickets.html" class="nav-link">Entradas Publicadas</a></li>
+        <li><a href="dashboard.html" class="nav-link">Mi Actividad</a></li>
+        <li><a href="profile.html" class="nav-link">Mi Perfil</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="chats.html" style="font-size: 1.5rem; color: var(--primary);"><i class="ph-fill ph-chat-circle-dots"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="chats-container">
+    <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;"><i class="ph-fill ph-chats"></i> Mis Mensajes</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Gestiona las entregas con tus compradores y vendedores.</p>
+    
+    <div id="chats-list">
+      <div class="empty-state">
+        <i class="ph-bold ph-spinner ph-spin"></i>
+        <p>Cargando mensajes...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Mobile Bottom Nav -->
+  <div class="mobile-bottom-nav">
+    <div class="mobile-nav-container">
+      <a href="marketplace.html" class="mobile-nav-item" id="mob-nav-marketplace">
+        <i class="ph ph-calendar-star"></i>
+        <span>Eventos</span>
+      </a>
+      <a href="tickets.html" class="mobile-nav-item" id="mob-nav-tickets">
+        <i class="ph ph-ticket"></i>
+        <span>Entradas</span>
+      </a>
+      <div class="mobile-nav-fab-container">
+        <a href="sell.html" class="mobile-nav-fab">
+          <i class="ph ph-plus"></i>
+        </a>
+      </div>
+      <a href="dashboard.html" class="mobile-nav-item" id="mob-nav-dashboard">
+        <i class="ph ph-check-square-offset"></i>
+        <span>Actividad</span>
+      </a>
+      <a href="profile.html" class="mobile-nav-item" id="mob-nav-profile">
+        <i class="ph ph-user"></i>
+        <span>Perfil</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase-client.js?v=4"></script>
+  <script src="js/auth-guard.js"></script>
+  <script src="js/chats.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Activar un estilo difuminado en todos los items nav para resaltar que estamos en chats o dejarlo neutro. 
+      // Por simplicidad, no añadimos un .active a ninguno porque Chats es un view flotante general.
+    });
+  </script>
+</body>
+</html>

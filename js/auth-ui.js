@@ -2,22 +2,33 @@
 // Script para actualizar la barra de navegación dependiendo si el usuario está logueado o no
 document.addEventListener('DOMContentLoaded', () => {
   // Buscamos la sesión guardada de Supabase en localStorage
-  const isSessionActive = () => {
+  const getSessionData = () => {
     for (let i = 0; i < localStorage.length; i++) {
       const key = localStorage.key(i);
       if (key && key.startsWith('sb-') && key.endsWith('-auth-token')) {
-        return true;
+        try {
+          return JSON.parse(localStorage.getItem(key));
+        } catch(e) {}
       }
     }
-    return false;
+    return null;
   };
 
-  if (isSessionActive()) {
+  const sessionData = getSessionData();
+
+  if (sessionData) {
     const navActions = document.querySelector('.nav-actions');
+    const isAdmin = sessionData.user && sessionData.user.email === 'safebeatcontacto@gmail.com';
     
-    // Solo modificamos si existe el contenedor navActions y no estamos en la página del dashboard
-    if (navActions && !window.location.pathname.includes('dashboard.html')) {
+    // Aplicamos esto globalmente para inyectar el Admin y los Chats en el nav global superior
+    if (navActions) {
+      const adminBtnHtml = isAdmin ? `<a href="admin.html" class="btn btn-primary" style="margin-right: 10px; background: #8b5cf6; border-color: #8b5cf6;"><i class="ph-bold ph-shield-star"></i> Admin</a>` : '';
+      
       navActions.innerHTML = `
+        <a href="chats.html" style="font-size: 1.5rem; color: var(--text-main); position: relative; margin-right: 10px;" title="Mis Mensajes">
+          <i class="ph-bold ph-chat-circle-dots"></i>
+        </a>
+        ${adminBtnHtml}
         <a href="sell.html" class="btn btn-outline">Vender entrada</a>
       `;
     }

@@ -1,97 +1,198 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Admin - Verificaciones | SaFeBeat</title>
+  <title>Admin Dashboard | SaFeBeat</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
     .admin-container {
-      padding-top: 8rem;
-      padding-bottom: 5rem;
+      max-width: 1200px;
+      margin: 6rem auto 5rem;
+      padding: 1rem;
     }
-    .users-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--surface);
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
-    .users-table th, .users-table td {
-      padding: 1rem 1.5rem;
-      text-align: left;
+    
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
       border-bottom: 1px solid var(--border);
     }
-    .users-table th {
-      background: var(--surface-hover);
-      font-weight: 600;
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      background: rgba(99, 102, 241, 0.1);
+      border-radius: 0 0 0 100%;
+    }
+
+    .stat-label {
       color: var(--text-muted);
-    }
-    .badge-unverified {
-      background: rgba(245, 158, 11, 0.1);
-      color: #f59e0b;
-      padding: 0.3rem 0.6rem;
-      border-radius: var(--radius-xl);
-      font-size: 0.8rem;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .table-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow-x: auto;
+      padding: 1.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.3rem;
-    }
-    .badge-verified {
-      background: rgba(16, 185, 129, 0.1);
-      color: var(--accent);
       padding: 0.3rem 0.6rem;
-      border-radius: var(--radius-xl);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    
+    .status-badge.disponible { background: rgba(99, 102, 241, 0.1); color: var(--primary); }
+    .status-badge.vendido { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+    .status-badge.entregado { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+    .status-badge.liquidado { background: rgba(16, 185, 129, 0.3); color: #059669; border: 1px solid #10b981; }
+
+    .btn-liquidar {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      font-weight: bold;
+      cursor: pointer;
       font-size: 0.8rem;
-      font-weight: 600;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
+    }
+    
+    .btn-liquidar:hover {
+      background: #059669;
+    }
+
+    .id-col {
+      font-family: monospace;
+      color: var(--text-muted);
+      font-size: 0.8rem !important;
     }
   </style>
-<script src="js/theme.js"></script>
+  <script src="js/theme.js"></script>
 </head>
 <body>
 
-  <!-- Navbar Simple -->
+  <!-- Navbar -->
   <nav class="navbar">
-    <div class="container nav-container" style="justify-content: space-between;">
+    <div class="container nav-container">
       <a href="index.html" class="logo">
-        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span> <span style="font-size: 0.8rem; color: #ef4444; margin-left: 0.5rem; text-transform: uppercase;">Admin</span>
+        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span> <span style="font-size: 0.5em; background:var(--primary); color:white; padding:2px 5px; border-radius:4px; vertical-align: top;">ADMIN</span>
       </a>
+      <ul class="nav-links">
+        <li><a href="dashboard.html" class="nav-link"><i class="ph-bold ph-arrow-left"></i> Salir Panel</a></li>
+      </ul>
+      <div class="nav-actions">
+        <span style="color:var(--text-muted); font-size: 0.8rem; border: 1px solid var(--border); padding: 5px 10px; border-radius: 20px;">MODO DIOS</span>
+      </div>
     </div>
   </nav>
 
-  <main class="container admin-container">
-    <div style="margin-bottom: 2rem;">
-      <h1>Panel de Revisión Manual</h1>
-      <p style="color: var(--text-muted);">Gestiona los perfiles de los usuarios que han solicitado validación para vender entradas.</p>
+  <main class="admin-container">
+    <div class="admin-header">
+      <div>
+        <h1 style="font-size: 1.8rem;">Torre de Control</h1>
+        <p style="color: var(--text-muted);">Información global en tiempo real de SaFeBeat.</p>
+      </div>
+      <div>
+        <button class="btn btn-outline" onclick="window.location.reload()"><i class="ph-bold ph-arrows-clockwise"></i> Actualizar</button>
+      </div>
     </div>
 
-    <!-- Filtro -->
-    <div style="margin-bottom: 1.5rem;">
-      <select id="filter-status" class="form-control" style="width: auto; background: var(--surface);" onchange="loadUsers()">
-        <option value="false">Pendientes de Revisión</option>
-        <option value="true">Usuarios Aprobados</option>
-      </select>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Caja Escrow (Retenidos)</div>
+        <div class="stat-value" id="kpi-escrow">Cargando</div>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;"><i class="ph-fill ph-lock-key"></i> Dinero pendiente de entrega</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Comisiones SaFeBeat (8%)</div>
+        <div class="stat-value" id="kpi-earnings" style="color: #10b981;">Cargando</div>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;"><i class="ph-fill ph-chart-line-up"></i> Ganancias netas generadas</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Volumen Operativo</div>
+        <div class="stat-value" id="kpi-ops">Cargando</div>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;"><i class="ph-fill ph-ticket"></i> Entradas totales tranzadas</p>
+      </div>
     </div>
 
-    <!-- Tabla de Usuarios -->
-    <div style="overflow-x: auto;">
-      <table class="users-table">
+    <div class="table-container">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3>Registro de Operaciones Globales</h3>
+        <!-- Filtro manual basico opcional -->
+      </div>
+      <table>
         <thead>
           <tr>
-            <th>ID del Usuario</th>
-            <th>Nombre / Datos</th>
-            <th>Estado Actual</th>
+            <th>ID Entrada</th>
+            <th>Evento</th>
+            <th>Vendedor / Comprador</th>
+            <th>Monto Compra</th>
+            <th>Estado</th>
             <th>Acciones</th>
           </tr>
         </thead>
-        <tbody id="users-list">
-          <tr><td colspan="4" style="text-align: center;">Cargando...</td></tr>
+        <tbody id="admin-tx-list">
+          <tr>
+            <td colspan="6" style="text-align: center; color: var(--text-muted); padding:3rem;">Autenticando Permisos de Administrador...</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -100,88 +201,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js?v=4"></script>
-  
-  <script>
-    async function loadUsers() {
-      if(!window.MiSupabase) return;
-      const tbody = document.getElementById('users-list');
-      const filterVerified = document.getElementById('filter-status').value === 'true';
-      
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Buscando usuarios...</td></tr>';
-      
-      const { data: allUsers, error } = await window.MiSupabase
-        .from('profiles')
-        .select('*');
-
-      if(error) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: red;">Error: No tienes permisos de administrador o la tabla no existe.</td></tr>';
-        return;
-      }
-      
-      // Filtrado seguro en JS
-      let users = [];
-      if (filterVerified) {
-        users = allUsers.filter(u => u.is_verified === true);
-      } else {
-        users = allUsers.filter(u => u.is_verified !== true && u.phone && String(u.phone).includes('DNI'));
-      }
-      
-      if(!users || users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No hay usuarios en esta lista.</td></tr>';
-        return;
-      }
-      
-      tbody.innerHTML = '';
-      
-      users.forEach(u => {
-        const estadoHtml = u.is_verified 
-          ? '<span class="badge-verified"><i class="ph-fill ph-seal-check"></i> Aprobado</span>'
-          : '<span class="badge-unverified"><i class="ph-fill ph-warning-circle"></i> En Revisión</span>';
-          
-        const btnHtml = u.is_verified
-          ? `<button onclick="toggleVerification('${u.user_id}', false)" class="btn btn-outline" style="border-color: #ef4444; color: #ef4444; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Revocar</button>`
-          : `<button onclick="toggleVerification('${u.user_id}', true)" class="btn btn-primary" style="background:#10b981; border:none; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Aprobar</button>`;
-
-        const row = `
-          <tr>
-            <td style="font-size: 0.85rem; color: var(--text-muted);">${u.user_id}</td>
-            <td><strong>${u.full_name || 'Sin Nombre'}</strong> <br> <span style="font-size:0.85rem; color: var(--text-muted);">${u.phone || 'Sin teléfono'}</span></td>
-            <td>${estadoHtml}</td>
-            <td>${btnHtml}</td>
-          </tr>
-        `;
-        tbody.insertAdjacentHTML('beforeend', row);
-      });
-    }
-
-    window.toggleVerification = async (userId, setTo) => {
-      if(!confirm(`¿Estás seguro de querer ${setTo ? 'APROBAR' : 'REVOCAR'} a este usuario?`)) return;
-      
-      const { error } = await window.MiSupabase
-        .from('profiles')
-        .update({ is_verified: setTo })
-        .eq('user_id', userId);
-        
-      if(error) {
-        alert("Error al actualizar la base de datos.");
-      } else {
-        alert(`Usuario ${setTo ? 'Aprobado' : 'Rechazado'} correctamente.`);
-        loadUsers();
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', loadUsers);
-  </script>
+  <script src="js/admin.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-

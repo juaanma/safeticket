@@ -146,7 +146,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         statusText = isBuyer ? 'Adquirido (QR Activo)' : 'Retenido en Escrow';
         statusClass = isBuyer ? 'status-success' : 'status-pending';
       } else if (ticket.status === 'entregado') {
-        statusText = isBuyer ? 'Operación Finalizada' : 'Dinero Liberado';
+        statusText = isBuyer ? 'Operación Finalizada' : 'Pendiente de Liquidación';
+        statusClass = isBuyer ? 'status-success' : 'status-pending';
+      } else if (ticket.status === 'liquidado') {
+        statusText = isBuyer ? 'Operación Finalizada' : 'Dinero Abonado (Completado)';
         statusClass = 'status-success';
       }
 
@@ -214,6 +217,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderTable(tabName);
     });
   });
+
+  // Inject Admin access if applicable
+  if (userData.user.email === 'safebeatcontacto@gmail.com') {
+    const navMenu = document.getElementById('dashboard-nav-menu');
+    if (navMenu) {
+      const adminHtml = `<a href="admin.html" style="color: white; background: var(--primary); font-weight: 600; margin-top: 1rem;"><i class="ph-bold ph-shield-star"></i> Panel Modo Dios</a>`;
+      navMenu.insertAdjacentHTML('beforeend', adminHtml);
+    }
+  }
 
   // Render inicial general
   if (allTickets.length === 0) {

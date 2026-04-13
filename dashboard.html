@@ -226,6 +226,9 @@
         <li><a href="profile.html" class="nav-link" id="nav-profile-link">Mi Perfil</a></li>
       </ul>
       <div class="nav-actions">
+        <a href="chats.html" style="font-size: 1.5rem; color: var(--text-main); position: relative;" title="Mis Mensajes">
+          <i class="ph-bold ph-chat-circle-dots"></i>
+        </a>
       </div>
     </div>
   </nav>
@@ -248,6 +251,7 @@
         <a href="#" data-tab="purchases"><i class="ph ph-ticket"></i> Mis Compras</a>
         <a href="#" data-tab="published"><i class="ph ph-tag"></i> Entradas Publicadas</a>
         <a href="#" data-tab="sold"><i class="ph ph-shopping-bag"></i> Entradas Vendidas</a>
+        <a href="chats.html"><i class="ph ph-chats"></i> Mis Mensajes</a>
         <a href="#" class="app-logout-btn" style="color: #ef4444; margin-top: 1rem;"><i class="ph ph-sign-out"></i> Cerrar Sesión</a>
       </nav>
     </aside>
@@ -312,6 +316,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js?v=4"></script>
   <script src="js/auth-guard.js"></script>
+  <script src="js/auth-ui.js"></script>
   <script src="js/dashboard.js?v=2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
