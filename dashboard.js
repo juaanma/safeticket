@@ -145,6 +145,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else if (ticket.status === 'vendido') {
         statusText = isBuyer ? 'Adquirido (QR Activo)' : 'Retenido en Escrow';
         statusClass = isBuyer ? 'status-success' : 'status-pending';
+      } else if (ticket.status === 'entregado') {
+        statusText = isBuyer ? 'Operación Finalizada' : 'Dinero Liberado';
+        statusClass = 'status-success';
       }
 
       const d = new Date(ticket.created_at);

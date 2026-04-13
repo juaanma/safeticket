@@ -367,13 +367,15 @@ async function confirmReceived() {
     btn.innerHTML = '<i class="ph-bold ph-spinner ph-spin"></i> Confirmando...';
   }
 
-  const { error } = await window.MiSupabase
+  const { data: updatedData, error } = await window.MiSupabase
     .from('tickets')
     .update({ status: 'entregado' })
-    .eq('id', ticketData.id);
+    .eq('id', ticketData.id)
+    .select();
 
-  if (error) {
-    alert('Error al intentar confirmar. Intenta nuevamente.');
+  if (error || !updatedData || updatedData.length === 0) {
+    console.error("Detalle Error al Confirmar", error || 'RLS bloqueó la acción. No se actualizó ninguna fila.');
+    alert('Base de Datos: No se pudo verificar la entrega. Es posible que las políticas de seguridad (RLS) impidan que el comprador modifique esta tabla directamente.');
     if(btn) {
       btn.disabled = false;
       btn.innerText = 'Ya recibí la entrada';
