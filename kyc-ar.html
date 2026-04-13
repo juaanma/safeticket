@@ -93,7 +93,7 @@
       const DIDIT_CLIENT_ID = "025f0489-153d-4fa3-80c9-34712fb692c2";
 
       // URL de Callback solicitada
-      const redirectUri = encodeURIComponent("https://safeticket-bay.vercel.app/didit-callback.html");
+      const redirectUri = encodeURIComponent(window.location.origin + "/didit-callback.html");
       const state = encodeURIComponent(user.id);
 
       // DIDIT requiere generar una "Verification Session URL" mediante tu Servidor
