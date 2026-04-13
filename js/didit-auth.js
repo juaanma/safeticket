@@ -61,9 +61,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   let finalError = updateError;
   if (updateError || !updatedData || updatedData.length === 0) {
+     const metadataName = (user && user.user_metadata && user.user_metadata.full_name) ? user.user_metadata.full_name : 'Usuario';
      const { error: insertError } = await window.MiSupabase
        .from('profiles')
-       .insert([{ user_id: user.id, is_verified: true, updated_at: new Date() }]);
+       .insert([{ user_id: user.id, full_name: metadataName, is_verified: true, updated_at: new Date() }]);
      finalError = insertError && updateError ? (insertError || updateError) : null;
   }
 
