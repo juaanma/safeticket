@@ -52,17 +52,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   titleEl.innerText = 'Actualizando Perfil...';
   
   // Actualizamos supabase marcando que el usuario pasó el KYC exitosamente
-  // Usamos upsert por si el perfil aún no ha sido creado al momento de registrarse
-  const { error: updateError } = await window.MiSupabase
+  // Intentamos un update primero. Si falla o no se actualizan filas (porque no existe el perfil aún), hacemos insert
+  const { data: updatedData, error: updateError } = await window.MiSupabase
     .from('profiles')
-    .upsert({ user_id: user.id, is_verified: true, updated_at: new Date() }, { onConflict: 'user_id' });
+    .update({ is_verified: true, updated_at: new Date() })
+    .eq('user_id', user.id)
+    .select();
 
-  if (updateError) {
+  let finalError = updateError;
+  if (updateError || !updatedData || updatedData.length === 0) {
+     const { error: insertError } = await window.MiSupabase
+       .from('profiles')
+       .insert([{ user_id: user.id, is_verified: true, updated_at: new Date() }]);
+     finalError = insertError && updateError ? (insertError || updateError) : null;
+  }
+
+  if (finalError) {
     iconEl.className = 'ph-fill ph-x-circle spinner';
     iconEl.style.color = '#ef4444';
     titleEl.innerText = 'Error en Base de Datos';
     msgEl.innerText = 'DIDIT confirmó tu identidad, pero hubo un error al asegurar tu perfil.';
-    console.error(updateError);
+    console.error(finalError);
     btnReturn.style.display = 'inline-block';
     return;
   }

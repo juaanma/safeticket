@@ -286,6 +286,15 @@
         errorMsg.innerText = error.message;
         errorMsg.style.display = 'block';
       } else {
+        // Intento de forzar la creación del perfil en la base de datos pública inmediatamente
+        if (data && data.user) {
+           await window.MiSupabase.from('profiles').insert([{
+             user_id: data.user.id,
+             full_name: fullName,
+             updated_at: new Date()
+           }]);
+        }
+        
         // Redirigir a verificar
         window.location.href = `verify-email.html?email=${encodeURIComponent(email)}`;
       }
