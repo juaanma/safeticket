@@ -48,11 +48,71 @@ document.addEventListener('DOMContentLoaded', async () => {
   populateData();
 
   if (isSeller) {
-    // Si es el vendedor, salta directamente al chat de coordinación
+    // Si es el vendedor, muestra el seguimiento de venta
     goToStep(4);
-    switchTab('chat');
+    switchTab('status'); // Muestra la pestaña de seguimiento en lugar de chat por defecto
+
+    // Personalizar UI para el vendedor
+    const h2 = document.querySelector('#view-status h2');
+    if(h2) h2.innerText = 'Estado de tu venta';
+    const pStatus = document.querySelector('#view-status p');
+    if(pStatus) pStatus.innerText = 'El dinero está asegurado. Envía la entrada y espera la confirmación del comprador.';
+
+    const timeline = document.querySelector('.timeline');
+    if(timeline) {
+      if (ticket.status === 'entregado') {
+        timeline.innerHTML = `
+          <div class="timeline-item completed">
+            <div class="timeline-title">Entrada Publicada</div>
+            <div class="timeline-desc">Tu entrada fue listada en el mercado.</div>
+          </div>
+          <div class="timeline-item completed">
+            <div class="timeline-title">Venta Asegurada</div>
+            <div class="timeline-desc">El comprador pagó y retenemos los fondos.</div>
+          </div>
+          <div class="timeline-item completed">
+            <div class="timeline-title">Entrada Enviada</div>
+            <div class="timeline-desc">Acordaste la entrega con el comprador.</div>
+          </div>
+          <div class="timeline-item completed">
+            <div class="timeline-title">Recepción Confirmada</div>
+            <div class="timeline-desc">El comprador recibió la entrada. Fondos liberados.</div>
+          </div>
+        `;
+      } else {
+        timeline.innerHTML = `
+          <div class="timeline-item completed">
+            <div class="timeline-title">Entrada Publicada</div>
+            <div class="timeline-desc">Tu entrada fue listada en el mercado.</div>
+          </div>
+          <div class="timeline-item completed">
+            <div class="timeline-title">Venta Asegurada</div>
+            <div class="timeline-desc">El comprador pagó y retenemos los fondos.</div>
+          </div>
+          <div class="timeline-item active">
+            <div class="timeline-title">Entrega Pendiente</div>
+            <div class="timeline-desc">Envía la entrada y coordina por el Chat.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-title">Confirmación del Comprador</div>
+            <div class="timeline-desc">Esperando que el comprador confirme la recepción.</div>
+          </div>
+        `;
+      }
+    }
+
     const recBox = document.getElementById('reception-box');
-    if (recBox) recBox.style.display = 'none';
+    if (recBox) {
+      if (ticket.status === 'entregado') {
+          recBox.style.background = 'rgba(16, 185, 129, 0.05)';
+          recBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+          recBox.innerHTML = '<div style="color: #10b981; font-weight: 600; text-align:center; padding:1rem;"><i class="ph-fill ph-check-circle" style="font-size:3rem; margin-bottom: 0.5rem;"></i><br><span style="font-size: 1.2rem;">Venta Finalizada</span><p style="color:var(--text-muted); font-size:0.85rem; margin-top: 0.5rem; font-weight: normal;">El comprador confirmó la recepción. Tus fondos están en proceso de liquidación.</p></div>';
+      } else {
+          recBox.style.background = 'rgba(59, 130, 246, 0.05)';
+          recBox.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+          recBox.innerHTML = '<div style="font-weight: 600; margin-bottom: 0.5rem; color: #3b82f6;"><i class="ph-fill ph-info"></i> Esperando al comprador</div><p style="font-size: 0.85rem; color: var(--text-main); margin-bottom: 0;">No puedes forzar la recepción. El comprador debe confirmar que recibió la entrada. Si hay problemas, puedes contactar a soporte.</p>';
+      }
+    }
   } else {
     // Si es el comprador, inicia o retoma el flujo
     if (ticket.status === 'vendido' || ticket.status === 'entregado') {
@@ -64,14 +124,28 @@ document.addEventListener('DOMContentLoaded', async () => {
           recBox.style.borderColor = 'rgba(16, 185, 129, 0.3)';
           recBox.innerHTML = '<div style="color: #10b981; font-weight: 600; text-align:center; padding:1rem;"><i class="ph-fill ph-check-circle" style="font-size:3rem; margin-bottom: 0.5rem;"></i><br><span style="font-size: 1.2rem;">Entrega Confirmada</span><p style="color:var(--text-muted); font-size:0.85rem; margin-top: 0.5rem; font-weight: normal;">Has notificado la recepción válida de la entrada. El vendedor recibirá sus fondos.<br>¡Disfruta el evento!</p></div>';
         }
-        setTimeout(() => {
-          const items = document.querySelectorAll('.timeline-item');
-          if(items.length >= 4) {
-             items[2].classList.remove('active');
-             items[2].classList.add('completed');
-             items[3].classList.add('completed');
-          }
-        }, 50);
+        
+        const timeline = document.querySelector('.timeline');
+        if(timeline) {
+          timeline.innerHTML = `
+            <div class="timeline-item completed">
+              <div class="timeline-title">Reserva Creada</div>
+              <div class="timeline-desc">La entrada fue separada para ti.</div>
+            </div>
+            <div class="timeline-item completed">
+              <div class="timeline-title">Pago Validado</div>
+              <div class="timeline-desc">Los fondos están asegurados en SaFeBeat.</div>
+            </div>
+            <div class="timeline-item completed">
+              <div class="timeline-title">Entrega Finalizada</div>
+              <div class="timeline-desc">Coordinaste con el vendedor por el Chat.</div>
+            </div>
+            <div class="timeline-item completed">
+              <div class="timeline-title">Entrada Recibida</div>
+              <div class="timeline-desc">Ya confirmaste que tienes la entrada.</div>
+            </div>
+          `;
+        }
       }
     } else {
       startTimer(10 * 60, document.getElementById('checkout-timer'));

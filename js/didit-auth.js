@@ -52,10 +52,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   titleEl.innerText = 'Actualizando Perfil...';
   
   // Actualizamos supabase marcando que el usuario pasó el KYC exitosamente
+  // Usamos upsert por si el perfil aún no ha sido creado al momento de registrarse
   const { error: updateError } = await window.MiSupabase
     .from('profiles')
-    .update({ is_verified: true })
-    .eq('user_id', user.id);
+    .upsert({ user_id: user.id, is_verified: true, updated_at: new Date() }, { onConflict: 'user_id' });
 
   if (updateError) {
     iconEl.className = 'ph-fill ph-x-circle spinner';
