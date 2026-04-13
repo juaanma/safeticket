@@ -55,24 +55,29 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Intentamos un update primero. Si falla o no se actualizan filas (porque no existe el perfil aún), hacemos insert
   const { data: updatedData, error: updateError } = await window.MiSupabase
     .from('profiles')
-    .update({ is_verified: true, updated_at: new Date() })
+    .update({ is_verified: true })
     .eq('user_id', user.id)
     .select();
 
-  let finalError = updateError;
+  let finalError = null;
   if (updateError || !updatedData || updatedData.length === 0) {
      const metadataName = (user && user.user_metadata && user.user_metadata.full_name) ? user.user_metadata.full_name : 'Usuario';
      const { error: insertError } = await window.MiSupabase
        .from('profiles')
-       .insert([{ user_id: user.id, full_name: metadataName, is_verified: true, updated_at: new Date() }]);
-     finalError = insertError && updateError ? (insertError || updateError) : null;
+       .insert([{ user_id: user.id, full_name: metadataName, is_verified: true }]);
+     
+     if (insertError) {
+       finalError = insertError;
+     } else {
+       finalError = null; // Si el insert salvó el día, anulamos el updateError
+     }
   }
 
   if (finalError) {
     iconEl.className = 'ph-fill ph-x-circle spinner';
     iconEl.style.color = '#ef4444';
-    titleEl.innerText = 'Error en Base de Datos';
-    msgEl.innerText = 'DIDIT confirmó tu identidad, pero hubo un error al asegurar tu perfil.';
+    titleEl.innerText = 'Detalle de Error de Base de Datos';
+    msgEl.innerHTML = `<strong style="color:#ef4444">${finalError.code || 'ERR'}</strong>: ${finalError.message || finalError.details || JSON.stringify(finalError)}`;
     console.error(finalError);
     btnReturn.style.display = 'inline-block';
     return;

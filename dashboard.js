@@ -93,10 +93,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const isSeller = ticket.seller_id === userData.user.id;
     const isBuyer = ticket.buyer_id === userData.user.id;
     if (isSeller) {
-      if (ticket.status === 'vendido' || ticket.status === 'entregado') {
-        ventasCount++;
-        income += Number(ticket.price);
-      }
+      ventasCount++;
+      if (ticket.status === 'disponible' || ticket.status === 'vendido') income += Number(ticket.price);
     }
     if (isBuyer) comprasCount++;
   });
@@ -117,9 +115,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (tabName === 'purchases') {
       filteredTickets = allTickets.filter(t => t.buyer_id === userData.user.id);
     } else if (tabName === 'published') {
-      filteredTickets = allTickets.filter(t => t.seller_id === userData.user.id && t.status === 'disponible');
+      filteredTickets = allTickets.filter(t => t.seller_id === userData.user.id);
     } else if (tabName === 'sold') {
-      filteredTickets = allTickets.filter(t => t.seller_id === userData.user.id && (t.status === 'vendido' || t.status === 'entregado'));
+      filteredTickets = allTickets.filter(t => t.seller_id === userData.user.id && t.status === 'vendido');
     }
 
     if (filteredTickets.length === 0) {
@@ -147,23 +145,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else if (ticket.status === 'vendido') {
         statusText = isBuyer ? 'Adquirido (QR Activo)' : 'Retenido en Escrow';
         statusClass = isBuyer ? 'status-success' : 'status-pending';
-      } else if (ticket.status === 'entregado') {
-        statusText = isBuyer ? 'Recibida Formalmente' : 'Liquidación Pendiente';
-        statusClass = 'status-success';
       }
 
       const d = new Date(ticket.created_at);
       const dateStr = d.toLocaleDateString();
       const formattedPrice = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 }).format(ticket.price);
 
-      // Botones de accion segun rol y estado
+      // Boton de cancelar si soy el vendedor y sigue disponible
       let actionsHtml = '';
-      if (ticket.status === 'disponible') {
-        if (isSeller) {
-          actionsHtml = `<button onclick="window.deleteTicket('${ticket.id}')" style="background:transparent; border:none; color:#ef4444; cursor:pointer;" title="Eliminar Listado"><i class="ph-bold ph-trash" style="font-size: 1.2rem;"></i></button>`;
-        }
-      } else if (ticket.status === 'vendido' || ticket.status === 'entregado') {
-        actionsHtml = `<a href="order.html?ticket_id=${ticket.id}" class="btn btn-outline" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; border-color: var(--primary); color: var(--primary);"><i class="ph-bold ph-chat-circle"></i> Coordinar</a>`;
+      if (isSeller && ticket.status === 'disponible') {
+        actionsHtml = `<button onclick="window.deleteTicket('${ticket.id}')" style="background:transparent; border:none; color:#ef4444; cursor:pointer;" title="Eliminar Listado"><i class="ph-bold ph-trash"></i></button>`;
       }
 
       const row = `
