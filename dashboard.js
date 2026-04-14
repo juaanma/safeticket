@@ -231,8 +231,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       // Quitar active
-      navMenuLinks.forEach(l => l.classList.remove('active'));
-      link.classList.add('active');
+      navMenuLinks.forEach(l => {
+        l.classList.remove('active', 'text-[#5144d4]', 'bg-indigo-50/50');
+        l.classList.add('text-slate-500', 'hover:text-[#5144d4]', 'hover:bg-[#faf9fd]');
+      });
+      link.classList.remove('text-slate-500', 'hover:text-[#5144d4]', 'hover:bg-[#faf9fd]');
+      link.classList.add('active', 'text-[#5144d4]', 'bg-indigo-50/50');
       
       const tabName = link.getAttribute('data-tab');
       
