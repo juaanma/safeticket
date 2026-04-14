@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Iniciar Sesión | SaFeBeat</title>
+  <title>Iniciar SesiÃ³n | SaFeBeat</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
@@ -151,27 +151,27 @@
       
       <div class="auth-title">
         <h1>Bienvenido de nuevo</h1>
-        <p>Continúa donde lo dejaste</p>
+        <p>ContinÃºa donde lo dejaste</p>
       </div>
 
 
       <form id="login-form">
         <div class="form-group">
-          <label>Correo Electrónico</label>
+          <label>Correo ElectrÃ³nico</label>
           <input type="email" id="login-email" class="form-control" placeholder="juan@ejemplo.com" required>
         </div>
         <div class="form-group" style="margin-bottom: 0.5rem;">
-          <label>Contraseña</label>
+          <label>ContraseÃ±a</label>
           <input type="password" id="login-password" class="form-control" placeholder="********" required>
         </div>
-        <a href="#" class="forgot-link" style="margin-bottom: 1.5rem;">¿Olvidaste tu contraseña?</a>
+        <a href="#" class="forgot-link" style="margin-bottom: 1.5rem;">Â¿Olvidaste tu contraseÃ±a?</a>
 
         <button type="submit" id="btn-login" class="btn btn-primary" style="width: 100%;">Ingresar <i class="ph-bold ph-arrow-right"></i></button>
         <p id="error-msg" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
       </form>
 
       <div class="auth-footer">
-        ¿Aún no tienes cuenta? <a href="register.html">Regístrate</a>
+        Â¿AÃºn no tienes cuenta? <a href="register.html">RegÃ­strate</a>
       </div>
     </div>
   </div>
@@ -194,7 +194,7 @@
       e.preventDefault();
 
       if (!window.MiSupabase) {
-        alert("Modo prueba: no hay configuración de Supabase. Ingresando sin validar...");
+        alert("Modo prueba: no hay configuraciÃ³n de Supabase. Ingresando sin validar...");
         window.location.href = 'dashboard.html';
         return;
       }
@@ -219,7 +219,7 @@
       if (error) {
         // Simple error translation hack
         let text = error.message;
-        if (text.includes('Invalid login credentials')) text = 'Correo o contraseña incorrectos.';
+        if (text.includes('Invalid login credentials')) text = 'Correo o contraseÃ±a incorrectos.';
         errorMsg.innerText = text;
         errorMsg.style.display = 'block';
       } else {
@@ -228,29 +228,30 @@
     });
   </script>
   <!-- Bottom Navigation Bar (Mobile Only) -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-4 pb-6 pt-3 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
-    <a href="index.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
-        <span class="material-symbols-outlined text-2xl">home</span>
-        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Inicio</span>
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-3 pb-3 pt-2 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
+    <a href="index.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-[1.35rem]">home</span>
+        <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Inicio</span>
     </a>
-    <a href="marketplace.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
-        <span class="material-symbols-outlined text-2xl">explore</span>
-        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Explorar</span>
+    <a href="marketplace.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-[1.35rem]">explore</span>
+        <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Explorar</span>
     </a>
-    <a href="sell.html" class="flex flex-col items-center justify-center mt[-8px] text-white bg-primary shadow-lg p-3 rounded-full active:scale-90 duration-200" style="transform: translateY(-8px);">
-        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add</span>
+    <a href="sell.html" class="flex flex-col items-center justify-center -mt-4 text-white bg-primary shadow-lg p-2 rounded-full active:scale-90 duration-200" style="transform: translateY(-8px);">
+        <span class="material-symbols-outlined text-[1.35rem]" style="font-variation-settings: 'FILL' 1;">add</span>
     </a>
-    <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
-        <span class="material-symbols-outlined text-2xl">confirmation_number</span>
-        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">ACTIVIDAD</span>
+    <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-[1.35rem]">confirmation_number</span>
+        <span class="font-bold text-[9px] uppercase tracking-widest mt-1">ACTIVIDAD</span>
     </a>
-    <a href="profile.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
-        <span class="material-symbols-outlined text-2xl">person</span>
-        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Perfil</span>
+    <a href="profile.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-[1.35rem]">person</span>
+        <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Perfil</span>
     </a>
 </nav>
 </body>
 </html>
+
 
 
 
