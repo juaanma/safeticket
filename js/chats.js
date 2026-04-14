@@ -97,17 +97,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const card = document.createElement('a');
     card.href = `order.html?ticket_id=${ticket.id}`;
-    card.className = 'chat-card';
+    card.className = "bg-white border border-slate-200/60 rounded-3xl p-5 flex flex-col md:flex-row gap-4 md:items-center hover:border-[#5144d4] hover:shadow-[0_8px_30px_rgba(81,68,212,0.08)] transition-all group relative";
+    
+    // Badge styles
+    let badgeTailwind = "bg-slate-100 text-slate-600";
+    if (badgeClass === 'badge-compra') badgeTailwind = "bg-indigo-100/80 text-[#5144d4]";
+    if (badgeClass === 'badge-venta') badgeTailwind = "bg-emerald-100/80 text-emerald-600";
+    if (badgeClass === 'badge-cerrado') badgeTailwind = "bg-slate-200 text-slate-500";
+    
+    // Avatar styles
+    let avatarTailwind = avatarStyle ? `background-image: ${avatarStyle.match(/url\('.*?'\)/)[0]};` : '';
+
     card.innerHTML = `
-      <div class="chat-badge ${badgeClass}">${typeTag}</div>
-      <div class="chat-avatar" style="${avatarStyle}">${initials}</div>
-      <div class="chat-content">
-        <div class="chat-header-row">
-          <div class="chat-name">${counterName}</div>
-          <div class="chat-date">${dateStr}</div>
+      <div class="absolute top-5 right-5 ${badgeTailwind} font-black text-[10px] uppercase tracking-widest px-3 py-1 rounded-lg">
+        ${typeTag}
+      </div>
+      
+      <div class="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 font-bold text-lg shrink-0 bg-cover bg-center border border-slate-200" style="${avatarTailwind}">
+        ${initials}
+      </div>
+      
+      <div class="flex-1 flex flex-col justify-center min-w-0 pr-20 md:pr-4">
+        <div class="flex items-center gap-3 mb-1">
+          <h3 class="font-bold text-[#1a1c1f] text-[1.1rem] truncate">${counterName}</h3>
+          <span class="text-xs font-semibold text-slate-400">${dateStr}</span>
         </div>
-        <div class="chat-event"><i class="ph-bold ph-ticket"></i> ${eventTitle} (Sec: ${ticket.section})</div>
-        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.3rem;"><i class="ph-bold ph-arrow-right"></i> Haz clic para ver el estado y hablar</div>
+        <div class="text-sm font-medium text-slate-600 truncate mb-3">
+          ${eventTitle} <span class="text-slate-400">(Sec: ${ticket.section})</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-[13px] font-bold text-[#5144d4] group-hover:translate-x-1 transition-transform">
+          Consultar estado <span class="material-symbols-outlined text-[1rem]">arrow_forward</span>
+        </div>
       </div>
     `;
 

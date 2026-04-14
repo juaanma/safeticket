@@ -109,14 +109,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnKyc = document.getElementById('btn-kyc-verify-profile');
 
     if (card) {
-      card.style.background = 'rgba(16, 185, 129, 0.05)';
-      card.style.borderColor = 'var(--accent)';
+      card.className = "bg-emerald-50 border border-emerald-200/60 rounded-2xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 verification-card";
+      card.removeAttribute('style');
     }
     if (icon) {
-      icon.className = 'ph-fill ph-seal-check';
-      icon.style.color = 'var(--accent)';
+      icon.className = "material-symbols-outlined text-[3rem] text-emerald-500 shrink-0";
+      icon.innerText = "verified";
+      icon.removeAttribute('style');
     }
-    if (title) title.innerText = 'Cuenta Verificada';
+    if (title) {
+      title.innerText = 'Cuenta Verificada';
+      title.className = "text-lg font-bold text-[#1a1c1f] mb-1";
+      title.removeAttribute('style');
+    }
     if (text) text.innerText = 'Tu identidad ha sido validada eéxitosamente. Puedes vender entradas y retirar tu dinero.';
     if (btnKyc) btnKyc.style.display = 'none';
   } else if (isKycPending) {
@@ -127,16 +132,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnKyc = document.getElementById('btn-kyc-verify-profile');
 
     if (card) {
-      card.style.background = 'rgba(59, 130, 246, 0.05)';
-      card.style.borderColor = '#3b82f6';
+      card.className = "bg-blue-50 border border-blue-200/60 rounded-2xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 verification-card";
+      card.removeAttribute('style');
     }
     if (icon) {
-      icon.className = 'ph-fill ph-clock-afternoon';
-      icon.style.color = '#3b82f6';
+      icon.className = "material-symbols-outlined text-[3rem] text-blue-500 shrink-0";
+      icon.innerText = "pending_actions";
+      icon.removeAttribute('style');
     }
     if (title) {
       title.innerText = 'Identidad en Revisión';
-      title.style.color = '#3b82f6';
+      title.className = "text-lg font-bold text-blue-600 mb-1";
+      title.removeAttribute('style');
     }
     if (text) text.innerText = 'Tus documentos están siendo moderados manualmente. Te notificaremos pronto.';
     if (btnKyc) btnKyc.style.display = 'none';
@@ -249,14 +256,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function switchTab(tabId) {
     if (!tabs[tabId]) return;
-    // Esconder todo y quitar active
+    
+    const inactiveClass = "flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:text-[#5144d4] hover:bg-[#faf9fd] transition-colors";
+    const activeClass = "flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-colors text-[#5144d4] bg-indigo-50/50";
+
+    // Esconder todo y aplicar estilo inactivo
     Object.values(tabs).forEach(t => {
-      if (t.link) t.link.classList.remove('active');
-      if (t.content) t.content.style.display = 'none';
+      if (t.link) {
+        t.link.className = inactiveClass;
+      }
+      if (t.content) {
+        t.content.classList.add('hidden');
+        t.content.style.display = '';
+      }
     });
-    // Mostrar la seleccionada
-    if (tabs[tabId].link) tabs[tabId].link.classList.add('active');
-    if (tabs[tabId].content) tabs[tabId].content.style.display = 'block';
+
+    // Mostrar y aplicar estilo activo a la seleccionada
+    if (tabs[tabId].link) {
+      tabs[tabId].link.className = activeClass;
+    }
+    if (tabs[tabId].content) {
+      tabs[tabId].content.classList.remove('hidden');
+    }
     
     // Guardar en la URL para que persista al recargar
     window.location.hash = tabId;

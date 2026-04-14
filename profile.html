@@ -119,138 +119,174 @@
       }
     }
   </style>
-<script src="js/theme.js"></script>
+  <script src="js/theme.js"></script>
+  <!-- Tailwind setup -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+      body { font-family: 'Inter', sans-serif; }
+      .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          display: inline-block;
+          line-height: 1;
+      }
+      ::-webkit-scrollbar {
+          display: none;
+      }
+  </style>
 </head>
-<body>
+<body class="bg-background text-on-surface pb-24 md:pb-0 selection:bg-primary/20">
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="logo">
-        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
-        <li><a href="tickets.html" class="nav-link">Entradas Publicadas</a></li>
-        <li><a href="dashboard.html" class="nav-link">Mi Actividad</a></li>
-        <li><a href="profile.html" class="nav-link active" style="color: var(--primary); font-weight: 600;" id="nav-profile-link">Mi Perfil</a></li>
-      </ul>
-      <div class="nav-actions">
-      </div>
+<!-- TopNavBar -->
+<nav class="w-full top-0 sticky z-50 bg-[#faf9fd]/90 backdrop-blur-md shadow-[0_12px_32px_rgba(26,28,31,0.06)] relative border-b border-outline-variant/10">
+    <div class="max-w-7xl mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 text-2xl font-black tracking-tighter text-[#5144d4] dark:text-[#7A70FF]">
+            <span class="material-symbols-outlined hidden md:block">confirmation_number</span>
+            SafeTicket
+        </a>
+        
+                <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-8 font-['Inter'] font-medium text-sm">
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="index.html">Explorar</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="marketplace.html">Comprar</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="sell.html">Vender</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="dashboard.html">Mi Actividad</a>
+            <a class="text-[#5144d4] font-bold border-b-2 border-[#5144d4] pb-1 transition-colors duration-200" href="profile.html">Mi Perfil</a>
+        </div>
+        <!-- Actions -->
+        <div id="nav-desktop-actions" class="flex items-center gap-4">
+            <a href="login.html" class="hidden md:block text-sm font-semibold hover:text-primary transition-colors">Cerrar SesiÃ³n</a>
+        </div>
     </div>
-  </nav>
+</nav>
 
-  <main class="container profile-layout">
+  <main class="max-w-7xl mx-auto px-6 md:px-8 pt-10 pb-20 flex flex-col md:flex-row gap-8">
+    
     <!-- Sidebar -->
-    <aside class="settings-sidebar">
-      <div style="text-align: center; margin-bottom: 2rem; position: relative;">
-        <!-- Container para foto de perfil -->
-        <div style="position: relative; width: 90px; height: 90px; margin: 0 auto 1rem;">
-          <div id="profile-user-initials" style="width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #a5b4fc, var(--primary)); display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; color: white; background-size: cover; background-position: center; border: 3px solid var(--surface); box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s ease;">--</div>
-          
-          <label for="avatar-upload" style="position: absolute; bottom: -5px; right: -5px; background: var(--primary); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid var(--surface); transition: var(--transition); box-shadow: 0 2px 5px rgba(0,0,0,0.2);" title="Cambiar foto de perfil">
-            <i class="ph-bold ph-camera" style="font-size: 1rem;"></i>
+    <aside class="w-full md:w-[280px] shrink-0">
+      <div class="bg-white rounded-[32px] p-6 shadow-[0_8px_30px_rgba(26,28,31,0.04)] border border-slate-100 flex flex-col items-center sticky top-28">
+        
+        <!-- Avatar Container -->
+        <div class="relative w-24 h-24 mb-4">
+          <div id="profile-user-initials" class="w-full h-full rounded-full bg-gradient-to-br from-indigo-300 to-[#5144d4] flex items-center justify-center text-3xl font-black text-white shadow-inner transition-transform hover:scale-105" style="background-size: cover; background-position: center;">--</div>
+          <label for="avatar-upload" class="absolute -bottom-1 -right-1 bg-[#5144d4] text-white w-9 h-9 rounded-full flex items-center justify-center cursor-pointer border-[3px] border-white shadow-md hover:scale-110 hover:bg-[#4338ca] transition-all" title="Cambiar foto de perfil">
+            <span class="material-symbols-outlined text-[1.1rem]">photo_camera</span>
           </label>
-          <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+          <input type="file" id="avatar-upload" accept="image/*" class="hidden">
         </div>
         
-        <div id="profile-user-name" style="font-weight: 700; font-size: 1.2rem;">Cargando...</div>
-        <div id="profile-user-email-header" style="color: var(--text-muted); font-size: 0.85rem;">...</div>
-      </div>
+        <h2 id="profile-user-name" class="text-xl font-bold text-[#1a1c1f] mb-1 text-center">Cargando...</h2>
+        <p id="profile-user-email-header" class="text-[13px] text-slate-500 font-medium mb-6 text-center">...</p>
 
-      <nav class="settings-menu">
-        <a href="#" class="active" id="tab-link-personal"><i class="ph ph-user"></i> Información Personal</a>
-        <a href="#" id="tab-link-kyc"><i class="ph ph-shield-check"></i> Verificación DNI</a>
-        <a href="#" id="tab-link-security"><i class="ph ph-lock-key"></i> Seguridad y Clave</a>
-        <a href="#" class="app-logout-btn" style="color: #ef4444; margin-top: 1rem;"><i class="ph ph-sign-out"></i> Cerrar Sesión</a>
-      </nav>
+        <!-- Navigation -->
+        <nav class="w-full flex flex-col gap-1.5 settings-menu">
+          <a href="#" class="active flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-colors text-[#5144d4] bg-indigo-50/50" id="tab-link-personal">
+            <span class="material-symbols-outlined text-[1.2rem]">person</span> Información Personal
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:text-[#5144d4] hover:bg-[#faf9fd] transition-colors" id="tab-link-kyc">
+            <span class="material-symbols-outlined text-[1.2rem]">verified_user</span> Verificación DNI
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:text-[#5144d4] hover:bg-[#faf9fd] transition-colors" id="tab-link-security">
+            <span class="material-symbols-outlined text-[1.2rem]">lock</span> Seguridad y Clave
+          </a>
+          <div class="h-px bg-slate-100 my-2"></div>
+          <a href="#" class="app-logout-btn flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-red-500 hover:bg-red-50 transition-colors">
+            <span class="material-symbols-outlined text-[1.2rem]">logout</span> Cerrar Sesión
+          </a>
+        </nav>
+      </div>
     </aside>
 
-    <!-- Main Content -->
-    <div class="settings-panel">
+    <!-- Main Content Panel -->
+    <div class="flex-1 min-w-0 bg-white rounded-[32px] p-8 md:p-10 shadow-[0_8px_30px_rgba(26,28,31,0.04)] border border-slate-100">
       
-      <div id="tab-kyc" class="profile-tab" style="display: none;">
-        <h3>Verificación de Identidad</h3>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">Para mantener la seguridad de nuestra comunidad, necesitamos comprobar que eres una persona real.</p>
-        <div id="verification-card" class="verification-card" style="background: rgba(245, 158, 11, 0.05); border-color: #f59e0b;">
-          <div style="display: flex; gap: 1rem; align-items: center;">
-            <i id="verification-icon" class="ph-fill ph-warning-circle" style="font-size: 3rem; color: #f59e0b;"></i>
+      <!-- Tab KYC -->
+      <div id="tab-kyc" class="profile-tab hidden">
+        <h3 class="text-2xl font-black tracking-tight text-[#1a1c1f] mb-3">Verificación de Identidad</h3>
+        <p class="text-slate-500 text-[15px] font-medium leading-relaxed mb-8">Para mantener la seguridad de nuestra comunidad y activar tus ventas en tiempo récord, necesitamos comprobar que eres una persona real.</p>
+        
+        <div id="verification-card" class="bg-amber-50 border border-amber-200/60 rounded-2xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-4 verification-card">
+          <span id="verification-icon" class="material-symbols-outlined text-[3rem] text-amber-500 shrink-0" style="font-variation-settings: 'FILL' 1;">warning</span>
+          <div class="text-center sm:text-left">
+            <h4 id="verification-title" class="text-lg font-bold text-[#1a1c1f] mb-1">Identidad Sin Verificar</h4>
+            <p id="verification-text" class="text-sm font-medium text-slate-500 mb-4 leading-relaxed">Necesitas verificar tu DNI para poder operar ventas dentro del ecosistema SafeTicket.</p>
+            <a id="btn-kyc-verify-profile" href="kyc-ar.html" class="inline-flex items-center gap-2 bg-[#5144d4] text-white font-bold text-sm px-6 py-2.5 rounded-full hover:bg-[#4338ca] hover:-translate-y-0.5 shadow-md shadow-indigo-500/20 transition-all">
+              <span class="material-symbols-outlined text-[1.1rem]">id_card</span> Validar Identidad
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Personal -->
+      <div id="tab-personal" class="profile-tab">
+        <!-- Section 1 -->
+        <div class="mb-10">
+          <h3 class="text-xl font-black text-[#1a1c1f] border-b border-slate-100 pb-4 mb-6">Datos Personales</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-              <h4 id="verification-title" style="color: var(--text-main); font-size: 1.1rem; margin-bottom: 0.2rem;">Identidad Sin Verificar</h4>
-              <p id="verification-text" style="color: var(--text-muted); font-size: 0.9rem;">Necesitas verificar tu DNI para poder vender entradas en la plataforma.</p>
-              <a id="btn-kyc-verify-profile" href="kyc-ar.html" class="btn btn-primary btn-sm" style="margin-top: 0.8rem; display: inline-flex;"><i class="ph-bold ph-scan"></i> Validar Identidad</a>
+              <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Nombre(s) y Apellido</label>
+              <input type="text" id="profile-fullname" class="w-full bg-slate-50 border border-slate-200 text-slate-500 text-[15px] font-medium rounded-xl py-3.5 px-4 cursor-not-allowed outline-none" value="Cargando..." readonly>
+            </div>
+            <div class="hidden">
+              <label>Apellidos</label>
+              <input type="text" value="Pérez">
+            </div>
+            <div>
+              <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Correo Electrónico</label>
+              <input type="email" id="profile-email" class="w-full bg-slate-50 border border-slate-200 text-slate-500 text-[15px] font-medium rounded-xl py-3.5 px-4 cursor-not-allowed outline-none" value="" readonly>
+            </div>
+            <div>
+              <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Teléfono</label>
+              <input type="tel" id="profile-phone" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Ingresa tu celular">
             </div>
           </div>
-        </div>
-      </div>
-
-      <div id="tab-personal" class="profile-tab">
-
-      <div class="form-section">
-        <h3>Datos Personales</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nombre(s) y Apellido</label>
-            <input type="text" id="profile-fullname" class="form-control" value="Cargando..." readonly style="background: var(--surface-hover); color: var(--text-muted); cursor: not-allowed;">
-          </div>
-          <div class="form-group" style="display: none;">
-            <label>Apellidos</label>
-            <input type="text" class="form-control" value="Pérez">
+          <div class="flex justify-end">
+            <button id="btn-save-profile" class="bg-[#5144d4] text-white font-bold text-[15px] px-8 py-3.5 rounded-full hover:bg-[#4338ca] hover:-translate-y-0.5 shadow-lg shadow-indigo-500/20 transition-all">Guardar Cambios</button>
           </div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Correo Electrónico</label>
-            <input type="email" id="profile-email" class="form-control" value="" readonly style="background: var(--surface-hover); color: var(--text-muted);">
-          </div>
-          <div class="form-group">
-            <label>Teléfono</label>
-            <input type="tel" id="profile-phone" class="form-control" value="">
-          </div>
-        </div>
-        <div class="form-group" style="text-align: right; margin-top: 1.5rem;">
-          <button id="btn-save-profile" class="btn btn-primary">Guardar Cambios</button>
-        </div>
-      </div>
 
-      <div class="form-section">
-        <h3>Datos Bancarios (Billetera)</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Aquí depositaremos el dinero de tus ventas. Debe estar a tu nombre.</p>
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-          <label>CBU / CVU</label>
-          <input type="text" id="profile-cbu" class="form-control" placeholder="Ingresa los 22 dígitos" value="">
+        <!-- Section 2 -->
+        <div class="pt-2">
+          <h3 class="text-xl font-black text-[#1a1c1f] border-b border-slate-100 pb-4 mb-3">Datos Bancarios</h3>
+          <p class="text-slate-500 text-[14px] font-medium leading-relaxed mb-6">Aquí depositaremos automáticamente el dinero de tus ventas realizadas de forma exitosa.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">CBU / CVU</label>
+              <input type="text" id="profile-cbu" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Ingresa los 22 dígitos">
+            </div>
+            <div>
+              <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Alias</label>
+              <input type="text" id="profile-alias" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Ej: TU.ALIAS.MP">
+            </div>
+          </div>
+          <div class="flex justify-end">
+            <button id="btn-save-bank" class="bg-[#faf9fd] text-[#1a1c1f] font-bold text-[15px] px-8 py-3.5 rounded-full border border-slate-200 hover:bg-slate-100 transition-colors">Actualizar CBU</button>
+          </div>
         </div>
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-          <label>Alias</label>
-          <input type="text" id="profile-alias" class="form-control" placeholder="Ej: TU.ALIAS.MP" value="">
-        </div>
-        <div class="form-group" style="text-align: right;">
-          <button id="btn-save-bank" class="btn btn-outline" style="border-color: var(--border);">Actualizar CBU</button>
-        </div>
-      </div>
-
       </div> <!-- Fin tab personal -->
 
-      <div id="tab-security" class="profile-tab" style="display: none;">
-        <h3>Seguridad y Clave</h3>
-        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem;">Gestiona la seguridad de tu cuenta cambiando tu contraseña regularmente.</p>
+      <!-- Tab Security -->
+      <div id="tab-security" class="profile-tab hidden">
+        <h3 class="text-2xl font-black tracking-tight text-[#1a1c1f] mb-3">Seguridad y Clave</h3>
+        <p class="text-slate-500 text-[15px] font-medium leading-relaxed mb-8">Gestiona la protección integral de tu cuenta cambiando tu contraseña regularmente o validando sesiones abiertas.</p>
         
-        <div class="form-section">
-          <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label>Contraseña Actual</label>
-            <input type="password" id="profile-old-password" class="form-control" placeholder="Ingresa tu contraseña actual">
+        <div class="max-w-md">
+          <div class="mb-5">
+            <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Contraseña Actual</label>
+            <input type="password" id="profile-old-password" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Ingresa tu contraseña actual">
           </div>
-          <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label>Nueva Contraseña</label>
-            <input type="password" id="profile-new-password" class="form-control" placeholder="Mínimo 6 caracteres">
+          <div class="mb-5">
+            <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Nueva Contraseña</label>
+            <input type="password" id="profile-new-password" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Mínimo 6 caracteres">
           </div>
-          <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label>Confirmar Nueva Contraseña</label>
-            <input type="password" id="profile-confirm-password" class="form-control" placeholder="Repite tu nueva contraseña">
+          <div class="mb-8">
+            <label class="block text-[13px] font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Confirmar Contraseña</label>
+            <input type="password" id="profile-confirm-password" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Repite tu nueva contraseña">
           </div>
-          <div class="form-group" style="text-align: right;">
-            <button id="btn-change-password" class="btn btn-primary" style="background-color: #ef4444; border: 1px solid #dc2626; color: white;">Guardar</button>
-          </div>
+          <button id="btn-change-password" class="bg-red-500 text-white font-bold text-[15px] px-8 py-3.5 rounded-full hover:bg-red-600 hover:-translate-y-0.5 shadow-lg shadow-red-500/20 transition-all">Guardar Nueva Clave</button>
         </div>
       </div>
 
@@ -284,48 +320,33 @@
       });
     });
   </script>
-  <!-- Mobile Bottom Nav -->
-  <div class="mobile-bottom-nav">
-    <div class="mobile-nav-container">
-      <a href="marketplace.html" class="mobile-nav-item" id="mob-nav-marketplace">
-        <i class="ph ph-calendar-star"></i>
-        <span>Eventos</span>
-      </a>
-      <a href="tickets.html" class="mobile-nav-item" id="mob-nav-tickets">
-        <i class="ph ph-ticket"></i>
-        <span>Entradas</span>
-      </a>
-      <div class="mobile-nav-fab-container">
-        <a href="sell.html" class="mobile-nav-fab">
-          <i class="ph ph-plus"></i>
-        </a>
-      </div>
-      <a href="dashboard.html" class="mobile-nav-item" id="mob-nav-dashboard">
-        <i class="ph ph-check-square-offset"></i>
-        <span>Actividad</span>
-      </a>
-      <a href="profile.html" class="mobile-nav-item" id="mob-nav-profile">
-        <i class="ph ph-user"></i>
-        <span>Perfil</span>
-      </a>
-    </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const path = window.location.pathname;
-      if (path.includes('marketplace')) {
-        document.getElementById('mob-nav-marketplace')?.classList.add('active');
-      } else if (path.includes('tickets')) {
-        document.getElementById('mob-nav-tickets')?.classList.add('active');
-      } else if (path.includes('dashboard')) {
-        document.getElementById('mob-nav-dashboard')?.classList.add('active');
-      } else if (path.includes('profile')) {
-        document.getElementById('mob-nav-profile')?.classList.add('active');
-      }
-    });
-  </script>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-4 pb-6 pt-3 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
+    <a href="index.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">home</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Inicio</span>
+    </a>
+    <a href="marketplace.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">explore</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Explorar</span>
+    </a>
+    <a href="sell.html" class="flex flex-col items-center justify-center mt[-8px] text-white bg-primary shadow-lg p-3 rounded-full active:scale-90 duration-200" style="transform: translateY(-8px);">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add</span>
+    </a>
+    <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">confirmation_number</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">ACTIVIDAD</span>
+    </a>
+    <a href="profile.html" class="flex flex-col items-center justify-center text-[#5144d4] p-2 active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">person</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Perfil</span>
+    </a>
+</nav>
 </body>
 </html>
+
+
+
 
 
 

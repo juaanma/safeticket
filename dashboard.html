@@ -209,98 +209,164 @@
       }
     }
   </style>
-<script src="js/theme.js"></script>
+  <script src="js/theme.js"></script>
+  <!-- Tailwind setup -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+      body { font-family: 'Inter', sans-serif; }
+      .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          display: inline-block;
+          line-height: 1;
+      }
+      ::-webkit-scrollbar {
+          display: none;
+      }
+  </style>
 </head>
-<body>
+<body class="bg-background text-on-surface pb-24 md:pb-0 selection:bg-primary/20">
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="logo">
-        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
-        <li><a href="tickets.html" class="nav-link">Entradas Publicadas</a></li>
-        <li><a href="dashboard.html" class="nav-link active" style="color: var(--primary); font-weight: 600;">Mi Actividad</a></li>
-        <li><a href="profile.html" class="nav-link" id="nav-profile-link">Mi Perfil</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="chats.html" style="font-size: 1.5rem; color: var(--text-main); position: relative;" title="Mis Mensajes">
-          <i class="ph-bold ph-chat-circle-dots"></i>
+<!-- TopNavBar -->
+<nav class="w-full top-0 sticky z-50 bg-[#faf9fd]/90 backdrop-blur-md shadow-[0_12px_32px_rgba(26,28,31,0.06)] relative border-b border-outline-variant/10">
+    <div class="max-w-7xl mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 text-2xl font-black tracking-tighter text-[#5144d4] dark:text-[#7A70FF]">
+            <span class="material-symbols-outlined hidden md:block">confirmation_number</span>
+            SafeTicket
         </a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="container dashboard-container">
-    <aside class="profile-sidebar">
-      <div class="profile-avatar" id="dashboard-user-initials" style="background-size: cover; background-position: center; border: 3px solid var(--surface); box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 90px; height: 90px; transition: transform 0.3s ease;">--</div>
-      <div class="profile-name" id="dashboard-user-name" style="margin-bottom: 1.5rem;">Cargando...</div>
-      
-      <div id="profile-status-wrapper" style="background: rgba(245, 158, 11, 0.05); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: var(--radius-sm); padding: 1.2rem; margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; text-align: center; transition: all 0.3s ease;">
-        <div id="profile-status" class="profile-status" style="margin: 0; background: rgba(245, 158, 11, 0.15); padding: 0.4rem 1rem; border-radius: var(--radius-xl); font-weight: 600; color: #d97706; display: inline-flex; font-size: 0.85rem;">
-          <i class="ph-fill ph-warning-circle"></i> Identidad sin verificar
+        
+                <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-8 font-['Inter'] font-medium text-sm">
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="index.html">Explorar</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="marketplace.html">Comprar</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="sell.html">Vender</a>
+            <a class="text-[#5144d4] font-bold border-b-2 border-[#5144d4] pb-1 transition-colors duration-200" href="dashboard.html">Mi Actividad</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="profile.html">Mi Perfil</a>
         </div>
-        <p id="profile-status-text" style="color: var(--text-muted); font-size: 0.8rem; line-height: 1.4; margin: 0;">El proceso es rápido y seguro. Necesitamos validar tu DNI para proteger tu cuenta.</p>
-        <a id="btn-kyc-verify" href="kyc-ar.html" class="btn btn-primary btn-sm" style="width: 100%; font-size: 0.85rem; padding: 0.6rem;"><i class="ph-bold ph-scan"></i> Iniciar Verificación</a>
-      </div>
+        <!-- Actions -->
+        <div id="nav-desktop-actions" class="flex items-center gap-4">
+            <a href="chats.html" class="hidden md:block text-sm font-semibold hover:text-primary transition-colors">
+              <span class="material-symbols-outlined">chat</span>
+            </a>
+            <a href="login.html" class="hidden md:block text-sm font-semibold hover:text-primary transition-colors">Cerrar SesiÃ³n</a>
+        </div>
+    </div>
+</nav>
 
-      <nav class="nav-menu" id="dashboard-nav-menu">
-        <a href="#" class="active" data-tab="all"><i class="ph ph-squares-four"></i> Resumen de Actividad</a>
-        <a href="#" data-tab="purchases"><i class="ph ph-ticket"></i> Mis Compras</a>
-        <a href="#" data-tab="published"><i class="ph ph-tag"></i> Entradas Publicadas</a>
-        <a href="#" data-tab="sold"><i class="ph ph-shopping-bag"></i> Entradas Vendidas</a>
-        <a href="chats.html"><i class="ph ph-chats"></i> Mis Mensajes</a>
-        <a href="#" class="app-logout-btn" style="color: #ef4444; margin-top: 1rem;"><i class="ph ph-sign-out"></i> Cerrar Sesión</a>
-      </nav>
+  <main class="max-w-7xl mx-auto px-6 md:px-8 pt-10 pb-20 flex flex-col md:flex-row gap-8">
+    
+    <!-- Sidebar -->
+    <aside class="w-full md:w-[280px] shrink-0">
+      <div class="bg-white rounded-[32px] p-6 shadow-[0_8px_30px_rgba(26,28,31,0.04)] border border-slate-100 flex flex-col items-center sticky top-28">
+        
+        <!-- Avatar -->
+        <div id="dashboard-user-initials" class="w-24 h-24 rounded-full bg-gradient-to-br from-indigo-300 to-[#5144d4] flex items-center justify-center text-3xl font-black text-white shadow-inner mb-4 transition-transform hover:scale-105" style="background-size: cover; background-position: center;">--</div>
+        
+        <!-- Name -->
+        <h2 id="dashboard-user-name" class="text-xl font-bold text-[#1a1c1f] mb-6 text-center">Cargando...</h2>
+
+        <!-- KYC Status Banner -->
+        <div id="profile-status-wrapper" class="w-full bg-amber-50 border border-amber-200/60 rounded-2xl p-4 flex flex-col items-center gap-3 text-center mb-8 transition-opacity duration-300">
+          <div id="profile-status" class="bg-amber-100/80 text-amber-600 font-bold text-xs px-4 py-1.5 rounded-full flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[1.1rem]">warning</span> Identidad sin verificar
+          </div>
+          <p id="profile-status-text" class="text-[12px] text-slate-500 font-medium leading-relaxed">Necesitamos validar tu DNI de forma segura para proteger tu cuenta.</p>
+          <a id="btn-kyc-verify" href="kyc-ar.html" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm py-2.5 rounded-xl transition-colors shadow-sm shadow-amber-500/20">Iniciar Verificación</a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="w-full flex flex-col gap-1.5" id="dashboard-nav-menu">
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm transition-colors text-[#5144d4] bg-indigo-50/50" data-tab="all">
+            <span class="material-symbols-outlined text-[1.2rem]">dashboard</span> Resumen de Actividad
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:text-[#5144d4] hover:bg-[#faf9fd] transition-colors" data-tab="purchases">
+            <span class="material-symbols-outlined text-[1.2rem]">local_activity</span> Mis Compras
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:text-[#5144d4] hover:bg-[#faf9fd] transition-colors" data-tab="published">
+            <span class="material-symbols-outlined text-[1.2rem]">sell</span> Entradas Publicadas
+          </a>
+          <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:text-[#5144d4] hover:bg-[#faf9fd] transition-colors" data-tab="sold">
+            <span class="material-symbols-outlined text-[1.2rem]">shopping_bag</span> Entradas Vendidas
+          </a>
+          <a href="chats.html" class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-slate-500 hover:text-[#5144d4] hover:bg-[#faf9fd] transition-colors">
+            <span class="material-symbols-outlined text-[1.2rem]">chat</span> Mis Mensajes
+          </a>
+          <div class="h-px bg-slate-100 my-2"></div>
+          <a href="#" class="app-logout-btn flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-red-500 hover:bg-red-50 transition-colors">
+            <span class="material-symbols-outlined text-[1.2rem]">logout</span> Cerrar Sesión
+          </a>
+        </nav>
+      </div>
     </aside>
 
-    <div class="dashboard-panel">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-        <h2 id="panel-title">Resumen de Actividad</h2>
-        <a href="sell.html" class="btn btn-primary btn-sm"><i class="ph ph-plus"></i> Nueva Venta</a>
+    <!-- Main Content Panel -->
+    <div class="flex-1 min-w-0">
+      <div id="dynamic-banners-container" class="mb-6">
+        <!-- Notificaciones dinámicas -->
       </div>
 
-      <div class="stats-grid" id="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">Ingresos Totales (Pendientes)</div>
-          <div class="stat-value" style="color: var(--accent);">...</div>
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h2 id="panel-title" class="text-3xl font-black tracking-tight text-[#1a1c1f]">Resumen de Actividad</h2>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-10" id="stats-grid">
+        <div class="bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgba(26,28,31,0.03)] border border-slate-100 relative overflow-hidden group">
+          <div class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-50 rounded-full opacity-50 transition-transform group-hover:scale-110"></div>
+          <div class="relative z-10">
+            <h4 class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">Ingresos Totales (Pdte)</h4>
+            <div class="text-3xl font-black text-emerald-600 tracking-tight stat-value">...</div>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Entradas Vendidas</div>
-          <div class="stat-value">...</div>
+        <div class="bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgba(26,28,31,0.03)] border border-slate-100 relative overflow-hidden group">
+          <div class="absolute -right-4 -top-4 w-24 h-24 bg-indigo-50 rounded-full opacity-50 transition-transform group-hover:scale-110"></div>
+          <div class="relative z-10">
+            <h4 class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">Entradas Vendidas</h4>
+            <div class="text-3xl font-black text-[#5144d4] tracking-tight stat-value">...</div>
+          </div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Entradas Compradas</div>
-          <div class="stat-value">...</div>
+        <div class="bg-white rounded-[24px] p-6 shadow-[0_8px_30px_rgba(26,28,31,0.03)] border border-slate-100 relative overflow-hidden group">
+          <div class="absolute -right-4 -top-4 w-24 h-24 bg-slate-50 rounded-full opacity-50 transition-transform group-hover:scale-110"></div>
+          <div class="relative z-10">
+            <h4 class="text-slate-500 text-sm font-bold uppercase tracking-wider mb-2">Entradas Compradas</h4>
+            <div class="text-3xl font-black text-[#1a1c1f] tracking-tight stat-value">...</div>
+          </div>
         </div>
       </div>
 
-      <h3 id="table-title">Transacciones Recientes</h3>
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Evento</th>
-              <th>Tipo</th>
-              <th>Fecha</th>
-              <th>Monto</th>
-              <th>Estado</th>
-            </tr>
-          </thead>
-          <tbody id="dashboard-tx-list">
-            <tr>
-              <td colspan="5" style="text-align: center; color: var(--text-muted);">Cargando tu actividad...</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Table Section -->
+      <div class="bg-white rounded-[24px] shadow-[0_8px_30px_rgba(26,28,31,0.03)] border border-slate-100 overflow-hidden">
+        <div class="p-6 md:p-8 border-b border-slate-100">
+          <h3 id="table-title" class="text-lg font-bold text-[#1a1c1f]">Transacciones Recientes</h3>
+        </div>
+        
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[700px]">
+            <thead>
+              <tr class="bg-[#faf9fd]">
+                <th class="py-4 px-6 md:px-8 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200/70">Evento</th>
+                <th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200/70">Tipo</th>
+                <th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200/70">Fecha</th>
+                <th class="py-4 px-6 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200/70">Monto</th>
+                <th class="py-4 px-6 md:px-8 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200/70 text-right">Estado</th>
+              </tr>
+            </thead>
+            <tbody id="dashboard-tx-list" class="text-sm font-medium text-[#1a1c1f]">
+              <tr>
+                <td colspan="5" class="py-12 text-center text-slate-400">
+                  <div class="flex flex-col items-center gap-2">
+                    <span class="material-symbols-outlined text-4xl animate-spin">refresh</span>
+                    <span>Cargando tu actividad...</span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-      
-      <div id="dynamic-banners-container">
-        <!-- Notificaciones de eventos y liquidaciones dinámicas -->
-      </div>
-
     </div>
   </main>
 
@@ -332,48 +398,33 @@
       });
     });
   </script>
-  <!-- Mobile Bottom Nav -->
-  <div class="mobile-bottom-nav">
-    <div class="mobile-nav-container">
-      <a href="marketplace.html" class="mobile-nav-item" id="mob-nav-marketplace">
-        <i class="ph ph-calendar-star"></i>
-        <span>Eventos</span>
-      </a>
-      <a href="tickets.html" class="mobile-nav-item" id="mob-nav-tickets">
-        <i class="ph ph-ticket"></i>
-        <span>Entradas</span>
-      </a>
-      <div class="mobile-nav-fab-container">
-        <a href="sell.html" class="mobile-nav-fab">
-          <i class="ph ph-plus"></i>
-        </a>
-      </div>
-      <a href="dashboard.html" class="mobile-nav-item" id="mob-nav-dashboard">
-        <i class="ph ph-check-square-offset"></i>
-        <span>Actividad</span>
-      </a>
-      <a href="profile.html" class="mobile-nav-item" id="mob-nav-profile">
-        <i class="ph ph-user"></i>
-        <span>Perfil</span>
-      </a>
-    </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const path = window.location.pathname;
-      if (path.includes('marketplace')) {
-        document.getElementById('mob-nav-marketplace')?.classList.add('active');
-      } else if (path.includes('tickets')) {
-        document.getElementById('mob-nav-tickets')?.classList.add('active');
-      } else if (path.includes('dashboard')) {
-        document.getElementById('mob-nav-dashboard')?.classList.add('active');
-      } else if (path.includes('profile')) {
-        document.getElementById('mob-nav-profile')?.classList.add('active');
-      }
-    });
-  </script>
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-4 pb-6 pt-3 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
+    <a href="index.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">home</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Inicio</span>
+    </a>
+    <a href="marketplace.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">explore</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Explorar</span>
+    </a>
+    <a href="sell.html" class="flex flex-col items-center justify-center mt[-8px] text-white bg-primary shadow-lg p-3 rounded-full active:scale-90 duration-200" style="transform: translateY(-8px);">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add</span>
+    </a>
+    <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#5144d4] p-2 active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">ACTIVIDAD</span>
+    </a>
+    <a href="profile.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">person</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Perfil</span>
+    </a>
+</nav>
 </body>
 </html>
+
+
+
 
 
 

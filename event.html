@@ -145,28 +145,49 @@
       }
     }
   </style>
-<script src="js/theme.js"></script>
+  <script src="js/theme.js"></script>
+  <!-- Tailwind setup -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <style>
+      body { font-family: 'Inter', sans-serif; }
+      .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          display: inline-block;
+          line-height: 1;
+      }
+      ::-webkit-scrollbar {
+          display: none;
+      }
+  </style>
 </head>
-<body>
+<body class="bg-background text-on-surface pb-24 md:pb-0 selection:bg-primary/20">
 
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="logo">
-        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="marketplace.html" class="nav-link">Eventos</a></li>
-        <li><a href="tickets.html" class="nav-link">Entradas Publicadas</a></li>
-        <li><a href="dashboard.html" class="nav-link">Mi Actividad</a></li>
-        <li><a href="profile.html" class="nav-link" id="nav-profile-link">Mi Perfil</a></li>
-      </ul>
-      <div class="nav-actions">
-        <a href="sell.html" class="btn btn-outline">Vender entrada</a>
-        <a href="login.html" class="btn btn-primary">Ingresar</a>
-      </div>
+<!-- TopNavBar -->
+<nav class="w-full top-0 sticky z-50 bg-[#faf9fd]/90 backdrop-blur-md shadow-[0_12px_32px_rgba(26,28,31,0.06)] relative border-b border-outline-variant/10">
+    <div class="max-w-7xl mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="index.html" class="flex items-center gap-2 text-2xl font-black tracking-tighter text-[#5144d4] dark:text-[#7A70FF]">
+            <span class="material-symbols-outlined hidden md:block">confirmation_number</span>
+            SafeTicket
+        </a>
+        
+                <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-8 font-['Inter'] font-medium text-sm">
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="index.html">Explorar</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="marketplace.html">Comprar</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="sell.html">Vender</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="dashboard.html">Mi Actividad</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="profile.html">Mi Perfil</a>
+        </div>
+        <!-- Actions -->
+        <div id="nav-desktop-actions" class="flex items-center gap-4">
+            <a href="login.html" class="hidden md:block text-sm font-semibold hover:text-primary transition-colors">Iniciar Sesión</a>
+        </div>
     </div>
-  </nav>
+</nav>
 
   <!-- Hero -->
   <div class="event-hero">
@@ -360,48 +381,33 @@
   </script>
   <script src="js/auth-ui.js"></script>
   <script src="js/event-detail.js"></script>
-  <!-- Mobile Bottom Nav -->
-  <div class="mobile-bottom-nav">
-    <div class="mobile-nav-container">
-      <a href="marketplace.html" class="mobile-nav-item" id="mob-nav-marketplace">
-        <i class="ph ph-calendar-star"></i>
-        <span>Eventos</span>
-      </a>
-      <a href="tickets.html" class="mobile-nav-item" id="mob-nav-tickets">
-        <i class="ph ph-ticket"></i>
-        <span>Entradas</span>
-      </a>
-      <div class="mobile-nav-fab-container">
-        <a href="sell.html" class="mobile-nav-fab">
-          <i class="ph ph-plus"></i>
-        </a>
-      </div>
-      <a href="dashboard.html" class="mobile-nav-item" id="mob-nav-dashboard">
-        <i class="ph ph-check-square-offset"></i>
-        <span>Actividad</span>
-      </a>
-      <a href="profile.html" class="mobile-nav-item" id="mob-nav-profile">
-        <i class="ph ph-user"></i>
-        <span>Perfil</span>
-      </a>
-    </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const path = window.location.pathname;
-      if (path.includes('marketplace')) {
-        document.getElementById('mob-nav-marketplace')?.classList.add('active');
-      } else if (path.includes('tickets')) {
-        document.getElementById('mob-nav-tickets')?.classList.add('active');
-      } else if (path.includes('dashboard')) {
-        document.getElementById('mob-nav-dashboard')?.classList.add('active');
-      } else if (path.includes('profile')) {
-        document.getElementById('mob-nav-profile')?.classList.add('active');
-      }
-    });
-  </script>
-
+<!-- Bottom Navigation Bar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-4 pb-6 pt-3 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
+    <a href="index.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">home</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Inicio</span>
+    </a>
+    <a href="marketplace.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">explore</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Explorar</span>
+    </a>
+    <a href="sell.html" class="flex flex-col items-center justify-center mt[-8px] text-white bg-primary shadow-lg p-3 rounded-full active:scale-90 duration-200" style="transform: translateY(-8px);">
+        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add</span>
+    </a>
+    <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">confirmation_number</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">ACTIVIDAD</span>
+    </a>
+    <a href="profile.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <span class="material-symbols-outlined text-2xl">person</span>
+        <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Perfil</span>
+    </a>
+</nav>
+</body>
 </html>
+
+
+
 
 
 

@@ -28,10 +28,9 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
     return;
   }
 
-  // Filtrar eventos falsos de la base
-  const fakeTitles = ["Festival Primavera Sound", "Arctic Monkeys", "Duki en River Plate"];
-  const events = eventsRaw.filter(e => !fakeTitles.includes(e.title));
-
+  // Mostrar absolutamente todos los eventos públicos validos que vengan de supabase
+  const events = eventsRaw;
+  
   // 2. Extraer IDs para buscar sus tickets
   const eventIds = events.map(e => e.id);
   
@@ -55,47 +54,47 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
   container.innerHTML = ''; // Limpiar tarjetas harcodeadas
 
   events.forEach(event => {
-    // Calcular cuántos tickets hay "disponibles" para ESTE evento
     const availableTickets = allTickets.filter(t => t.event_id === event.id);
-    const minPrice = availableTickets.length > 0 
-      ? Math.min(...availableTickets.map(t => t.price)) 
-      : 0;
-
-    const ticketsText = availableTickets.length > 0 
-      ? `${availableTickets.length} entradas disponibles` 
-      : 'Sin entradas disponibles';
-
-    const priceText = availableTickets.length > 0 
-      ? `<div class="event-price"><span>Desde</span> ${formatPrice(minPrice)}</div>`
-      : `<div class="event-price" style="color: var(--text-muted);">Agotado</div>`;
-
+    const minPrice = availableTickets.length > 0 ? Math.min(...availableTickets.map(t => Number(t.price))) : 0;
+    const isSoldOut = availableTickets.length === 0;
+    
     const html = `
-      <a href="event.html?id=${event.id}" class="ticket-card" style="min-height: 140px;">
-        <img src="${event.image_url || 'https://images.unsplash.com/photo-1540039155732-d6749b9325eb?w=800'}" alt="${event.title}" class="ticket-card-img">
-        <div class="ticket-card-body">
-          <div>
-            <div class="ticket-card-header">
-              <h3 class="ticket-card-title" style="font-size: 1.1rem;">${event.title}</h3>
-            </div>
-            <div class="ticket-card-row">
-              <span class="ticket-card-venue">${event.location}</span>
-            </div>
-            <div class="ticket-card-date">${formatEventDate(event.date)}</div>
-          </div>
-          <div class="ticket-card-footer">
-            <div>
-              <div class="ticket-card-seller-label">Disponibilidad</div>
-              <div class="seller-avatar-group" style="color:var(--primary); font-weight:800; display:flex; gap:0.2rem; align-items:center;">
-                <i class="ph-fill ph-ticket"></i> ${availableTickets.length > 0 ? availableTickets.length + ' tickets' : 'Agotado'}
+      <div class="bg-white rounded-[24px] overflow-hidden border border-slate-100 shadow-[0_8px_30px_rgba(26,28,31,0.04)] flex flex-col hover:shadow-[0_12px_40px_rgba(26,28,31,0.08)] transition-shadow">
+          <div class="relative h-[200px] md:h-[220px] overflow-hidden cursor-pointer" onclick="window.location.href='event.html?id=${event.id}'">
+              <img src="${event.image_url || 'https://images.unsplash.com/photo-1540039155732-d6749b9325eb?w=800'}" alt="${event.title}" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105 ${isSoldOut ? 'grayscale opacity-70' : ''}">
+              <div class="absolute top-4 left-4">
+                  <span class="bg-white/90 backdrop-blur-md text-[#1a1c1f] text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
+                      ${event.category || 'Música'}
+                  </span>
               </div>
-            </div>
-            <div style="text-align: right;">
-              <div class="ticket-card-seller-label">Desde</div>
-              <div class="ticket-card-price" style="font-size: 1.1rem; color: ${availableTickets.length > 0 ? 'var(--primary)' : 'var(--text-muted)'};">${availableTickets.length > 0 ? formatPrice(minPrice) : '---'}</div>
-            </div>
+              ${isSoldOut ? `
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span class="bg-[#1a1c1f] text-white font-black text-sm px-6 py-2.5 rounded-full rotate-[-12deg] shadow-lg">SOLD OUT</span>
+              </div>
+              ` : ''}
           </div>
-        </div>
-      </a>
+          <div class="p-6 flex-1 flex flex-col cursor-pointer" onclick="window.location.href='event.html?id=${event.id}'">
+              <div class="flex justify-between items-start mb-4 gap-4">
+                  <h3 class="font-bold text-[#1a1c1f] text-[1.15rem] leading-tight flex-1 line-clamp-2">${event.title}</h3>
+                  <span class="text-[#5144d4] font-black tracking-tight shrink-0">${isSoldOut ? '---' : formatPrice(minPrice)}</span>
+              </div>
+              <div class="flex flex-col gap-2.5 mb-8 text-sm font-medium text-slate-500">
+                  <div class="flex items-center gap-2 text-slate-500">
+                      <span class="material-symbols-outlined text-[1.1rem]">calendar_today</span> <span class="truncate">${formatEventDate(event.date)}</span>
+                  </div>
+                  <div class="flex items-center gap-2 text-slate-500">
+                      <span class="material-symbols-outlined text-[1.1rem]" style="font-variation-settings: 'FILL' 1;">location_on</span> <span class="truncate">${event.location}</span>
+                  </div>
+                  <div class="flex items-center gap-2 ${!isSoldOut && availableTickets.length > 0 ? 'text-[#5144d4]' : 'text-slate-400'} mt-1">
+                      <span class="material-symbols-outlined text-[1.1rem]">${!isSoldOut ? 'verified' : 'cancel'}</span> 
+                      ${isSoldOut ? 'Sin stock disponible' : availableTickets.length === 1 ? '¡1 última entrada!' : availableTickets.length + ' tickets en venta'}
+                  </div>
+              </div>
+              <button class="w-full mt-auto bg-[#faf9fd] text-[#1a1c1f] font-bold py-3.5 rounded-[14px] hover:bg-slate-200 transition-colors">
+                  Ver Detalles
+              </button>
+          </div>
+      </div>
     `;
     
     container.insertAdjacentHTML('beforeend', html);
@@ -110,9 +109,12 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
 
 // Exponer la funcion global para llamarla al cargar
 window.loadEvents = loadEvents;
+window.loadEvents = loadEvents;
 
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('index-events-grid')) {
-    window.loadEvents('#index-events-grid', 3);
+    window.loadEvents('#index-events-grid', 4);
+  } else if (document.querySelector('.events-grid')) {
+    window.loadEvents('.events-grid');
   }
 });

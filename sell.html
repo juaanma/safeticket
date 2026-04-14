@@ -1,233 +1,210 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Vender Entrada | SaFeBeat</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <style>
-    .sell-container {
-      max-width: 600px;
-      margin: 8rem auto 5rem;
-    }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-      color: var(--text-muted);
-    }
-
-    .form-control {
-      width: 100%;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      padding: 1rem;
-      border-radius: var(--radius-sm);
-      font-family: inherit;
-      font-size: 1rem;
-      transition: var(--transition);
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-glow);
-    }
-
-    .upload-box {
-      border: 2px dashed var(--border);
-      border-radius: var(--radius-md);
-      padding: 3rem 2rem;
-      text-align: center;
-      background: rgba(21, 24, 33, 0.5);
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .upload-box:hover {
-      border-color: var(--primary);
-      background: rgba(99, 102, 241, 0.05);
-    }
-
-    .upload-icon {
-      font-size: 3rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-    
-    .info-box {
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid var(--accent);
-      padding: 1rem;
-      border-radius: var(--radius-sm);
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      margin-bottom: 2rem;
-    }
-
-    .autocomplete-items div {
-      padding: 12px 1rem;
-      cursor: pointer;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-main);
-      transition: var(--transition);
-      background: var(--surface);
-    }
-    
-    .autocomplete-items div:hover {
-      background-color: var(--surface-hover);
-      color: var(--primary);
-    }
-    
-    .autocomplete-items div:last-child {
-      border-bottom: none;
-    }
-  </style>
-<script src="js/theme.js"></script>
-</head>
-<body>
-
-  <!-- Navbar -->
-  <nav class="navbar">
-    <div class="container nav-container">
-      <a href="index.html" class="logo">
-        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
-      </a>
-      <div class="nav-actions">
-        <a href="index.html" class="btn btn-outline">Cancelar</a>
-      </div>
-    </div>
-  </nav>
-
-  <main class="container sell-container">
-    <h1 style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Publicar tu Entrada</h1>
-    <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Vende tu entrada de forma segura y recibe tu dinero directamente en tu cuenta bancaria.</p>
-
-    <div id="seller-verified-banner" class="info-box" style="display: none;">
-      <i class="ph-fill ph-shield-check" style="color: var(--accent); font-size: 1.5rem; margin-top: 0.2rem;"></i>
-      <div>
-        <div style="font-weight: 600; color: var(--accent); margin-bottom: 0.3rem;">Vendedor Verificado</div>
-        <div style="font-size: 0.9rem; color: var(--text-muted);">Tu identidad ya ha sido verificada. Tus publicaciones tendrán el sello de "Vendedor Confiable", aumentando tus chances de venta.</div>
-      </div>
-    </div>
-
-    <form id="sell-form">
-      <div class="form-group" style="position: relative;">
-        <label>¿A qué evento pertenece tu entrada?</label>
-        <input type="text" id="sell-event-input" class="form-control" placeholder="Escribe para buscar tu evento..." required autocomplete="off">
-        <input type="hidden" id="sell-event-id" required>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Vender Entrada | SaFeBeat</title>
+    <!-- Tailwind setup -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="js/tailwind-config.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        ::-webkit-scrollbar { display: none; }
         
-        <div id="autocomplete-list" class="autocomplete-items" style="display:none; position: absolute; left: 0; right: 0; z-index: 99; border: 1px solid var(--border); border-radius: var(--radius-sm); max-height: 200px; overflow-y: auto; box-shadow: 0 4px 6px rgba(0,0,0,0.3); margin-top: 5px;"></div>
+        /* Autocomplete Box Customization */
+        .autocomplete-items div {
+            padding: 12px 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+            color: #1a1c1f;
+            transition: all 0.2s;
+            background: white;
+            font-size: 14px;
+        }
+        .autocomplete-items div:hover {
+            background-color: #faf9fd;
+            color: #5144d4;
+        }
+        .autocomplete-items div:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body class="bg-[#faf9fd] text-[#1a1c1f] pb-24 md:pb-0 selection:bg-[#5144d4]/20">
 
-        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">
-          ¿No encuentras tu evento en la lista? <a href="create-event.html" style="color: var(--primary); text-decoration: underline;">¡Añádelo tú mismo haciendo clic aquí!</a>
-        </p>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="form-group">
-          <label>Sector / Ubicación</label>
-          <input type="text" id="sell-section" class="form-control" placeholder="Ej: Campo VIP" required>
+    <!-- TopNavBar -->
+    <nav class="w-full top-0 sticky z-50 bg-[#faf9fd]/90 backdrop-blur-md shadow-[0_12px_32px_rgba(26,28,31,0.06)] relative border-b border-slate-200/50">
+        <div class="max-w-7xl mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="index.html" class="flex items-center gap-2 text-2xl font-black tracking-tighter text-[#5144d4]">
+                <span class="material-symbols-outlined hidden md:block">confirmation_number</span>
+                SafeTicket
+            </a>
+            
+                    <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-8 font-['Inter'] font-medium text-sm">
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="index.html">Explorar</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="marketplace.html">Comprar</a>
+            <a class="text-[#5144d4] font-bold border-b-2 border-[#5144d4] pb-1 transition-colors duration-200" href="sell.html">Vender</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="dashboard.html">Mi Actividad</a>
+            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="profile.html">Mi Perfil</a>
         </div>
-        <div class="form-group">
-          <label>Fila / Asiento (Opcional)</label>
-          <input type="text" id="sell-seat" class="form-control" placeholder="Ej: Fila 10, Asiento 2">
+        <!-- Actions -->
+        <div id="nav-desktop-actions" class="flex items-center gap-4">
+                <a href="chats.html" class="hidden md:block text-sm font-semibold text-[#1a1c1f] hover:text-[#5144d4] transition-colors">
+                  <span class="material-symbols-outlined">chat</span>
+                </a>
+                <a href="login.html" class="hidden md:block text-sm font-semibold hover:text-[#5144d4] transition-colors">Cerrar Sesión</a>
+            </div>
         </div>
-      </div>
+    </nav>
 
-      <div class="form-group" style="margin-top: 1rem;">
-        <label>Formato de la Entrada</label>
-        <select id="sell-format" class="form-control" required>
-          <option value="" disabled selected>Selecciona el formato</option>
-          <option value="pdf">Entrada Digital (PDF con código de barras/QR)</option>
-          <option value="app">Transferencia en App (Ej: Quentro, AllAccess)</option>
-          <option value="fisica">Entrada Física (Punto de encuentro)</option>
-        </select>
-      </div>
-
-
-
-      <div class="form-group" style="margin-top: 2rem;">
-        <label>Precio de Venta ($)</label>
-        <div style="position: relative;">
-          <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem;">$</span>
-          <input type="number" id="sell-price" class="form-control" style="padding-left: 2.5rem; font-size: 1.2rem; font-weight: bold;" placeholder="0" required>
+    <main class="max-w-xl mx-auto px-6 pt-12 pb-20">
+        
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-black tracking-tight text-[#1a1c1f] mb-3">Publicar tu Entrada</h1>
+            <p class="text-slate-500 text-[15px] font-medium leading-relaxed max-w-md mx-auto">Vende tu entrada de forma rápida y segura. Recibe tu dinero directamente en tu cuenta bancaria.</p>
         </div>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">La comisión de la plataforma (8%) será descontada de este valor al momento de la venta.</p>
-      </div>
 
-      <button type="submit" id="btn-submit-sell" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 2rem;">
-        Publicar Entrada <i class="ph-bold ph-arrow-right"></i>
-      </button>
-      <p id="sell-error-msg" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
+        <!-- Verified Banner (hidden by default) -->
+        <div id="seller-verified-banner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-5 mb-8 shadow-sm">
+            <div class="flex gap-4 items-start">
+                <span class="material-symbols-outlined text-emerald-600 text-3xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                <div>
+                    <h3 class="font-bold text-emerald-800 mb-1">Vendedor Verificado</h3>
+                    <p class="text-sm text-emerald-700 leading-relaxed">Tu identidad ha sido verificada. Tus publicaciones tendrán el sello "Confiable", agilizando tus posibles ventas.</p>
+                </div>
+            </div>
+        </div>
 
-    </form>
-  </main>
+        <!-- Form Container -->
+        <div class="bg-white rounded-[32px] p-8 md:p-10 shadow-[0_8px_30px_rgba(26,28,31,0.04)] border border-slate-100">
+            <form id="sell-form" class="flex flex-col gap-6">
+                
+                <!-- Event Selection -->
+                <div class="relative">
+                    <label class="block text-sm font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">¿A qué evento pertenece tu entrada?</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+                        <input type="text" id="sell-event-input" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 pl-11 pr-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Escribe para buscar tu evento..." required autocomplete="off">
+                        <input type="hidden" id="sell-event-id" required>
+                    </div>
+                    
+                    <!-- Autocomplete dropdown -->
+                    <div id="autocomplete-list" class="hidden absolute left-0 right-0 z-50 bg-white border border-slate-200 rounded-xl max-h-[200px] overflow-y-auto shadow-[0_12px_24px_rgba(26,28,31,0.08)] mt-2"></div>
+                    
+                    <p class="text-[13px] text-slate-500 font-medium mt-3">
+                        ¿No encuentras tu evento? <a href="create-event.html" class="text-[#5144d4] hover:underline font-bold">¡Añádelo tú mismo haciendo clic aquí!</a>
+                    </p>
+                </div>
 
-  <!-- Protector de Ruta -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-client.js?v=4"></script>
-  <script src="js/auth-guard.js"></script>
-  <script src="js/auth-ui.js"></script>
-  <script src="js/sell.js?v=2"></script>
-  <!-- Mobile Bottom Nav -->
-  <div class="mobile-bottom-nav">
-    <div class="mobile-nav-container">
-      <a href="marketplace.html" class="mobile-nav-item" id="mob-nav-marketplace">
-        <i class="ph ph-calendar-star"></i>
-        <span>Eventos</span>
-      </a>
-      <a href="tickets.html" class="mobile-nav-item" id="mob-nav-tickets">
-        <i class="ph ph-ticket"></i>
-        <span>Entradas</span>
-      </a>
-      <div class="mobile-nav-fab-container">
-        <a href="sell.html" class="mobile-nav-fab">
-          <i class="ph ph-plus"></i>
+                <!-- Grid for Section and Seat -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
+                    <div>
+                        <label class="block text-sm font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Sector / Ubicación</label>
+                        <input type="text" id="sell-section" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Ej: Campo VIP" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide flex items-center gap-2">
+                            Fila / Asiento 
+                            <span class="text-[10px] bg-slate-100 text-slate-500 py-0.5 px-2 rounded-md tracking-normal normal-case">Opcional</span>
+                        </label>
+                        <input type="text" id="sell-seat" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="Ej: Fila 10, Asiento 2">
+                    </div>
+                </div>
+
+                <!-- Ticket Format -->
+                <div class="mt-2">
+                    <label class="block text-sm font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Formato de la Entrada</label>
+                    <div class="relative">
+                        <select id="sell-format" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-[15px] font-medium rounded-xl py-3.5 px-4 appearance-none focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none cursor-pointer" required>
+                            <option value="" disabled selected>Selecciona cómo la enviarás</option>
+                            <option value="pdf">🎫 Entrada Digital (PDF con código QR)</option>
+                            <option value="app">📱 Transferencia en App (Ej: Quentro)</option>
+                            <option value="fisica">🤝 Entrada Física (Punto de encuentro)</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                    </div>
+                </div>
+
+                <!-- Price -->
+                <div class="mt-2">
+                    <label class="block text-sm font-bold text-[#1a1c1f] mb-2 uppercase tracking-wide">Precio de Venta</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-lg">$</span>
+                        <input type="number" id="sell-price" class="w-full bg-[#f8f9fa] border border-slate-200 text-[#1a1c1f] text-lg font-black tracking-tight rounded-xl py-4 pl-9 pr-4 focus:bg-white focus:border-[#5144d4] focus:ring-4 focus:ring-[#5144d4]/10 transition-all outline-none" placeholder="0" required>
+                    </div>
+                    <div class="flex items-start gap-2 mt-3 bg-[#faf9fd] p-3 rounded-lg border border-slate-100">
+                        <span class="material-symbols-outlined text-[#5144d4] text-[18px]">info</span>
+                        <p class="text-[12px] font-medium text-slate-500 leading-snug">Se descontará un 8% de comisión de la plataforma al momento de confirmarse la venta exitosa del ticket.</p>
+                    </div>
+                </div>
+
+                <!-- Submit and Error -->
+                <div class="mt-6 pt-6 border-t border-slate-100">
+                    <button type="submit" id="btn-submit-sell" class="w-full bg-[#5144d4] text-white font-bold text-lg py-4 rounded-xl flex justify-center items-center gap-2 hover:bg-[#4338ca] hover:-translate-y-1 shadow-[0_8px_20px_rgba(81,68,212,0.3)] transition-all active:scale-[0.98]">
+                        Publicar Entrada
+                        <span class="material-symbols-outlined text-[1.2rem]">arrow_forward</span>
+                    </button>
+                    <p id="sell-error-msg" class="text-red-500 font-medium text-sm text-center mt-4 hidden"></p>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#faf9fd] border-t border-slate-200/60 pt-10 pb-8 mt-4">
+        <div class="max-w-7xl mx-auto px-6 md:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-[12px] font-medium text-slate-400">&copy; 2026 SaFeBeat. Todos los derechos reservados.</p>
+                <div class="flex items-center gap-1.5 text-emerald-600 font-bold text-[10px] tracking-widest uppercase">
+                    <span class="material-symbols-outlined text-[1rem]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                    SEGURIDAD GARANTIZADA
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Protector de Ruta -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js?v=4"></script>
+    <script src="js/auth-guard.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="js/sell.js?v=2"></script>
+
+    <!-- Bottom Navigation Bar (Mobile Only) -->
+    <nav class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-4 pb-6 pt-3 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
+        <a href="index.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+            <span class="material-symbols-outlined text-2xl">home</span>
+            <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Inicio</span>
         </a>
-      </div>
-      <a href="dashboard.html" class="mobile-nav-item" id="mob-nav-dashboard">
-        <i class="ph ph-check-square-offset"></i>
-        <span>Actividad</span>
-      </a>
-      <a href="profile.html" class="mobile-nav-item" id="mob-nav-profile">
-        <i class="ph ph-user"></i>
-        <span>Perfil</span>
-      </a>
-    </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const path = window.location.pathname;
-      if (path.includes('marketplace')) {
-        document.getElementById('mob-nav-marketplace')?.classList.add('active');
-      } else if (path.includes('tickets')) {
-        document.getElementById('mob-nav-tickets')?.classList.add('active');
-      } else if (path.includes('dashboard')) {
-        document.getElementById('mob-nav-dashboard')?.classList.add('active');
-      } else if (path.includes('profile')) {
-        document.getElementById('mob-nav-profile')?.classList.add('active');
-      }
-    });
-  </script>
+        <a href="marketplace.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+            <span class="material-symbols-outlined text-2xl">explore</span>
+            <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Explorar</span>
+        </a>
+        <a href="sell.html" class="flex flex-col items-center justify-center mt[-8px] text-white bg-[#5144d4] shadow-lg shadow-indigo-500/30 p-3 rounded-full active:scale-90 duration-200" style="transform: translateY(-8px);">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">add</span>
+        </a>
+        <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+            <span class="material-symbols-outlined text-2xl">confirmation_number</span>
+            <span class="font-bold text-[10px] uppercase tracking-widest mt-1">ACTIVIDAD</span>
+        </a>
+        <a href="profile.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-2 hover:opacity-100 transition-opacity active:scale-90 duration-200">
+            <span class="material-symbols-outlined text-2xl">person</span>
+            <span class="font-bold text-[10px] uppercase tracking-widest mt-1">Perfil</span>
+        </a>
+    </nav>
 </body>
 </html>
-
-
-
-
-
-
-
-
 
 
 
