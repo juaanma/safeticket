@@ -129,6 +129,14 @@
 </head>
 <body>
 
+  <div id="fake-404-ui" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; background: var(--bg-main);">
+    <h1 style="font-size: 8rem; margin: 0; color: var(--text-main); line-height: 1;"><i class="ph-fill ph-warning-circle" style="color: #ef4444; font-size: 6rem; vertical-align: middle; margin-right: 1rem;"></i>404</h1>
+    <h2 style="color: var(--text-main); font-size: 2rem; margin-top: 1rem; margin-bottom: 0.5rem;">Página no encontrada</h2>
+    <p style="color: var(--text-muted); margin-bottom: 2rem; max-width: 400px; line-height: 1.5;">Lo sentimos, la ruta que intentas acceder no existe en nuestro servidor o ha sido movida.</p>
+    <a href="index.html" class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1rem; border-radius: 50px;">Regresar al Inicio</a>
+  </div>
+
+  <div id="admin-secret-ui" style="display: none;">
   <!-- Navbar -->
   <nav class="navbar">
     <div class="container nav-container">
@@ -198,6 +206,7 @@
     </div>
 
   </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase-client.js?v=4"></script>

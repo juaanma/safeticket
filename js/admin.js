@@ -4,22 +4,27 @@ const ADMIN_EMAIL = 'safebeatcontacto@gmail.com';
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!window.MiSupabase) {
-    alert("Error de conexión con la base de datos.");
     return;
   }
 
   const { data: sessionData, error: sessionError } = await window.MiSupabase.auth.getSession();
   if (sessionError || !sessionData || !sessionData.session) {
-    window.location.href = 'login.html';
+    // Si no hay sesión, simplemente dejamos la página 404 visible
     return;
   }
 
   const userEmail = sessionData.session.user.email;
   if (userEmail !== ADMIN_EMAIL) {
-    alert("Acceso Denegado: No posees privilegios de administrador.");
-    window.location.href = 'index.html';
+    // Si no es el admin, dejamos la página 404 visible sin dar explicaciones
     return;
   }
+
+  // Si es el admin: Ocultar 404 y mostrar la interfaz de admin
+  const fake404 = document.getElementById('fake-404-ui');
+  const adminSecret = document.getElementById('admin-secret-ui');
+  
+  if (fake404) fake404.style.display = 'none';
+  if (adminSecret) adminSecret.style.display = 'block';
 
   // Load everything
   await loadAdminData();
