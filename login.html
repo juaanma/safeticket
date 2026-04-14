@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Iniciar SesiÃ³n | SaFeBeat</title>
+  <title>Iniciar Sesión | SafeTicket</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <style>
@@ -143,35 +143,44 @@
   </style>
 </head>
 <body class="bg-background text-on-surface pb-24 md:pb-0 selection:bg-primary/20">
-  <div class="auth-container">
-    <div class="auth-box">
-      <a href="index.html" class="logo-center">
-        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
+  <div class="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-background">
+    <!-- Decorative background glow -->
+    <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[6rem] pointer-events-none transform translate-x-1/3 -translate-y-1/3"></div>
+    <div class="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-tertiary/10 rounded-full blur-[6rem] pointer-events-none transform -translate-x-1/3 translate-y-1/3"></div>
+
+    <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-[2rem] p-8 md:p-12 w-full max-w-[28rem] shadow-2xl relative z-10 backdrop-blur-md">
+      <a href="index.html" class="flex justify-center items-center gap-2 text-2xl font-black mb-8 text-[#5144d4] dark:text-[#7A70FF] transition-transform active:scale-95 hover:opacity-90">
+        <span class="material-symbols-outlined text-[1.8rem]">confirmation_number</span>
+        SafeTicket
       </a>
       
-      <div class="auth-title">
-        <h1>Bienvenido de nuevo</h1>
-        <p>Continúa donde lo dejaste</p>
+      <div class="text-center mb-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-on-surface mb-2 tracking-tight">Bienvenido de nuevo</h1>
+        <p class="text-on-surface-variant text-sm md:text-base">Continúa donde lo dejaste</p>
       </div>
 
-
-      <form id="login-form">
-        <div class="form-group">
-          <label>Correo Electrónico</label>
-          <input type="email" id="login-email" class="form-control" placeholder="juan@ejemplo.com" required>
+      <form id="login-form" class="space-y-5">
+        <div>
+          <label class="block text-sm font-semibold text-on-surface mb-2 ml-1">Correo Electrónico</label>
+          <input type="email" id="login-email" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3.5 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm" placeholder="juan@ejemplo.com" required>
         </div>
-        <div class="form-group" style="margin-bottom: 0.5rem;">
-          <label>Contraseña</label>
-          <input type="password" id="login-password" class="form-control" placeholder="********" required>
+        <div>
+          <label class="block text-sm font-semibold text-on-surface mb-2 ml-1">Contraseña</label>
+          <input type="password" id="login-password" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3.5 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm" placeholder="••••••••" required>
+          <div class="flex justify-end mt-2 mr-1">
+             <a href="#" class="text-xs font-semibold text-primary hover:text-[#4338ca] transition-colors">¿Olvidaste tu contraseña?</a>
+          </div>
         </div>
-        <a href="#" class="forgot-link" style="margin-bottom: 1.5rem;">¿Olvidaste tu contraseña?</a>
 
-        <button type="submit" id="btn-login" class="btn btn-primary" style="width: 100%;">Ingresar <i class="ph-bold ph-arrow-right"></i></button>
-        <p id="error-msg" style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
+        <button type="submit" id="btn-login" class="w-full bg-primary text-on-primary py-3.5 mt-2 rounded-[1rem] font-bold shadow-lg shadow-primary/20 hover:bg-[#4338ca] hover:shadow-primary/30 active:scale-95 transition-all flex justify-center items-center gap-2">
+          Ingresar
+          <span class="material-symbols-outlined text-[1.25rem]">arrow_forward</span>
+        </button>
+        <p id="error-msg" class="text-error text-[13px] text-center mt-4 hidden font-medium bg-error/10 py-2 px-3 rounded-lg"></p>
       </form>
 
-      <div class="auth-footer">
-        ¿Aún no tienes cuenta? <a href="register.html">Regístrate</a>
+      <div class="text-center mt-8 text-on-surface-variant text-sm border-t border-outline-variant/20 pt-6">
+        ¿Aún no tienes cuenta? <a href="register.html" class="text-primary font-bold hover:underline ml-1">Regístrate</a>
       </div>
     </div>
   </div>

@@ -4,200 +4,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Regístrate | SaFeBeat</title>
+  <title>Regístrate | SafeTicket</title>
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Tailwind setup -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
   <style>
-    .auth-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
-
-    .auth-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 3rem;
-      width: 100%;
-      max-width: 480px;
-      box-shadow: var(--shadow);
-    }
-
-    .auth-title {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
-    .auth-title h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .auth-title p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .form-control {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      border-radius: var(--radius-sm);
-      background: var(--bg-color);
-      border: 1px solid var(--border);
-      color: var(--text-main);
-      font-family: inherit;
-    }
-
-    .form-control:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .auth-footer {
-      text-align: center;
-      margin-top: 1.5rem;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .auth-footer a {
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    .social-auth {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .btn-social {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      background: var(--bg-color);
-      border: 1px solid var(--border);
-      padding: 0.8rem;
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      color: var(--text-main);
-      transition: var(--transition);
-      font-weight: 500;
-    }
-
-    .btn-social:hover {
-      border-color: var(--primary);
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      margin-bottom: 2rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .divider::before {
-      margin-right: 1em;
-    }
-
-    .divider::after {
-      margin-left: 1em;
-    }
-
-    .logo-center {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 2rem;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--text-main);
-      gap: 0.5rem;
-    }
-
-    .logo-center span {
-      color: var(--primary);
-    }
+      body { font-family: 'Inter', sans-serif; }
+      .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+          display: inline-block;
+          line-height: 1;
+      }
+      ::-webkit-scrollbar {
+          display: none;
+      }
   </style>
-<script src="js/theme.js"></script>
+  <script src="js/theme.js"></script>
 </head>
 
 <body>
-  <div class="auth-container">
-    <div class="auth-box">
-      <a href="index.html" class="logo-center">
-        <i class="ph-fill ph-ticket"></i> SaFe<span>Beat</span>
-      </a>
+  <div class="min-h-[100dvh] flex items-center justify-center p-4 relative overflow-hidden bg-background">
+    <!-- Decorative background glow -->
+    <div class="absolute top-0 right-0 w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[6rem] pointer-events-none transform translate-x-1/3 -translate-y-1/3"></div>
+    <div class="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-tertiary/10 rounded-full blur-[6rem] pointer-events-none transform -translate-x-1/3 translate-y-1/3"></div>
 
-      <div class="auth-title">
-        <h1>Crea tu cuenta</h1>
-        <p>Únete a la plataforma más segura de reventa</p>
+    <div class="bg-surface-container-lowest border border-outline-variant/30 rounded-[2rem] p-8 md:p-12 w-full max-w-[28rem] shadow-2xl relative z-10 backdrop-blur-md">
+      <a href="index.html" class="flex justify-center items-center gap-2 text-2xl font-black mb-6 text-[#5144d4] dark:text-[#7A70FF] transition-transform active:scale-95 hover:opacity-90">
+        <span class="material-symbols-outlined text-[1.8rem]">confirmation_number</span>
+        SafeTicket
+      </a>
+      
+      <div class="text-center mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-on-surface mb-2 tracking-tight">Crea tu cuenta</h1>
+        <p class="text-on-surface-variant text-sm md:text-base">Únete a la plataforma más segura de reventa</p>
       </div>
 
-
-      <form id="register-form">
-        <div class="form-group">
-          <label>Nombre y Apellido (Como en tu DNI)</label>
-          <input type="text" id="reg-name" class="form-control" placeholder="Juan Pérez" required>
+      <form id="register-form" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold text-on-surface mb-1.5 ml-1">Nombre y Apellido <span class="text-[11px] text-on-surface-variant font-medium opacity-80">(Como en tu DNI)</span></label>
+          <input type="text" id="reg-name" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm" placeholder="Juan Pérez" required>
         </div>
-        <div class="form-group">
-          <label>Correo Electrónico</label>
-          <input type="email" id="reg-email" class="form-control" placeholder="juan@ejemplo.com" required>
+        <div>
+          <label class="block text-sm font-semibold text-on-surface mb-1.5 ml-1">Correo Electrónico</label>
+          <input type="email" id="reg-email" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm" placeholder="juan@ejemplo.com" required>
         </div>
-        <div class="form-group">
-          <label>Contraseña</label>
-          <div style="position: relative;">
-            <input type="password" id="reg-password" class="form-control" placeholder="••••••••" required style="padding-right: 2.5rem;">
-            <button type="button" class="toggle-password" data-target="reg-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer;"><i class="ph-bold ph-eye"></i></button>
+        <div>
+          <label class="block text-sm font-semibold text-on-surface mb-1.5 ml-1">Contraseña</label>
+          <div class="relative">
+            <input type="password" id="reg-password" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 pr-12 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm" placeholder="••••••••" required>
+            <button type="button" class="toggle-password absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors focus:outline-none p-2 rounded-full hover:bg-surface-container" data-target="reg-password">
+               <span class="material-symbols-outlined text-[1.25rem] block pointer-events-none">visibility</span>
+            </button>
           </div>
         </div>
-        <div class="form-group">
-          <label>Repetir Contraseña</label>
-          <div style="position: relative;">
-            <input type="password" id="reg-password-confirm" class="form-control" placeholder="••••••••" required style="padding-right: 2.5rem;">
-            <button type="button" class="toggle-password" data-target="reg-password-confirm" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.2rem; color: var(--text-muted); cursor: pointer;"><i class="ph-bold ph-eye"></i></button>
+        <div>
+          <label class="block text-sm font-semibold text-on-surface mb-1.5 ml-1">Repetir Contraseña</label>
+          <div class="relative">
+            <input type="password" id="reg-password-confirm" class="w-full bg-surface-container-low border border-outline-variant/30 rounded-xl px-4 py-3 pr-12 text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm" placeholder="••••••••" required>
+            <button type="button" class="toggle-password absolute right-2 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors focus:outline-none p-2 rounded-full hover:bg-surface-container" data-target="reg-password-confirm">
+               <span class="material-symbols-outlined text-[1.25rem] block pointer-events-none">visibility</span>
+            </button>
           </div>
         </div>
 
-        <div
-          style="display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
-          <input type="checkbox" required id="terms" style="margin-top: 0.2rem; accent-color: var(--primary);">
-          <label for="terms">Acepto los <a href="#" style="color: var(--primary);">Términos y Condiciones</a> y autorizo
-            la validación de mi identidad para transacciones seguras.</label>
+        <div class="flex items-start gap-2 pt-2 pb-1">
+          <input type="checkbox" required id="terms" class="mt-[0.2rem] rounded text-primary focus:ring-primary bg-surface-container-low border-outline-variant/50 w-4 h-4 cursor-pointer">
+          <label for="terms" class="text-xs text-on-surface-variant leading-relaxed cursor-pointer select-none">
+            Acepto los <a href="#" class="text-primary font-bold hover:underline">Términos y Condiciones</a> y autorizo la validación de mi identidad.
+          </label>
         </div>
 
-        <button type="submit" id="btn-submit" class="btn btn-primary" style="width: 100%;">Registrarme <i
-            class="ph-bold ph-arrow-right"></i></button>
-        <p id="error-msg"
-          style="color: #ef4444; margin-top: 1rem; font-size: 0.9rem; text-align: center; display: none;"></p>
+        <button type="submit" id="btn-submit" class="w-full bg-primary text-on-primary py-3.5 mt-2 rounded-[1rem] font-bold shadow-lg shadow-primary/20 hover:bg-[#4338ca] hover:shadow-primary/30 active:scale-95 transition-all flex justify-center items-center gap-2">
+          Registrarme
+          <span class="material-symbols-outlined text-[1.25rem]">arrow_forward</span>
+        </button>
+        <p id="error-msg" class="text-error text-[13px] text-center mt-3 hidden font-medium bg-error/10 py-2 px-3 rounded-lg"></p>
       </form>
 
-      <div class="auth-footer">
-        ¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a>
+      <div class="text-center mt-6 text-on-surface-variant text-sm border-t border-outline-variant/20 pt-5">
+        ¿Ya tienes una cuenta? <a href="login.html" class="text-primary font-bold hover:underline ml-1">Inicia sesión</a>
       </div>
     </div>
   </div>
@@ -220,15 +109,13 @@
         btn.addEventListener('click', function() {
           const targetId = this.getAttribute('data-target');
           const input = document.getElementById(targetId);
-          const icon = this.querySelector('i');
+          const icon = this.querySelector('span');
           if (input.type === 'password') {
             input.type = 'text';
-            icon.classList.remove('ph-eye');
-            icon.classList.add('ph-eye-closed');  // Usando el ícono tachado de Phosphor
+            icon.innerText = 'visibility_off';
           } else {
             input.type = 'password';
-            icon.classList.remove('ph-eye-closed');
-            icon.classList.add('ph-eye');
+            icon.innerText = 'visibility';
           }
         });
       });
