@@ -4,7 +4,40 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (!window.MiSupabase) return;
 
   const tableBody = document.getElementById('dashboard-tx-list');
-  if (!tableBody) return;
+  if (tableBody) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="5" class="py-12 text-center text-slate-400">
+          <div class="flex flex-col items-center gap-2">
+            <span class="material-symbols-outlined text-4xl animate-spin">refresh</span>
+            <span>Cargando tu actividad...</span>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+
+  const statValues = document.querySelectorAll('.stat-value');
+  statValues.forEach(el => el.innerText = '...');
+  
+  // Intento de carga ultra-rápida desde localStorage (fluidez UI)
+  const getSessionData = () => {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('sb-') && key.endsWith('-auth-token')) {
+        try { return JSON.parse(localStorage.getItem(key)); } catch(e) {}
+      }
+    }
+    return null;
+  };
+  const sessionData = getSessionData();
+  if (sessionData && sessionData.user) {
+    const cachedName = (sessionData.user.user_metadata && sessionData.user.user_metadata.full_name) ? sessionData.user.user_metadata.full_name : 'Usuario';
+    const profileNameEl = document.getElementById('dashboard-user-name');
+    const profileInitialsEl = document.getElementById('dashboard-user-initials');
+    if (profileNameEl) profileNameEl.innerText = cachedName;
+    if (profileInitialsEl) profileInitialsEl.innerText = cachedName.substring(0, 2).toUpperCase();
+  }
 
   const { data: userData } = await window.MiSupabase.auth.getUser();
   if (!userData || !userData.user) return;
@@ -33,6 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (profile && profile.is_verified) {
     const wrapper = document.getElementById('profile-status-wrapper');
     if (wrapper) {
+      wrapper.style.display = 'flex';
       wrapper.style.background = 'rgba(16, 185, 129, 0.05)';
       wrapper.style.borderColor = 'rgba(16, 185, 129, 0.3)';
     }
@@ -49,6 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else if (isKycPending) {
     const wrapper = document.getElementById('profile-status-wrapper');
     if (wrapper) {
+      wrapper.style.display = 'flex';
       wrapper.style.background = 'rgba(59, 130, 246, 0.05)';
       wrapper.style.borderColor = 'rgba(59, 130, 246, 0.3)';
     }
@@ -62,6 +97,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (btnKycVerify) btnKycVerify.style.display = 'none';
     const textDesc = document.getElementById('profile-status-text');
     if(textDesc) textDesc.innerHTML = 'Tus documentos están en evaluación.';
+  } else {
+    const wrapper = document.getElementById('profile-status-wrapper');
+    if (wrapper) {
+      wrapper.style.display = 'flex';
+    }
   }
 
   // Load avatar desde base de datos remota si existe

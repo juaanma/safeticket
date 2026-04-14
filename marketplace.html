@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -71,36 +71,36 @@
     <main class="max-w-7xl mx-auto px-6 md:px-8 pt-10 pb-16">
 
         <!-- Header Section -->
-        <div class="flex md:flex-row flex-col justify-between items-start md:items-center mb-8 gap-4">
+        <div class="flex md:flex-row flex-col justify-between items-start md:items-center mb-4 md:mb-8 gap-2 md:gap-4 hidden md:flex">
             <div>
-                <h1 class="text-4xl md:text-5xl font-black tracking-tight text-[#1a1c1f] mb-3">Entradas Disponibles</h1>
-                <p class="text-slate-500 text-sm md:text-base font-medium">Explora todas las entradas publicadas por
+                <h1 class="text-2xl md:text-5xl font-black tracking-tight text-[#1a1c1f] mb-1 md:mb-3">Entradas Disponibles</h1>
+                <p class="text-slate-500 hidden md:block text-sm md:text-base font-medium">Explora todas las entradas publicadas por
                     usuarios verificados.</p>
             </div>
             <!-- Trust Badge -->
             <div
-                class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full flex items-center gap-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider border border-emerald-200 shadow-sm shrink-0">
-                <span class="material-symbols-outlined text-[1.1rem]"
+                class="bg-emerald-50 text-emerald-700 px-3 py-1.5 md:px-4 md:py-2 rounded-full flex items-center gap-1.5 md:gap-2 text-[8px] md:text-[9px] sm:text-xs font-bold uppercase tracking-wider border border-emerald-200 shadow-sm shrink-0">
+                <span class="material-symbols-outlined text-[0.9rem] md:text-[1.1rem]"
                     style="font-variation-settings: 'FILL' 1;">security</span>
                 GARANTÍA ASEGURADA
             </div>
         </div>
 
         <!-- Search and Filters Bar -->
-        <div class="flex flex-col md:flex-row gap-3 mb-10 w-full z-10 relative">
+        <div class="flex flex-col md:flex-row gap-2 md:gap-3 mb-6 md:mb-10 w-full z-10 relative">
             <!-- Search -->
             <div
-                class="flex-1 bg-white rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 flex items-center px-4 py-3 h-[52px]">
-                <span class="material-symbols-outlined text-slate-400 mr-3 text-xl">search</span>
+                class="flex-1 bg-white rounded-[12px] sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 flex items-center px-3 md:px-4 py-0 md:py-3 h-10 md:h-[52px]">
+                <span class="material-symbols-outlined text-slate-400 mr-2 md:mr-3 text-lg md:text-xl">search</span>
                 <input type="text" id="search-filter" placeholder="Buscar entrada por evento o artista..."
-                    class="bg-transparent border-none outline-none w-full text-[15px] font-medium text-slate-800 placeholder:text-slate-400 focus:ring-0 p-0">
+                    class="bg-transparent border-none outline-none w-full text-[13px] md:text-[15px] font-medium text-slate-800 placeholder:text-slate-400 focus:ring-0 p-0">
             </div>
 
-            <div class="flex gap-3 w-full md:w-[420px]">
+            <div class="flex gap-2 md:gap-3 w-full md:w-[420px]">
                 <!-- Género Filter -->
                 <div class="relative flex-1">
                     <select id="genre-filter"
-                        class="w-full bg-white !bg-none rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-4 py-3 h-[52px] text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-10">
+                        class="w-full bg-white !bg-none rounded-[12px] sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-3 md:px-4 py-0 md:py-3 h-10 md:h-[52px] text-[12px] md:text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-8 md:pr-10">
                         <option value="">Género (Todos)</option>
                         <option value="Progressive">Progressive</option>
                         <option value="Techno">Techno</option>
@@ -108,19 +108,19 @@
                         <option value="Melodic Techno">Melodic Techno</option>
                     </select>
                     <span
-                        class="material-symbols-outlined text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">keyboard_arrow_down</span>
+                        class="material-symbols-outlined text-slate-400 absolute right-2 md:right-4 top-1/2 -translate-y-1/2 pointer-events-none text-lg md:text-xl">keyboard_arrow_down</span>
                 </div>
 
                 <!-- Price Sort -->
                 <div class="relative flex-1">
                     <select id="price-sort"
-                        class="w-full bg-white !bg-none rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-4 py-3 h-[52px] text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-10">
+                        class="w-full bg-white !bg-none rounded-[12px] sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-3 md:px-4 py-0 md:py-3 h-10 md:h-[52px] text-[12px] md:text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-8 md:pr-10">
                         <option value="">Precio</option>
                         <option value="asc">Más barato</option>
                         <option value="desc">Más caro</option>
                     </select>
                     <span
-                        class="material-symbols-outlined text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-xl">swap_vert</span>
+                        class="material-symbols-outlined text-slate-400 absolute right-2 md:right-3 top-1/2 -translate-y-1/2 pointer-events-none text-lg md:text-xl">swap_vert</span>
                 </div>
             </div>
         </div>
@@ -128,26 +128,14 @@
         <!-- Empty State -->
 
         <div id="tickets-grid-container"
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 min-h-[200px] mb-16">
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-8 min-h-[200px] mb-16">
             <div class="col-span-full flex flex-col items-center justify-center text-slate-400 py-12">
                 <span class="material-symbols-outlined text-4xl animate-spin mb-4">refresh</span>
                 <p class="font-medium">Buscando Entradas...</p>
             </div>
         </div>
 
-        <!-- Popular Events Section -->
-        <div class="flex justify-between items-end mb-6 px-1">
-            <h2 class="text-[1.35rem] font-black tracking-tight text-[#1a1c1f]">Eventos populares</h2>
-            <a href="index.html" class="text-[#5144d4] font-bold text-[15px] hover:underline mb-1">Ver todos</a>
-        </div>
 
-        <!-- Grid de eventos (Dinámico) -->
-        <div class="events-grid grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 min-h-[400px]">
-            <div class="col-span-full flex flex-col items-center justify-center text-slate-400 py-12">
-                <span class="material-symbols-outlined text-4xl animate-spin mb-4">refresh</span>
-                <p class="font-medium">Cargando eventos populares...</p>
-            </div>
-        </div>
     </main>
 
     <!-- Footer -->
@@ -239,10 +227,9 @@
                 style="font-variation-settings: 'FILL' 1;">explore</span>
             <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Explorar</span>
         </a>
-        <a href="sell.html"
-            class="flex flex-col items-center justify-center -mt-4 text-white bg-primary shadow-lg p-2 rounded-full active:scale-90 duration-200"
-            style="transform: translateY(-8px);">
-            <span class="material-symbols-outlined text-[1.35rem]" style="font-variation-settings: 'FILL' 1;">add</span>
+        <a href="sell.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+            <span class="material-symbols-outlined text-[1.35rem]">add_circle</span>
+            <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Vender</span>
         </a>
         <a href="dashboard.html"
             class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">

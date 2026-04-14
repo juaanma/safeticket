@@ -2,6 +2,28 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!window.MiSupabase) return;
+  // Intento de carga ultra-rápida desde localStorage (fluidez UI)
+  const getSessionData = () => {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('sb-') && key.endsWith('-auth-token')) {
+        try { return JSON.parse(localStorage.getItem(key)); } catch(e) {}
+      }
+    }
+    return null;
+  };
+  const sessionData = getSessionData();
+  if (sessionData && sessionData.user) {
+    const cachedName = (sessionData.user.user_metadata && sessionData.user.user_metadata.full_name) ? sessionData.user.user_metadata.full_name : 'Usuario';
+    const profileNameEl = document.getElementById('profile-user-name');
+    const profileInitialsEl = document.getElementById('profile-user-initials');
+    const emailHeaderEl = document.getElementById('profile-user-email-header');
+    const emailInput = document.getElementById('profile-email');
+    if (profileNameEl) profileNameEl.innerText = cachedName;
+    if (profileInitialsEl) profileInitialsEl.innerText = cachedName.substring(0, 2).toUpperCase();
+    if (emailHeaderEl) emailHeaderEl.innerText = sessionData.user.email;
+    if (emailInput) emailInput.value = sessionData.user.email;
+  }
 
   const { data: userData, error: userError } = await window.MiSupabase.auth.getUser();
   if (userError || !userData || !userData.user) return;

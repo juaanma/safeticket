@@ -84,35 +84,34 @@ document.addEventListener('DOMContentLoaded', async () => {
         const avatarImg = pData.avatar ? `<img src="${pData.avatar}" class="w-6 h-6 rounded-full object-cover shadow-sm ring-2 ring-white">` : `<span class="material-symbols-outlined text-[#10b981] text-xl">verified_user</span>`;
         
         const html = `
-          <div class="bg-white rounded-[24px] overflow-hidden border border-slate-100 shadow-[0_8px_30px_rgba(26,28,31,0.04)] flex flex-col hover:shadow-[0_12px_40px_rgba(26,28,31,0.08)] transition-shadow">
-            <div class="h-[120px] bg-cover bg-center relative" style="background-image: url('${ev.image_url || 'https://images.unsplash.com/photo-1540039155732-d6749b9325eb?w=800'}');">
-              <div class="absolute inset-0 bg-black/20"></div>
-              <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white px-2.5 py-1 rounded-lg text-xs font-bold shadow-sm tracking-wide">
+          <a href="order.html?ticket_id=${ticket.id}" class="block bg-white rounded-[16px] md:rounded-[24px] overflow-hidden border border-slate-100 shadow-[0_4px_20px_rgba(26,28,31,0.04)] flex flex-row md:flex-col hover:shadow-[0_12px_40px_rgba(26,28,31,0.08)] transition-all active:scale-[0.98]">
+            <div class="w-[100px] sm:w-[140px] md:w-full h-auto min-h-[110px] md:h-[130px] bg-cover bg-center relative shrink-0" style="background-image: url('${ev.image_url || 'https://images.unsplash.com/photo-1540039155732-d6749b9325eb?w=800'}');">
+              <div class="absolute inset-0 bg-black/10"></div>
+              <div class="absolute top-2 left-2 md:top-3 md:right-3 md:left-auto bg-black/60 backdrop-blur-md text-white px-2 py-0.5 md:py-1 rounded-[6px] md:rounded-lg text-[9px] md:text-xs font-bold shadow-sm tracking-wide">
                 ${formatLabel}
               </div>
             </div>
-            <div class="p-6 flex-1 flex flex-col">
-              <div class="text-[#5144d4] text-[13px] font-black uppercase tracking-widest mb-1">${dateStr}</div>
-              <h3 class="font-bold text-[#1a1c1f] text-[1.1rem] leading-tight mb-2 line-clamp-2">${ev.title || 'Evento General'}</h3>
-              <div class="text-[13px] text-slate-500 font-medium mb-5 flex items-center gap-1.5 line-clamp-1"><span class="material-symbols-outlined text-[1rem]">location_on</span> ${ev.location || 'Coordinar con vendedor'}</div>
+            <div class="p-3 md:p-6 flex-1 flex flex-col justify-center md:justify-start min-w-0">
+              <div class="text-[#5144d4] text-[10px] md:text-[13px] font-black uppercase tracking-[0.1em] md:tracking-widest mb-0.5 md:mb-1 line-clamp-1">${dateStr}</div>
+              <h3 class="font-bold text-[#1a1c1f] text-[14px] md:text-[1.1rem] leading-[1.15] md:leading-tight mb-1 md:mb-2 line-clamp-2">${ev.title || 'Evento General'}</h3>
+              <div class="hidden md:flex text-[13px] text-slate-500 font-medium mb-5 items-center gap-1.5 line-clamp-1"><span class="material-symbols-outlined text-[1rem]">location_on</span> ${ev.location || 'Coordinar con vendedor'}</div>
               
-              <div class="bg-slate-50/80 border border-slate-200/60 p-4 rounded-xl mb-6 mt-auto">
-                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-[12px] text-slate-500 uppercase tracking-widest font-semibold">Sector</span>
-                    <span class="font-black text-slate-700 text-sm">${ticket.section}</span>
+              <div class="flex flex-col md:bg-slate-50/80 md:border md:border-slate-200/60 md:p-4 md:rounded-xl md:mt-auto">
+                 <div class="flex max-md:flex-col max-md:gap-0.5 md:justify-between md:items-center mb-1 md:mb-2">
+                    <span class="text-[11px] md:text-[12px] text-slate-500 font-medium md:uppercase md:tracking-widest md:font-semibold line-clamp-1"><span class="md:hidden font-bold text-slate-600">Sec:</span> ${ticket.section}</span>
+                    <span class="font-black text-[#5144d4] text-[16px] md:text-[1.15rem] leading-none">${priceStr}</span>
                  </div>
-                 <div class="flex justify-between items-center pt-2 border-t border-slate-200/50">
+                 <div class="hidden md:flex justify-between items-center pt-2 border-t border-slate-200/50">
                     <span class="text-[13px] font-medium text-slate-600 flex items-center gap-2">
                       ${avatarImg} <span class="truncate max-w-[80px]">${sellerSnippet}</span>
                     </span>
-                    <span class="font-black text-[#5144d4] text-[1.15rem]">${priceStr}</span>
                  </div>
               </div>
-              <a href="order.html?ticket_id=${ticket.id}" class="w-full bg-[#faf9fd] text-[#1a1c1f] font-bold py-3.5 rounded-[14px] hover:bg-slate-200 transition-colors text-center shadow-sm">
+              <div class="hidden md:flex w-full bg-[#faf9fd] text-[#1a1c1f] font-bold py-3.5 rounded-[14px] hover:bg-slate-200 transition-colors text-center shadow-sm justify-center items-center mt-6">
                  Comprar Ticket Seguro
-              </a>
+              </div>
             </div>
-          </div>
+          </a>
         `;
         
         container.insertAdjacentHTML('beforeend', html);
