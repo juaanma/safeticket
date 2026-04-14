@@ -1,5 +1,6 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -7,98 +8,127 @@
     <!-- Tailwind setup -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="js/tailwind-config.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
             display: inline-block;
             line-height: 1;
         }
-        ::-webkit-scrollbar { display: none; }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
     </style>
 </head>
+
 <body class="bg-[#faf9fd] text-[#1a1c1f] pb-24 md:pb-0 selection:bg-[#5144d4]/20">
 
     <!-- TopNavBar -->
-    <nav class="w-full top-0 sticky z-50 bg-[#faf9fd]/90 backdrop-blur-md shadow-[0_12px_32px_rgba(26,28,31,0.06)] relative border-b border-slate-200/50">
+    <nav
+        class="w-full top-0 sticky z-50 bg-[#faf9fd]/90 backdrop-blur-md shadow-[0_12px_32px_rgba(26,28,31,0.06)] relative border-b border-slate-200/50">
         <div class="max-w-7xl mx-auto px-6 md:px-8 py-4 flex justify-between items-center">
             <!-- Logo -->
-            <a href="index.html" class="flex items-center gap-2 text-[1.35rem] font-black tracking-tighter text-[#5144d4]">
+            <a href="index.html"
+                class="flex items-center gap-2 text-[1.35rem] font-black tracking-tighter text-[#5144d4]">
                 <span class="material-symbols-outlined hidden md:block">confirmation_number</span>
                 SafeTicket
             </a>
-            
-                    <!-- Desktop Links -->
-        <div class="hidden md:flex items-center gap-8 font-['Inter'] font-medium text-sm">
-            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="index.html">Explorar</a>
-            <a class="text-[#5144d4] font-bold border-b-2 border-[#5144d4] pb-1 transition-colors duration-200" href="marketplace.html">Comprar</a>
-            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="sell.html">Vender</a>
-            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="dashboard.html">Mi Actividad</a>
-            <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="profile.html">Mi Perfil</a>
-        </div>
-        <!-- Actions -->
-        <div id="nav-desktop-actions" class="flex items-center gap-4">
-                <a href="chats.html" class="hidden md:block text-sm font-semibold text-[#1a1c1f] hover:text-[#5144d4] transition-colors">
-                  <span class="material-symbols-outlined">chat</span>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-8 font-['Inter'] font-medium text-sm">
+                <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200"
+                    href="index.html">Explorar</a>
+                <a class="text-[#5144d4] font-bold border-b-2 border-[#5144d4] pb-1 transition-colors duration-200"
+                    href="marketplace.html">Comprar</a>
+                <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200"
+                    href="sell.html">Vender</a>
+                <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="dashboard.html">Mi
+                    Actividad</a>
+                <a class="text-[#1a1c1f] hover:text-[#5144d4] transition-colors duration-200" href="profile.html">Mi
+                    Perfil</a>
+            </div>
+            <!-- Actions -->
+            <div id="nav-desktop-actions" class="flex items-center gap-4">
+                <a href="chats.html"
+                    class="hidden md:block text-sm font-semibold text-[#1a1c1f] hover:text-[#5144d4] transition-colors">
+                    <span class="material-symbols-outlined">chat</span>
                 </a>
-                <a href="login.html" class="hidden md:block text-sm font-semibold hover:text-[#5144d4] transition-colors">Cerrar SesiÃ³n</a>
+                <a href="login.html"
+                    class="hidden md:block text-sm font-semibold hover:text-[#5144d4] transition-colors">Cerrar
+                    Sesión</a>
             </div>
         </div>
     </nav>
 
     <main class="max-w-7xl mx-auto px-6 md:px-8 pt-10 pb-16">
-        
+
         <!-- Header Section -->
         <div class="flex md:flex-row flex-col justify-between items-start md:items-center mb-8 gap-4">
             <div>
                 <h1 class="text-4xl md:text-5xl font-black tracking-tight text-[#1a1c1f] mb-3">Entradas Disponibles</h1>
-                <p class="text-slate-500 text-sm md:text-base font-medium">Explora todas las entradas publicadas por usuarios verificados.</p>
+                <p class="text-slate-500 text-sm md:text-base font-medium">Explora todas las entradas publicadas por
+                    usuarios verificados.</p>
             </div>
             <!-- Trust Badge -->
-            <div class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full flex items-center gap-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider border border-emerald-200 shadow-sm shrink-0">
-                <span class="material-symbols-outlined text-[1.1rem]" style="font-variation-settings: 'FILL' 1;">security</span>
-                GARANTÃA SAFETRUST INDIGO
+            <div
+                class="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full flex items-center gap-2 text-[9px] sm:text-xs font-bold uppercase tracking-wider border border-emerald-200 shadow-sm shrink-0">
+                <span class="material-symbols-outlined text-[1.1rem]"
+                    style="font-variation-settings: 'FILL' 1;">security</span>
+                GARANTÍA ASEGURADA
             </div>
         </div>
 
         <!-- Search and Filters Bar -->
         <div class="flex flex-col md:flex-row gap-3 mb-10 w-full z-10 relative">
             <!-- Search -->
-            <div class="flex-1 bg-white rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 flex items-center px-4 py-3 h-[52px]">
+            <div
+                class="flex-1 bg-white rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 flex items-center px-4 py-3 h-[52px]">
                 <span class="material-symbols-outlined text-slate-400 mr-3 text-xl">search</span>
-                <input type="text" id="search-filter" placeholder="Buscar entrada por evento o artista..." class="bg-transparent border-none outline-none w-full text-[15px] font-medium text-slate-800 placeholder:text-slate-400 focus:ring-0 p-0">
+                <input type="text" id="search-filter" placeholder="Buscar entrada por evento o artista..."
+                    class="bg-transparent border-none outline-none w-full text-[15px] font-medium text-slate-800 placeholder:text-slate-400 focus:ring-0 p-0">
             </div>
-            
+
             <div class="flex gap-3 w-full md:w-[420px]">
-                <!-- GÃ©nero Filter -->
+                <!-- Género Filter -->
                 <div class="relative flex-1">
-                    <select id="genre-filter" class="w-full bg-white rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-4 py-3 h-[52px] text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-10">
-                        <option value="">GÃ©nero (Todos)</option>
+                    <select id="genre-filter"
+                        class="w-full bg-white !bg-none rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-4 py-3 h-[52px] text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-10">
+                        <option value="">Género (Todos)</option>
                         <option value="Progressive">Progressive</option>
                         <option value="Techno">Techno</option>
                         <option value="House">House</option>
                         <option value="Melodic Techno">Melodic Techno</option>
                     </select>
-                    <span class="material-symbols-outlined text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">keyboard_arrow_down</span>
+                    <span
+                        class="material-symbols-outlined text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">keyboard_arrow_down</span>
                 </div>
-                
+
                 <!-- Price Sort -->
                 <div class="relative flex-1">
-                    <select id="price-sort" class="w-full bg-white rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-4 py-3 h-[52px] text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-10">
+                    <select id="price-sort"
+                        class="w-full bg-white !bg-none rounded-xl sm:rounded-2xl shadow-[0_2px_12px_rgba(26,28,31,0.03)] border border-slate-100 px-4 py-3 h-[52px] text-[15px] font-medium text-[#1a1c1f] outline-none hover:border-[#5144d4] transition-colors appearance-none cursor-pointer pr-10">
                         <option value="">Precio</option>
-                        <option value="asc">MÃ¡s barato</option>
-                        <option value="desc">MÃ¡s caro</option>
+                        <option value="asc">Más barato</option>
+                        <option value="desc">Más caro</option>
                     </select>
-                    <span class="material-symbols-outlined text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-xl">swap_vert</span>
+                    <span
+                        class="material-symbols-outlined text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-xl">swap_vert</span>
                 </div>
             </div>
         </div>
 
         <!-- Empty State -->
 
-        <div id="tickets-grid-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 min-h-[200px] mb-16">
+        <div id="tickets-grid-container"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 min-h-[200px] mb-16">
             <div class="col-span-full flex flex-col items-center justify-center text-slate-400 py-12">
                 <span class="material-symbols-outlined text-4xl animate-spin mb-4">refresh</span>
                 <p class="font-medium">Buscando Entradas...</p>
@@ -110,8 +140,8 @@
             <h2 class="text-[1.35rem] font-black tracking-tight text-[#1a1c1f]">Eventos populares</h2>
             <a href="index.html" class="text-[#5144d4] font-bold text-[15px] hover:underline mb-1">Ver todos</a>
         </div>
-        
-        <!-- Grid de eventos (DinÃ¡mico) -->
+
+        <!-- Grid de eventos (Dinámico) -->
         <div class="events-grid grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 min-h-[400px]">
             <div class="col-span-full flex flex-col items-center justify-center text-slate-400 py-12">
                 <span class="material-symbols-outlined text-4xl animate-spin mb-4">refresh</span>
@@ -130,10 +160,15 @@
                         <span class="material-symbols-outlined hidden md:block">confirmation_number</span>
                         SafeTicket
                     </div>
-                    <p class="text-slate-500 text-[13px] leading-relaxed mb-6">La plataforma de reventa de entradas mÃ¡s segura para experiencias culturales y musicales.</p>
+                    <p class="text-slate-500 text-[13px] leading-relaxed mb-6">La plataforma de reventa de entradas más
+                        segura para experiencias culturales y musicales.</p>
                     <div class="flex gap-4">
-                        <span class="material-symbols-outlined text-slate-400 hover:text-[#5144d4] cursor-pointer transition-colors" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
-                        <span class="material-symbols-outlined text-slate-400 hover:text-[#5144d4] cursor-pointer transition-colors" style="font-variation-settings: 'FILL' 1;">public</span>
+                        <span
+                            class="material-symbols-outlined text-slate-400 hover:text-[#5144d4] cursor-pointer transition-colors"
+                            style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+                        <span
+                            class="material-symbols-outlined text-slate-400 hover:text-[#5144d4] cursor-pointer transition-colors"
+                            style="font-variation-settings: 'FILL' 1;">public</span>
                     </div>
                 </div>
 
@@ -141,8 +176,12 @@
                 <div>
                     <h4 class="font-bold text-[13px] text-[#1a1c1f] mb-5 uppercase tracking-wider">Plataforma</h4>
                     <ul class="flex flex-col gap-3">
-                        <li><a href="#" class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Sobre Nosotros</a></li>
-                        <li><a href="#" class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Programa de Socios</a></li>
+                        <li><a href="#"
+                                class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Sobre
+                                Nosotros</a></li>
+                        <li><a href="#"
+                                class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Programa
+                                de Socios</a></li>
                     </ul>
                 </div>
 
@@ -150,8 +189,12 @@
                 <div>
                     <h4 class="font-bold text-[13px] text-[#1a1c1f] mb-5 uppercase tracking-wider">Soporte</h4>
                     <ul class="flex flex-col gap-3">
-                        <li><a href="#" class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Centro de Ayuda</a></li>
-                        <li><a href="#" class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Contacto</a></li>
+                        <li><a href="#"
+                                class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Centro
+                                de Ayuda</a></li>
+                        <li><a href="#"
+                                class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Contacto</a>
+                        </li>
                     </ul>
                 </div>
 
@@ -159,17 +202,23 @@
                 <div>
                     <h4 class="font-bold text-[13px] text-[#1a1c1f] mb-5 uppercase tracking-wider">Legal</h4>
                     <ul class="flex flex-col gap-3">
-                        <li><a href="#" class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">TÃ©rminos de Servicio</a></li>
-                        <li><a href="#" class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">PolÃ­tica de Privacidad</a></li>
+                        <li><a href="#"
+                                class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Términos
+                                de Servicio</a></li>
+                        <li><a href="#"
+                                class="text-[13px] font-medium text-slate-500 hover:text-[#5144d4] transition-colors">Política
+                                de Privacidad</a></li>
                     </ul>
                 </div>
             </div>
 
             <!-- Footer Bottom -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-slate-200/60">
-                <p class="text-[11px] font-medium text-slate-400">&copy; 2026 SaFeBeat. Todos los derechos reservados.</p>
+                <p class="text-[11px] font-medium text-slate-400">&copy; 2026 SaFeBeat. Todos los derechos reservados.
+                </p>
                 <div class="flex items-center gap-1.5 text-emerald-600 font-bold text-[9px] tracking-widest uppercase">
-                    <span class="material-symbols-outlined text-[1rem]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                    <span class="material-symbols-outlined text-[1rem]"
+                        style="font-variation-settings: 'FILL' 1;">verified</span>
                     SEGURIDAD GARANTIZADA
                 </div>
             </div>
@@ -177,23 +226,31 @@
     </footer>
 
     <!-- Bottom Navigation Bar (Mobile Only) -->
-    <nav class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-3 pb-3 pt-2 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
-        <a href="index.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+    <nav
+        class="md:hidden fixed bottom-0 left-0 w-full z-[100] flex justify-around items-center px-3 pb-3 pt-2 bg-[#faf9fd]/90 backdrop-blur-xl shadow-[0_-12px_32px_rgba(26,28,31,0.06)] rounded-t-[32px] border-t border-slate-200/50">
+        <a href="index.html"
+            class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
             <span class="material-symbols-outlined text-[1.35rem]">home</span>
             <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Inicio</span>
         </a>
-        <a href="marketplace.html" class="flex flex-col items-center justify-center text-[#5144d4] p-[0.35rem] active:scale-90 duration-200">
-            <span class="material-symbols-outlined text-[1.35rem]" style="font-variation-settings: 'FILL' 1;">explore</span>
+        <a href="marketplace.html"
+            class="flex flex-col items-center justify-center text-[#5144d4] p-[0.35rem] active:scale-90 duration-200">
+            <span class="material-symbols-outlined text-[1.35rem]"
+                style="font-variation-settings: 'FILL' 1;">explore</span>
             <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Explorar</span>
         </a>
-        <a href="sell.html" class="flex flex-col items-center justify-center -mt-4 text-white bg-primary shadow-lg p-2 rounded-full active:scale-90 duration-200" style="transform: translateY(-8px);">
+        <a href="sell.html"
+            class="flex flex-col items-center justify-center -mt-4 text-white bg-primary shadow-lg p-2 rounded-full active:scale-90 duration-200"
+            style="transform: translateY(-8px);">
             <span class="material-symbols-outlined text-[1.35rem]" style="font-variation-settings: 'FILL' 1;">add</span>
         </a>
-        <a href="dashboard.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <a href="dashboard.html"
+            class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
             <span class="material-symbols-outlined text-[1.35rem]">confirmation_number</span>
             <span class="font-bold text-[9px] uppercase tracking-widest mt-1">ACTIVIDAD</span>
         </a>
-        <a href="profile.html" class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
+        <a href="profile.html"
+            class="flex flex-col items-center justify-center text-[#1a1c1f] opacity-60 p-[0.35rem] hover:opacity-100 transition-opacity active:scale-90 duration-200">
             <span class="material-symbols-outlined text-[1.35rem]">person</span>
             <span class="font-bold text-[9px] uppercase tracking-widest mt-1">Perfil</span>
         </a>
@@ -207,8 +264,5 @@
     <script src="js/events.js"></script>
     <script src="js/tickets.js"></script>
 </body>
+
 </html>
-
-
-
-

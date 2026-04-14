@@ -1,4 +1,4 @@
-﻿// js/events.js
+// js/events.js
 
 function formatEventDate(dateString) {
   const options = { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' };
@@ -28,8 +28,9 @@ async function loadEvents(containerSelector = '.events-grid', limit = null) {
     return;
   }
 
-  // Mostrar absolutamente todos los eventos públicos validos que vengan de supabase
-  const events = eventsRaw;
+  // Ocultar eventos de prueba a petición
+  const eventsToHide = ["Festival Primavera Sound", "Arctic Monkeys"];
+  const events = eventsRaw.filter(e => !eventsToHide.includes(e.title));
   
   // 2. Extraer IDs para buscar sus tickets
   const eventIds = events.map(e => e.id);
